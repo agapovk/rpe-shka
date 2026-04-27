@@ -5,5 +5,14 @@
     "ultracite/biome/react",
     "ultracite/biome/next",
     "ultracite/biome/jest"
-  ]
+  ],
+  "linter": {
+    "rules": {
+      "style": {
+        "noNestedTernary": "off",
+        "noNonNullAssertion": "off",
+        "useFilenamingConvention": "off"
+      }
+    }
+  }
 }

@@ -1,0 +1,58 @@
+"use client";
+
+import { redirect, useRouter } from "next/navigation";
+import { use } from "react";
+import ResultsScreen from "@/components/survey/ResultsScreen";
+import { suggestSessionName } from "@/features/session/session.utils";
+import { useSurveyStore } from "@/features/survey/survey.store";
+import { ACCENTS, TEAMS } from "@/features/survey/survey.utils";
+
+export default function ResultsPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = use(params);
+  const router = useRouter();
+  const { getSession, createSession } = useSurveyStore();
+  const session = getSession(id);
+
+  if (!session) {
+    return redirect("/");
+  }
+
+  const accent = ACCENTS.lime.hex;
+
+  const handleNew = () => {
+    const newId = createSession(suggestSessionName(), TEAMS[0].id);
+    router.push(`/sessions/${newId}/survey`);
+  };
+
+  return (
+    <div
+      className="flex min-h-screen flex-col items-center justify-center overflow-auto md:p-6"
+      style={{
+        ["--accent" as string]: accent,
+        background:
+          "radial-gradient(1200px 600px at 50% -200px, rgba(255,255,255,0.025), transparent 60%), var(--color-bg)",
+      }}
+    >
+      <div className="flex w-full flex-1 flex-col items-center gap-6">
+        <div
+          className="relative flex w-full max-w-3xl flex-1 flex-col overflow-hidden bg-bg-1 md:rounded-[28px] md:border md:border-line"
+          style={{
+            boxShadow:
+              "0 0 0 1px rgba(255,255,255,0.03) inset, 0 40px 80px rgba(0,0,0,0.5)",
+          }}
+        >
+          <ResultsScreen
+            accent={accent}
+            onBack={() => router.push(`/sessions/${id}/survey`)}
+            onNew={handleNew}
+            session={session}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
