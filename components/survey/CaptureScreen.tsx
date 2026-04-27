@@ -4,11 +4,10 @@ import { useState } from "react";
 import { suggestSessionName } from "@/features/session/session.utils";
 import { useSurveyStore } from "@/features/survey/survey.store";
 import type { Session } from "@/features/survey/survey.types";
-import { ROSTER, rpeColor, TEAMS } from "@/features/survey/survey.utils";
+import { CATEGORY, ROSTER, rpeColor } from "@/features/survey/survey.utils";
 import ScoreSheet from "./ScoreSheet";
 
 interface Props {
-  accent: string;
   onFinish: () => void;
   session: Session;
 }
@@ -16,7 +15,7 @@ interface Props {
 type Filter = "all" | "pending" | "done";
 
 // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: large capture UI
-export default function CaptureScreen({ accent, session, onFinish }: Props) {
+export default function CaptureScreen({ session, onFinish }: Props) {
   const { updateSession, setScore, clearScore } = useSurveyStore();
 
   const [openId, setOpenId] = useState<number | null>(null);
@@ -78,10 +77,7 @@ export default function CaptureScreen({ accent, session, onFinish }: Props) {
         {/* Header */}
         <header className="flex flex-col gap-2">
           <div className="flex items-center gap-2.5 font-mono text-[11px] text-text-2 uppercase tracking-[0.14em]">
-            <span
-              className="h-2 w-2 rounded-full"
-              style={{ background: accent, boxShadow: `0 0 12px ${accent}` }}
-            />
+            <span className="h-2 w-2 rounded-full bg-accent [box-shadow:0_0_12px_var(--color-accent)]" />
             <span>
               SESSION · {done === total && total > 0 ? "READY" : "IN PROGRESS"}
             </span>
@@ -100,28 +96,20 @@ export default function CaptureScreen({ accent, session, onFinish }: Props) {
           />
         </header>
 
-        {/* Team pills */}
+        {/* Category pills */}
         <section className="flex flex-wrap gap-2">
-          {TEAMS.map((tm) => {
-            const on = session.teamId === tm.id;
+          {CATEGORY.map((cat) => {
+            const on = session.categoryId === cat.id;
             return (
               <button
-                className={`rounded-full border px-4 py-2.5 font-medium font-mono text-xs tracking-widest transition ${on ? "" : "border-line bg-bg-2 text-text-2 hover:border-line-2 hover:text-text"}`}
-                key={tm.id}
-                onClick={() => updateSession(session.id, { teamId: tm.id })}
-                style={
-                  on
-                    ? {
-                        background: accent,
-                        borderColor: accent,
-                        color: "var(--color-bg)",
-                        fontWeight: 600,
-                      }
-                    : undefined
+                className={`rounded-full border px-4 py-2.5 font-mono text-xs tracking-widest transition ${on ? "border-accent bg-accent font-semibold text-bg" : "border-line bg-bg-2 font-medium text-text-2 hover:border-line-2 hover:text-text"}`}
+                key={cat.id}
+                onClick={() =>
+                  updateSession(session.id, { categoryId: cat.id })
                 }
                 type="button"
               >
-                {tm.short}
+                {cat.short}
               </button>
             );
           })}
@@ -132,11 +120,7 @@ export default function CaptureScreen({ accent, session, onFinish }: Props) {
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-baseline gap-1.5 font-display">
               <span
-                className="font-bold text-[44px] tabular-nums leading-none transition-colors"
-                style={{
-                  color:
-                    done === total && total > 0 ? accent : "var(--color-text)",
-                }}
+                className={`font-bold text-[44px] tabular-nums leading-none transition-colors ${done === total && total > 0 ? "text-accent" : "text-text"}`}
               >
                 {done}
               </span>
@@ -169,8 +153,8 @@ export default function CaptureScreen({ accent, session, onFinish }: Props) {
           </div>
           <div className="relative h-1.5 overflow-hidden rounded-full bg-bg-3">
             <div
-              className="absolute top-0 bottom-0 left-0 rounded-full transition-[width] duration-400"
-              style={{ background: accent, width: `${pct}%` }}
+              className="absolute top-0 bottom-0 left-0 rounded-full bg-accent transition-[width] duration-400"
+              style={{ width: `${pct}%` }}
             />
           </div>
         </section>
@@ -182,9 +166,8 @@ export default function CaptureScreen({ accent, session, onFinish }: Props) {
               Tap a player to score
             </span>
             <button
-              className="py-1 font-mono text-[11px] uppercase tracking-[0.14em] underline-offset-4 hover:underline"
+              className="py-1 font-mono text-[11px] text-accent uppercase tracking-[0.14em] underline-offset-4 hover:underline"
               onClick={() => setEditingRoster(!editingRoster)}
-              style={{ color: accent }}
               type="button"
             >
               {editingRoster ? "Done editing" : "Edit roster"}
@@ -207,12 +190,7 @@ export default function CaptureScreen({ accent, session, onFinish }: Props) {
                     type="button"
                   >
                     <span
-                      className="flex h-5.5 w-5.5 shrink-0 items-center justify-center rounded-md border-[1.5px] transition"
-                      style={
-                        inSession
-                          ? { background: accent, borderColor: accent }
-                          : { borderColor: "var(--color-line-2)" }
-                      }
+                      className={`flex h-5.5 w-5.5 shrink-0 items-center justify-center rounded-md border-[1.5px] transition ${inSession ? "border-accent bg-accent" : "border-line-2"}`}
                     >
                       {inSession && (
                         <svg
@@ -263,10 +241,7 @@ export default function CaptureScreen({ accent, session, onFinish }: Props) {
                   </span>
                   {hasScore ? (
                     <span className="flex items-center gap-3 font-mono text-[10px] tracking-[0.14em]">
-                      <span
-                        className="flex h-5.5 w-5.5 shrink-0 items-center justify-center rounded-full"
-                        style={{ background: accent }}
-                      >
+                      <span className="flex h-5.5 w-5.5 shrink-0 items-center justify-center rounded-full bg-accent">
                         <svg
                           fill="none"
                           height="12"
@@ -290,10 +265,7 @@ export default function CaptureScreen({ accent, session, onFinish }: Props) {
                     </span>
                   ) : (
                     <span className="flex items-center gap-2.5 font-mono text-[10px] text-text-3 tracking-[0.14em]">
-                      <span
-                        className="font-medium transition-colors group-hover:text-accent"
-                        style={{ ["--accent" as string]: accent }}
-                      >
+                      <span className="font-medium transition-colors group-hover:text-accent">
                         TAP TO SCORE
                       </span>
                       <svg
@@ -329,7 +301,6 @@ export default function CaptureScreen({ accent, session, onFinish }: Props) {
 
         {openPlayer && (
           <ScoreSheet
-            accent={accent}
             initialNote={session.notes[openPlayer.id] ?? ""}
             initialScore={session.scores[openPlayer.id] ?? null}
             onClear={handleClear}
@@ -351,10 +322,7 @@ export default function CaptureScreen({ accent, session, onFinish }: Props) {
       >
         <div className="flex min-w-27.5 flex-col justify-center px-1">
           <span
-            className="font-bold font-display text-[44px] leading-none"
-            style={{
-              color: done === 0 ? "var(--color-text-3)" : "var(--color-text)",
-            }}
+            className={`font-bold font-display text-[44px] leading-none ${done === 0 ? "text-text-3" : "text-text"}`}
           >
             {done}
             <span className="text-[0.6em] text-text-3">/{total}</span>
@@ -364,10 +332,9 @@ export default function CaptureScreen({ accent, session, onFinish }: Props) {
           </span>
         </div>
         <button
-          className="flex min-h-18 flex-1 items-center justify-center gap-2.5 rounded-[14px] px-7 py-5.5 font-bold font-display text-[22px] text-bg uppercase tracking-[0.06em] transition hover:brightness-110 active:translate-y-px disabled:cursor-not-allowed disabled:opacity-30 disabled:grayscale-[0.4]"
+          className="flex min-h-18 flex-1 items-center justify-center gap-2.5 rounded-[14px] bg-accent px-7 py-5.5 font-bold font-display text-[22px] text-bg uppercase tracking-[0.06em] transition hover:brightness-110 active:translate-y-px disabled:cursor-not-allowed disabled:opacity-30 disabled:grayscale-[0.4]"
           disabled={done === 0}
           onClick={onFinish}
-          style={{ background: accent }}
           type="button"
         >
           {done === total && total > 0

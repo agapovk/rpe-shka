@@ -1,4 +1,4 @@
-import type { Player, Team } from "./survey.types";
+import type { Category, Player } from "./survey.types";
 
 export const ROSTER: Player[] = [
   { id: 1, name: "AKBASHEV ROMAN", num: 13 },
@@ -24,38 +24,31 @@ export const ROSTER: Player[] = [
   { id: 24, name: "ZHELEZNOV YURIY", num: 14 },
 ];
 
-export const TEAMS: Team[] = [
-  { id: "md-4", label: "Matchday -4", short: "MD-4" },
-  { id: "md-3", label: "Matchday -3", short: "MD-3" },
-  { id: "md-2", label: "Matchday -2", short: "MD-2" },
-  { id: "md-1", label: "Matchday -1", short: "MD-1" },
-  { id: "md", label: "Matchday", short: "MD" },
-  { id: "md+1", label: "Matchday +1", short: "MD+1" },
-  { id: "adaptation", label: "Adaptation", short: "ADPT" },
+export const CATEGORY: Category[] = [
+  { id: 1, label: "Matchday -4", short: "MD-4" },
+  { id: 2, label: "Matchday -3", short: "MD-3" },
+  { id: 3, label: "Matchday -2", short: "MD-2" },
+  { id: 4, label: "Matchday -1", short: "MD-1" },
+  { id: 5, label: "Matchday", short: "MD" },
+  { id: 6, label: "Matchday +1", short: "MD+1" },
+  { id: 7, label: "Adaptation", short: "ADPT" },
 ];
 
-export const ACCENTS = {
-  lime: { hex: "#C7F94C", label: "Electric Lime" },
-  coral: { hex: "#FF5B5B", label: "Neon Coral" },
-  cyan: { hex: "#3DD9FF", label: "Cold Cyan" },
-} as const;
-
-const RPE_STOPS: (string | null)[] = [
-  null,
-  "oklch(0.78 0.18 145)",
-  "oklch(0.80 0.19 138)",
-  "oklch(0.83 0.19 128)",
-  "oklch(0.86 0.18 105)",
-  "oklch(0.86 0.19 92)",
-  "oklch(0.83 0.19 75)",
-  "oklch(0.78 0.20 55)",
-  "oklch(0.72 0.21 38)",
-  "oklch(0.66 0.22 25)",
-  "oklch(0.60 0.23 18)",
+const RPE_COLORS = [
+  "oklch(0.78 0.18 145)", // 1
+  "oklch(0.80 0.19 138)", // 2
+  "oklch(0.83 0.19 128)", // 3
+  "oklch(0.86 0.18 105)", // 4
+  "oklch(0.86 0.19 92)", // 5
+  "oklch(0.83 0.19 75)", // 6
+  "oklch(0.78 0.20 55)", // 7
+  "oklch(0.72 0.21 38)", // 8
+  "oklch(0.66 0.22 25)", // 9
+  "oklch(0.60 0.23 18)", // 10
 ];
 
 export function rpeColor(n: number): string {
-  return RPE_STOPS[n] ?? RPE_STOPS[1]!;
+  return RPE_COLORS[n - 1] ?? RPE_COLORS[0];
 }
 
 export function rpeBucket(n: number): string {

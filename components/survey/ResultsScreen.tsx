@@ -4,25 +4,19 @@ import { csvFormat } from "d3-dsv";
 import { useMemo, useState } from "react";
 import type { Session } from "@/features/survey/survey.types";
 import {
+  CATEGORY,
   ROSTER,
   rpeBucket,
   rpeColor,
-  TEAMS,
 } from "@/features/survey/survey.utils";
 
 interface Props {
-  accent: string;
   onBack: () => void;
   onNew: () => void;
   session: Session;
 }
 
-export default function ResultsScreen({
-  accent,
-  session,
-  onBack,
-  onNew,
-}: Props) {
+export default function ResultsScreen({ session, onBack, onNew }: Props) {
   const [sortDesc, setSortDesc] = useState(true);
   const [exported, setExported] = useState(false);
 
@@ -50,7 +44,8 @@ export default function ResultsScreen({
   const sorted = [...recorded].sort((a, b) =>
     sortDesc ? b.rpe - a.rpe : a.rpe - b.rpe
   );
-  const teamLabel = TEAMS.find((t) => t.id === session.teamId)?.label ?? "";
+  const categoryLabel =
+    CATEGORY.find((c) => c.id === session.categoryId)?.label ?? "";
 
   const doExport = () => {
     try {
@@ -94,10 +89,10 @@ export default function ResultsScreen({
             </svg>
           </button>
           <span
-            className="h-2 w-2 rounded-full"
-            style={{ background: accent, boxShadow: `0 0 12px ${accent}` }}
+            className="h-2 w-2 rounded-full bg-accent"
+            // style={{ background: accent, boxShadow: `0 0 12px ${accent}` }}
           />
-          <span>RESULTS · {teamLabel.toUpperCase()}</span>
+          <span>RESULTS · {categoryLabel.toUpperCase()}</span>
         </div>
         <h1 className="m-0 font-bold font-display text-[56px] uppercase leading-[0.95] tracking-tight">
           {session.name}
@@ -112,10 +107,7 @@ export default function ResultsScreen({
           <div className="font-mono text-[11px] text-text-2 uppercase tracking-[0.16em]">
             AVG RPE
           </div>
-          <div
-            className="font-bold font-display text-[84px] tabular-nums leading-[0.9]"
-            style={{ color: accent }}
-          >
+          <div className="font-bold font-display text-[84px] text-accent tabular-nums leading-[0.9]">
             {stats.avg.toFixed(1)}
           </div>
           <div className="font-mono text-[11px] text-text-3 uppercase tracking-[0.14em]">
@@ -181,9 +173,7 @@ export default function ResultsScreen({
               >
                 <span className="font-medium font-mono text-[11px] text-text-3">
                   {flag && (
-                    <span className="mr-1 font-bold" style={{ color: accent }}>
-                      !
-                    </span>
+                    <span className="mr-1 font-bold text-accent">!</span>
                   )}
                   {String(p.num).padStart(2, "0")}
                 </span>
@@ -271,9 +261,8 @@ export default function ResultsScreen({
           )}
         </button>
         <button
-          className="flex min-h-18 flex-1 items-center justify-center gap-2.5 rounded-[14px] px-7 py-5.5 font-bold font-display text-[22px] text-bg uppercase tracking-[0.06em] transition hover:brightness-110 active:translate-y-px"
+          className="flex min-h-18 flex-1 items-center justify-center gap-2.5 rounded-[14px] bg-accent px-7 py-5.5 font-bold font-display text-[22px] text-bg uppercase tracking-[0.06em] transition hover:brightness-110 active:translate-y-px"
           onClick={onNew}
-          style={{ background: accent }}
           type="button"
         >
           NEW SESSION

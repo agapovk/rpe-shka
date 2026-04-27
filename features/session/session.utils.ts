@@ -13,11 +13,9 @@ export function fmtDate(d: Date): string {
     "Nov",
     "Dec",
   ];
-  return `${months[d.getMonth()]} ${d.getDate()}`;
+  return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()} `;
 }
 
 export function suggestSessionName(): string {
-  const h = new Date().getHours();
-  const period = h < 12 ? "Morning" : h < 17 ? "Afternoon" : "Evening";
-  return `${period} · ${fmtDate(new Date())}`;
+  return `${fmtDate(new Date())}`;
 }

@@ -4,7 +4,6 @@ import { redirect, useRouter } from "next/navigation";
 import { use } from "react";
 import CaptureScreen from "@/components/survey/CaptureScreen";
 import { useSurveyStore } from "@/features/survey/survey.store";
-import { ACCENTS } from "@/features/survey/survey.utils";
 
 export default function SurveyPage({
   params,
@@ -19,13 +18,10 @@ export default function SurveyPage({
     return redirect("/");
   }
 
-  const accent = ACCENTS.lime.hex;
-
   return (
     <div
       className="flex min-h-screen flex-col items-center justify-center overflow-auto md:p-6"
       style={{
-        ["--accent" as string]: accent,
         background:
           "radial-gradient(1200px 600px at 50% -200px, rgba(255,255,255,0.025), transparent 60%), var(--color-bg)",
       }}
@@ -39,7 +35,6 @@ export default function SurveyPage({
           }}
         >
           <CaptureScreen
-            accent={accent}
             onFinish={() => router.push(`/sessions/${id}/results`)}
             session={session}
           />

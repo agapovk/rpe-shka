@@ -6,7 +6,6 @@ import { rpeColor } from "@/features/survey/survey.utils";
 import RpeScale from "./RpeScale";
 
 interface Props {
-  accent: string;
   initialNote: string;
   initialScore: number | null;
   onClear: () => void;
@@ -18,7 +17,6 @@ interface Props {
 
 export default function ScoreSheet({
   player,
-  accent,
   initialScore,
   initialNote,
   onSave,
@@ -149,10 +147,9 @@ export default function ScoreSheet({
             </button>
           )}
           <button
-            className="flex min-h-18 flex-1 items-center justify-center gap-2.5 rounded-[14px] px-7 py-5.5 font-bold font-display text-[22px] text-bg uppercase tracking-[0.06em] active:translate-y-px disabled:cursor-not-allowed disabled:opacity-30 disabled:grayscale-[0.4]"
+            className="flex min-h-18 flex-1 items-center justify-center gap-2.5 rounded-[14px] bg-accent px-7 py-5.5 font-bold font-display text-[22px] text-bg uppercase tracking-[0.06em] active:translate-y-px disabled:cursor-not-allowed disabled:opacity-30 disabled:grayscale-[0.4]"
             disabled={score == null}
             onClick={save}
-            style={{ background: accent }}
             type="button"
           >
             {score == null ? (

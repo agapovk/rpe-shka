@@ -5,7 +5,7 @@ import { use } from "react";
 import ResultsScreen from "@/components/survey/ResultsScreen";
 import { suggestSessionName } from "@/features/session/session.utils";
 import { useSurveyStore } from "@/features/survey/survey.store";
-import { ACCENTS, TEAMS } from "@/features/survey/survey.utils";
+import { CATEGORY } from "@/features/survey/survey.utils";
 
 export default function ResultsPage({
   params,
@@ -21,10 +21,8 @@ export default function ResultsPage({
     return redirect("/");
   }
 
-  const accent = ACCENTS.lime.hex;
-
   const handleNew = () => {
-    const newId = createSession(suggestSessionName(), TEAMS[0].id);
+    const newId = createSession(suggestSessionName(), CATEGORY[0].id);
     router.push(`/sessions/${newId}/survey`);
   };
 
@@ -32,7 +30,6 @@ export default function ResultsPage({
     <div
       className="flex min-h-screen flex-col items-center justify-center overflow-auto md:p-6"
       style={{
-        ["--accent" as string]: accent,
         background:
           "radial-gradient(1200px 600px at 50% -200px, rgba(255,255,255,0.025), transparent 60%), var(--color-bg)",
       }}
@@ -46,7 +43,6 @@ export default function ResultsPage({
           }}
         >
           <ResultsScreen
-            accent={accent}
             onBack={() => router.push(`/sessions/${id}/survey`)}
             onNew={handleNew}
             session={session}
