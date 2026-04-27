@@ -49,7 +49,7 @@ export default function ResultsScreen({ session, onBack, onNew }: Props) {
 
   const doExport = () => {
     try {
-      const fileName = `RPE ${session.name.replace(/\s+/g, "_")}.csv`;
+      const fileName = `rpe_${session.name.replace(/\s+/g, "_")}_${CATEGORY[session.categoryId].short}.csv`;
       const csv = csvFormat(recorded);
       const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
       const link = document.createElement("a");

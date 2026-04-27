@@ -25,13 +25,13 @@ export const ROSTER: Player[] = [
 ];
 
 export const CATEGORY: Category[] = [
-  { id: 1, label: "Matchday -4", short: "MD-4" },
-  { id: 2, label: "Matchday -3", short: "MD-3" },
-  { id: 3, label: "Matchday -2", short: "MD-2" },
-  { id: 4, label: "Matchday -1", short: "MD-1" },
-  { id: 5, label: "Matchday", short: "MD" },
-  { id: 6, label: "Matchday +1", short: "MD+1" },
-  { id: 7, label: "Adaptation", short: "ADPT" },
+  { id: 1, label: "Matchday -4", short: "md-4" },
+  { id: 2, label: "Matchday -3", short: "md-3" },
+  { id: 3, label: "Matchday -2", short: "md-2" },
+  { id: 4, label: "Matchday -1", short: "md-1" },
+  { id: 5, label: "Matchday", short: "md" },
+  { id: 6, label: "Matchday +1", short: "md+1" },
+  { id: 7, label: "Adaptation", short: "adpt" },
 ];
 
 const RPE_COLORS = [

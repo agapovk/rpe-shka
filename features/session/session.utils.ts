@@ -13,7 +13,7 @@ export function fmtDate(d: Date): string {
     "Nov",
     "Dec",
   ];
-  return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()} `;
+  return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
 }
 
 export function suggestSessionName(): string {

@@ -102,7 +102,7 @@ export default function CaptureScreen({ session, onFinish }: Props) {
             const on = session.categoryId === cat.id;
             return (
               <button
-                className={`rounded-full border px-4 py-2.5 font-mono text-xs tracking-widest transition ${on ? "border-accent bg-accent font-semibold text-bg" : "border-line bg-bg-2 font-medium text-text-2 hover:border-line-2 hover:text-text"}`}
+                className={`rounded-full border px-4 py-2.5 font-mono text-xs uppercase tracking-widest transition ${on ? "border-accent bg-accent font-semibold text-bg" : "border-line bg-bg-2 font-medium text-text-2 hover:border-line-2 hover:text-text"}`}
                 key={cat.id}
                 onClick={() =>
                   updateSession(session.id, { categoryId: cat.id })
