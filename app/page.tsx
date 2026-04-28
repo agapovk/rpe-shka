@@ -1,18 +1,34 @@
-import { Button } from "@/components/ui/button";
+"use client";
 
-export default function Page() {
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { suggestSessionName } from "@/features/session/session.utils";
+import { useSurveyStore } from "@/features/survey/survey.store";
+import { CATEGORY } from "@/features/survey/survey.utils";
+import { useHydrated } from "@/lib/useHydrated";
+
+export default function HomePage() {
+  const router = useRouter();
+  const hydrated = useHydrated();
+  const { sessions, createSession } = useSurveyStore();
+
+  useEffect(() => {
+    if (!hydrated) {
+      return;
+    }
+    const last = sessions.at(-1);
+    if (last) {
+      router.replace(`/sessions/${last.id}/survey`);
+    } else {
+      const id = createSession(suggestSessionName(), CATEGORY[0].id);
+      router.replace(`/sessions/${id}/survey`);
+    }
+  }, [hydrated, sessions, router, createSession]);
+
   return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex min-w-0 max-w-md flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
-        </div>
-        <div className="font-mono text-muted-foreground text-xs">
-          (Press <kbd>d</kbd> to toggle dark mode)
-        </div>
+    <div className="flex min-h-screen items-center justify-center">
+      <div className="animate-pulse font-mono text-[11px] text-text-3 uppercase tracking-widest">
+        Loading...
       </div>
     </div>
   );
