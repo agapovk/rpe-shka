@@ -4,14 +4,7 @@ export interface Player {
   num: number;
 }
 
-export interface Category {
-  id: number;
-  label: string;
-  short: string;
-}
-
 export interface Session {
-  categoryId: number;
   date: string;
   id: string;
   name: string;

@@ -115,7 +115,6 @@ export interface RpeEntry {
   note?: string;
 }
 export interface Session {
-  categoryId: number;
   date: string;
   id: string;
   name: string;

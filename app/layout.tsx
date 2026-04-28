@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Barlow_Condensed, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -21,6 +21,12 @@ const sans = Inter({
 export const metadata: Metadata = {
   title: "RPE Survey · Coach",
   description: "Post-training perceived-exertion capture for coaches",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default function RootLayout({

@@ -8,8 +8,6 @@ interface Props {
   value: number | null;
 }
 
-// const ARC_OFFSETS = [20, 10, 2, 0, 0, 0, 0, 2, 10, 20];
-
 export default function RpeScale({ value, onChange }: Props) {
   return (
     <div className="grid grid-cols-5 gap-3">

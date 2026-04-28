@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { suggestSessionName } from "@/features/session/session.utils";
 import { useSurveyStore } from "@/features/survey/survey.store";
-import { CATEGORY } from "@/features/survey/survey.utils";
 import { useHydrated } from "@/lib/useHydrated";
 
 export default function HomePage() {
@@ -20,7 +19,7 @@ export default function HomePage() {
     if (last) {
       router.replace(`/sessions/${last.id}/survey`);
     } else {
-      const id = createSession(suggestSessionName(), CATEGORY[0].id);
+      const id = createSession(suggestSessionName());
       router.replace(`/sessions/${id}/survey`);
     }
   }, [hydrated, sessions, router, createSession]);

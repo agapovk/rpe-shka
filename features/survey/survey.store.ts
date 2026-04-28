@@ -7,7 +7,7 @@ import { ROSTER } from "./survey.utils";
 
 interface SurveyStore {
   clearScore: (sessionId: string, playerId: number) => void;
-  createSession: (name: string, categoryId: number) => string;
+  createSession: (name: string) => string;
   getSession: (id: string) => Session | undefined;
   sessions: Session[];
   setScore: (
@@ -18,7 +18,7 @@ interface SurveyStore {
   ) => void;
   updateSession: (
     id: string,
-    patch: Partial<Pick<Session, "categoryId" | "name" | "rosterIds">>
+    patch: Partial<Pick<Session, "name" | "rosterIds">>
   ) => void;
 }
 
@@ -27,10 +27,9 @@ export const useSurveyStore = create<SurveyStore>()(
     (set, get) => ({
       sessions: [],
 
-      createSession: (name, categoryId) => {
+      createSession: (name) => {
         const id = crypto.randomUUID();
         const session: Session = {
-          categoryId,
           date: new Date().toISOString(),
           id,
           name,
