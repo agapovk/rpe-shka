@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { suggestSessionName } from "@/features/session/session.utils";
-import { useSurveyStore } from "@/features/survey/survey.store";
 import type { Session } from "@/features/survey/survey.types";
-import { ROSTER, rpeColor } from "@/features/survey/survey.utils";
+import { ROSTER } from "@/features/survey/survey.utils";
+import { type Filter, useCaptureScreen } from "@/hooks/useCaptureScreen";
+import RosterEditRow from "./RosterEditRow";
+import RosterScoreRow from "./RosterScoreRow";
 import ScoreSheet from "./ScoreSheet";
 
 interface Props {
@@ -12,64 +12,25 @@ interface Props {
   session: Session;
 }
 
-type Filter = "all" | "pending" | "done";
-
-// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: large capture UI
-export default function CaptureScreen({ session, onFinish }: Props) {
-  const { updateSession, setScore, clearScore } = useSurveyStore();
-
-  const [openId, setOpenId] = useState<number | null>(null);
-  const [filter, setFilter] = useState<Filter>("all");
-  const [editingRoster, setEditingRoster] = useState(false);
-
-  const visibleRoster = ROSTER.filter((pl) =>
-    session.rosterIds.includes(pl.id)
-  );
-  const done = visibleRoster.filter(
-    (pl) => session.scores[pl.id] != null
-  ).length;
-  const total = visibleRoster.length;
-  const pct = total ? (done / total) * 100 : 0;
-
-  const openPlayer =
-    openId == null ? null : (ROSTER.find((pl) => pl.id === openId) ?? null);
-
-  const toggleRoster = (id: number) => {
-    const wasIn = session.rosterIds.includes(id);
-    const rosterIds = wasIn
-      ? session.rosterIds.filter((x) => x !== id)
-      : [...session.rosterIds, id];
-    updateSession(session.id, { rosterIds });
-    if (wasIn && session.scores[id] != null) {
-      clearScore(session.id, id);
-    }
-  };
-
-  const filtered = visibleRoster.filter((pl) => {
-    if (filter === "pending") {
-      return session.scores[pl.id] == null;
-    }
-    if (filter === "done") {
-      return session.scores[pl.id] != null;
-    }
-    return true;
-  });
-
-  const handleSave = (score: number, note: string) => {
-    if (openId == null) {
-      return;
-    }
-    setScore(session.id, openId, score, note);
-    setOpenId(null);
-  };
-
-  const handleClear = () => {
-    if (openId == null) {
-      return;
-    }
-    clearScore(session.id, openId);
-    setOpenId(null);
-  };
+export default function CaptureScreen({ onFinish, session }: Props) {
+  const {
+    closeScore,
+    done,
+    editingRoster,
+    filter,
+    filtered,
+    handleClear,
+    handleNameBlur,
+    handleNameChange,
+    handleSave,
+    handleToggleRoster,
+    openPlayer,
+    openScore,
+    pct,
+    setEditingRoster,
+    setFilter,
+    total,
+  } = useCaptureScreen(session);
 
   return (
     <>
@@ -84,14 +45,8 @@ export default function CaptureScreen({ session, onFinish }: Props) {
           </div>
           <input
             className="w-full border-transparent border-b-[1.5px] bg-transparent py-0.5 font-bold font-display text-[32px] text-text uppercase leading-[0.95] tracking-tight outline-none transition-colors hover:border-line-2 focus:border-accent sm:text-5xl"
-            onBlur={(e) => {
-              if (!e.target.value.trim()) {
-                updateSession(session.id, { name: suggestSessionName() });
-              }
-            }}
-            onChange={(e) =>
-              updateSession(session.id, { name: e.target.value })
-            }
+            onBlur={(e) => handleNameBlur(e.target.value)}
+            onChange={(e) => handleNameChange(e.target.value)}
             value={session.name}
           />
         </header>
@@ -157,118 +112,24 @@ export default function CaptureScreen({ session, onFinish }: Props) {
           </div>
 
           <div className="flex flex-col overflow-hidden rounded-xl border border-line bg-bg-2">
-            {(editingRoster ? ROSTER : filtered).map((pl) => {
-              const inSession = session.rosterIds.includes(pl.id);
-              const score = session.scores[pl.id];
-              const hasScore = score != null;
-              const note = session.notes[pl.id];
-
-              if (editingRoster) {
-                return (
-                  <button
-                    className={`flex min-h-14 items-center gap-4 border-line border-b px-4.5 py-3.5 text-left transition last:border-b-0 ${inSession ? "text-text" : "text-text-2"} hover:bg-bg-3 hover:text-text`}
-                    key={pl.id}
-                    onClick={() => toggleRoster(pl.id)}
-                    type="button"
-                  >
-                    <span
-                      className={`flex h-5.5 w-5.5 shrink-0 items-center justify-center rounded-md border-[1.5px] transition ${inSession ? "border-accent bg-accent" : "border-line-2"}`}
-                    >
-                      {inSession && (
-                        <svg
-                          fill="none"
-                          height="14"
-                          stroke="#0D0D0F"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="3.5"
-                          viewBox="0 0 24 24"
-                          width="14"
-                        >
-                          <title>Remove from session</title>
-                          <polyline points="4 12 10 18 20 6" />
-                        </svg>
-                      )}
-                    </span>
-                    <span
-                      className={`w-6 font-medium font-mono text-[13px] ${inSession ? "text-text-2" : "text-text-3"}`}
-                    >
-                      {String(pl.num).padStart(2, "0")}
-                    </span>
-                    <span className="flex-1 font-display font-medium text-[18px] sm:text-[22px]">
-                      {pl.name}
-                    </span>
-                  </button>
-                );
-              }
-
-              return (
-                <button
-                  className={`grid min-h-14 items-center gap-3.5 border-line border-b px-4.5 py-3.5 text-left transition last:border-b-0 ${hasScore ? "bg-white/1.5 text-text" : "text-text-2"} group hover:bg-bg-3 hover:text-text`}
+            {(editingRoster ? ROSTER : filtered).map((pl) =>
+              editingRoster ? (
+                <RosterEditRow
+                  inSession={session.rosterIds.includes(pl.id)}
                   key={pl.id}
-                  onClick={() => setOpenId(pl.id)}
-                  style={{ gridTemplateColumns: "28px 1fr auto" }}
-                  type="button"
-                >
-                  <span className="w-6 font-medium font-mono text-[13px] text-text-3">
-                    {String(pl.num).padStart(2, "0")}
-                  </span>
-                  <span className="truncate font-display font-medium text-[18px] sm:text-[22px]">
-                    {pl.name}
-                    {note && (
-                      <span className="ml-2 font-normal font-sans text-[11px] text-text-3 tracking-normal">
-                        · {note}
-                      </span>
-                    )}
-                  </span>
-                  {hasScore ? (
-                    <span className="flex items-center gap-3 font-mono text-[10px] tracking-[0.14em]">
-                      <span className="flex h-5.5 w-5.5 shrink-0 items-center justify-center rounded-full bg-accent">
-                        <svg
-                          fill="none"
-                          height="12"
-                          stroke="#0D0D0F"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="3.5"
-                          viewBox="0 0 24 24"
-                          width="12"
-                        >
-                          <title>Scored</title>
-                          <polyline points="4 12 10 18 20 6" />
-                        </svg>
-                      </span>
-                      <span
-                        className="min-w-5.5 text-right font-bold font-display text-[22px] tabular-nums leading-none sm:text-[28px]"
-                        style={{ color: rpeColor(score) }}
-                      >
-                        {score}
-                      </span>
-                    </span>
-                  ) : (
-                    <span className="flex items-center gap-2.5 font-mono text-[10px] text-text-3 tracking-[0.14em]">
-                      <span className="font-medium transition-colors group-hover:text-accent">
-                        TAP TO SCORE
-                      </span>
-                      <svg
-                        fill="none"
-                        height="16"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2.4"
-                        viewBox="0 0 24 24"
-                        width="16"
-                      >
-                        <title>Tap to score</title>
-                        <line x1="5" x2="19" y1="12" y2="12" />
-                        <polyline points="12 5 19 12 12 19" />
-                      </svg>
-                    </span>
-                  )}
-                </button>
-              );
-            })}
+                  onToggle={handleToggleRoster}
+                  player={pl}
+                />
+              ) : (
+                <RosterScoreRow
+                  key={pl.id}
+                  note={session.notes[pl.id]}
+                  onOpen={openScore}
+                  player={pl}
+                  score={session.scores[pl.id]}
+                />
+              )
+            )}
             {!editingRoster && filtered.length === 0 && (
               <div className="px-6 py-10 text-center font-mono text-[12px] text-text-3 tracking-[0.12em]">
                 {filter === "pending"
@@ -287,7 +148,7 @@ export default function CaptureScreen({ session, onFinish }: Props) {
           initialNote={session.notes[openPlayer.id] ?? ""}
           initialScore={session.scores[openPlayer.id] ?? null}
           onClear={handleClear}
-          onClose={() => setOpenId(null)}
+          onClose={closeScore}
           onSave={handleSave}
           player={openPlayer}
         />
@@ -295,7 +156,7 @@ export default function CaptureScreen({ session, onFinish }: Props) {
 
       {/* CTA bar */}
       <div
-        className="flex shrink-0 items-stretch gap-3 pt-6"
+        className="flex shrink-0 items-stretch gap-3 pt-5"
         style={{
           background:
             "linear-gradient(to top, var(--color-bg-1) 60%, transparent)",

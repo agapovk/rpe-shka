@@ -53,3 +53,25 @@ export function rpeBucket(n: number): string {
   }
   return "MAXIMAL";
 }
+
+export type RecordedPlayer = Player & { rpe: number; note: string | undefined };
+
+export interface SessionStats {
+  avg: number;
+  hard: number;
+  hi: number;
+  lo: number;
+}
+
+export function calcSessionStats(recorded: RecordedPlayer[]): SessionStats {
+  if (recorded.length === 0) {
+    return { avg: 0, hard: 0, hi: 0, lo: 0 };
+  }
+  const vals = recorded.map((p) => p.rpe);
+  return {
+    avg: vals.reduce((a, b) => a + b, 0) / vals.length,
+    hard: recorded.filter((p) => p.rpe >= 8).length,
+    hi: Math.max(...vals),
+    lo: Math.min(...vals),
+  };
+}
