@@ -34,7 +34,7 @@ export default function CaptureScreen({ onFinish, session }: Props) {
 
   return (
     <>
-      <div className="flex min-h-0 flex-1 flex-col gap-5 overflow-y-auto">
+      <div className="flex min-h-0 flex-1 flex-col gap-5 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {/* Header */}
         <header className="flex flex-col gap-2">
           <div className="flex items-center gap-2.5 font-mono text-[11px] text-text-2 uppercase tracking-[0.14em]">
