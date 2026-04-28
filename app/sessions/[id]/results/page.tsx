@@ -1,11 +1,12 @@
 "use client";
 
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { use } from "react";
 import ResultsScreen from "@/components/survey/ResultsScreen";
 import { suggestSessionName } from "@/features/session/session.utils";
 import { useSurveyStore } from "@/features/survey/survey.store";
 import { CATEGORY } from "@/features/survey/survey.utils";
+import { useHydrated } from "@/lib/useHydrated";
 
 export default function ResultsPage({
   params,
@@ -14,11 +15,17 @@ export default function ResultsPage({
 }) {
   const { id } = use(params);
   const router = useRouter();
+  const hydrated = useHydrated();
   const { getSession, createSession } = useSurveyStore();
   const session = getSession(id);
 
+  if (!hydrated) {
+    return null;
+  }
+
   if (!session) {
-    return redirect("/");
+    router.replace("/");
+    return null;
   }
 
   const handleNew = () => {

@@ -44,6 +44,7 @@ export default function ResultsScreen({ session, onBack, onNew }: Props) {
   const sorted = [...recorded].sort((a, b) =>
     sortDesc ? b.rpe - a.rpe : a.rpe - b.rpe
   );
+
   const categoryLabel =
     CATEGORY.find((c) => c.id === session.categoryId)?.label ?? "";
 

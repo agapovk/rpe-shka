@@ -1,9 +1,10 @@
 "use client";
 
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { use } from "react";
 import CaptureScreen from "@/components/survey/CaptureScreen";
 import { useSurveyStore } from "@/features/survey/survey.store";
+import { useHydrated } from "@/lib/useHydrated";
 
 export default function SurveyPage({
   params,
@@ -12,10 +13,16 @@ export default function SurveyPage({
 }) {
   const { id } = use(params);
   const router = useRouter();
+  const hydrated = useHydrated();
   const session = useSurveyStore((s) => s.getSession(id));
 
+  if (!hydrated) {
+    return null;
+  }
+
   if (!session) {
-    return redirect("/");
+    router.replace("/");
+    return null;
   }
 
   return (

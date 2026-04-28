@@ -18,7 +18,7 @@ interface SurveyStore {
   ) => void;
   updateSession: (
     id: string,
-    patch: Partial<Pick<Session, "name" | "rosterIds" | "categoryId">>
+    patch: Partial<Pick<Session, "categoryId" | "name" | "rosterIds">>
   ) => void;
 }
 
@@ -30,13 +30,13 @@ export const useSurveyStore = create<SurveyStore>()(
       createSession: (name, categoryId) => {
         const id = crypto.randomUUID();
         const session: Session = {
+          categoryId,
           date: new Date().toISOString(),
           id,
           name,
           notes: {},
           rosterIds: ROSTER.map((p) => p.id),
           scores: {},
-          categoryId,
         };
         set((s) => ({ sessions: [...s.sessions, session] }));
         return id;
@@ -79,6 +79,9 @@ export const useSurveyStore = create<SurveyStore>()(
 
       getSession: (id) => get().sessions.find((s) => s.id === id),
     }),
-    { name: "rpe-storage" }
+    {
+      name: "rpe-storage",
+      partialize: ({ sessions }) => ({ sessions }),
+    }
   )
 );

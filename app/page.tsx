@@ -5,12 +5,17 @@ import { useEffect } from "react";
 import { suggestSessionName } from "@/features/session/session.utils";
 import { useSurveyStore } from "@/features/survey/survey.store";
 import { CATEGORY } from "@/features/survey/survey.utils";
+import { useHydrated } from "@/lib/useHydrated";
 
 export default function HomePage() {
   const router = useRouter();
+  const hydrated = useHydrated();
   const { sessions, createSession } = useSurveyStore();
 
   useEffect(() => {
+    if (!hydrated) {
+      return;
+    }
     const last = sessions.at(-1);
     if (last) {
       router.replace(`/sessions/${last.id}/survey`);
@@ -18,7 +23,7 @@ export default function HomePage() {
       const id = createSession(suggestSessionName(), CATEGORY[0].id);
       router.replace(`/sessions/${id}/survey`);
     }
-  }, [sessions, router, createSession]);
+  }, [hydrated, sessions, router, createSession]);
 
   return (
     <div className="flex min-h-screen items-center justify-center">
