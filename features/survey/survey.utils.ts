@@ -1,4 +1,4 @@
-import type { Category, Player } from "./survey.types";
+import type { Player } from "./survey.types";
 
 export const ROSTER: Player[] = [
   { id: 1, name: "AKBASHEV ROMAN", num: 13 },
@@ -22,16 +22,6 @@ export const ROSTER: Player[] = [
   { id: 22, name: "SEKULIC MARTIN", num: 10 },
   { id: 23, name: "SUNGATULIN FANIL", num: 6 },
   { id: 24, name: "ZHELEZNOV YURIY", num: 14 },
-];
-
-export const CATEGORY: Category[] = [
-  { id: 1, label: "Matchday -4", short: "md-4" },
-  { id: 2, label: "Matchday -3", short: "md-3" },
-  { id: 3, label: "Matchday -2", short: "md-2" },
-  { id: 4, label: "Matchday -1", short: "md-1" },
-  { id: 5, label: "Matchday", short: "md" },
-  { id: 6, label: "Matchday +1", short: "md+1" },
-  { id: 7, label: "Adaptation", short: "adpt" },
 ];
 
 const RPE_COLORS = [

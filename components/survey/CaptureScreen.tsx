@@ -4,7 +4,7 @@ import { useState } from "react";
 import { suggestSessionName } from "@/features/session/session.utils";
 import { useSurveyStore } from "@/features/survey/survey.store";
 import type { Session } from "@/features/survey/survey.types";
-import { CATEGORY, ROSTER, rpeColor } from "@/features/survey/survey.utils";
+import { ROSTER, rpeColor } from "@/features/survey/survey.utils";
 import ScoreSheet from "./ScoreSheet";
 
 interface Props {
@@ -83,7 +83,7 @@ export default function CaptureScreen({ session, onFinish }: Props) {
             </span>
           </div>
           <input
-            className="w-full border-transparent border-b-[1.5px] bg-transparent py-0.5 font-bold font-display text-5xl text-text uppercase leading-[0.95] tracking-tight outline-none transition-colors hover:border-line-2 focus:border-accent"
+            className="w-full border-transparent border-b-[1.5px] bg-transparent py-0.5 font-bold font-display text-[32px] text-text uppercase leading-[0.95] tracking-tight outline-none transition-colors hover:border-line-2 focus:border-accent sm:text-5xl"
             onBlur={(e) => {
               if (!e.target.value.trim()) {
                 updateSession(session.id, { name: suggestSessionName() });
@@ -96,39 +96,21 @@ export default function CaptureScreen({ session, onFinish }: Props) {
           />
         </header>
 
-        {/* Category pills */}
-        <section className="flex flex-wrap gap-2">
-          {CATEGORY.map((cat) => {
-            const on = session.categoryId === cat.id;
-            return (
-              <button
-                className={`rounded-full border px-4 py-2.5 font-mono text-xs uppercase tracking-widest transition ${on ? "border-accent bg-accent font-semibold text-bg" : "border-line bg-bg-2 font-medium text-text-2 hover:border-line-2 hover:text-text"}`}
-                key={cat.id}
-                onClick={() =>
-                  updateSession(session.id, { categoryId: cat.id })
-                }
-                type="button"
-              >
-                {cat.short}
-              </button>
-            );
-          })}
-        </section>
-
         {/* Progress */}
         <section className="flex flex-col gap-3.5 border-line border-y py-4.5">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-baseline gap-1.5 font-display">
               <span
-                className={`font-bold text-[44px] tabular-nums leading-none transition-colors ${done === total && total > 0 ? "text-accent" : "text-text"}`}
+                className={`font-bold text-[30px] tabular-nums leading-none transition-colors sm:text-[44px] ${done === total && total > 0 ? "text-accent" : "text-text"}`}
               >
                 {done}
               </span>
-              <span className="mr-2.5 font-medium text-[22px] text-text-3">
+              <span className="mr-2.5 font-medium text-[16px] text-text-3 sm:text-[22px]">
                 / {total}
               </span>
-              <span className="font-medium font-mono text-[11px] text-text-2 uppercase tracking-[0.14em]">
-                PLAYERS SCORED
+              <span className="font-medium font-mono text-[11px] text-text-2 uppercase sm:tracking-[0.14em]">
+                <span className="hidden sm:inline">PLAYERS</span>
+                SCORED
               </span>
             </div>
             <div className="flex gap-0.5 rounded-lg border border-line bg-bg-2 p-0.75">
@@ -140,7 +122,7 @@ export default function CaptureScreen({ session, onFinish }: Props) {
                 const on = filter === f;
                 return (
                   <button
-                    className={`rounded-md px-2.5 py-1.5 font-medium font-mono text-[10px] tracking-[0.12em] transition ${on ? "bg-bg-3 text-text" : "text-text-3 hover:text-text-2"}`}
+                    className={`rounded-md px-2.5 py-1.5 font-medium font-mono text-[10px] transition sm:tracking-[0.12em] ${on ? "bg-bg-3 text-text" : "text-text-3 hover:text-text-2"}`}
                     key={f}
                     onClick={() => setFilter(f)}
                     type="button"
@@ -213,7 +195,7 @@ export default function CaptureScreen({ session, onFinish }: Props) {
                     >
                       {String(pl.num).padStart(2, "0")}
                     </span>
-                    <span className="flex-1 font-display font-medium text-[22px]">
+                    <span className="flex-1 font-display font-medium text-[18px] sm:text-[22px]">
                       {pl.name}
                     </span>
                   </button>
@@ -231,7 +213,7 @@ export default function CaptureScreen({ session, onFinish }: Props) {
                   <span className="w-6 font-medium font-mono text-[13px] text-text-3">
                     {String(pl.num).padStart(2, "0")}
                   </span>
-                  <span className="truncate font-display font-medium text-[22px]">
+                  <span className="truncate font-display font-medium text-[18px] sm:text-[22px]">
                     {pl.name}
                     {note && (
                       <span className="ml-2 font-normal font-sans text-[11px] text-text-3 tracking-normal">
@@ -257,7 +239,7 @@ export default function CaptureScreen({ session, onFinish }: Props) {
                         </svg>
                       </span>
                       <span
-                        className="min-w-5.5 text-right font-bold font-display text-[28px] tabular-nums leading-none"
+                        className="min-w-5.5 text-right font-bold font-display text-[22px] tabular-nums leading-none sm:text-[28px]"
                         style={{ color: rpeColor(score) }}
                       >
                         {score}
@@ -319,9 +301,9 @@ export default function CaptureScreen({ session, onFinish }: Props) {
             "linear-gradient(to top, var(--color-bg-1) 60%, transparent)",
         }}
       >
-        <div className="flex min-w-27.5 flex-col justify-center px-1">
+        <div className="flex min-w-20 flex-col justify-center px-1 sm:min-w-27.5">
           <span
-            className={`font-bold font-display text-[44px] leading-none ${done === 0 ? "text-text-3" : "text-text"}`}
+            className={`font-bold font-display text-[30px] leading-none sm:text-[44px] ${done === 0 ? "text-text-3" : "text-text"}`}
           >
             {done}
             <span className="text-[0.6em] text-text-3">/{total}</span>
@@ -331,7 +313,7 @@ export default function CaptureScreen({ session, onFinish }: Props) {
           </span>
         </div>
         <button
-          className="flex min-h-18 flex-1 items-center justify-center gap-2.5 rounded-[14px] bg-accent px-7 py-5.5 font-bold font-display text-[22px] text-bg uppercase tracking-[0.06em] transition hover:brightness-110 active:translate-y-px disabled:cursor-not-allowed disabled:opacity-30 disabled:grayscale-[0.4]"
+          className="flex min-h-14 flex-1 items-center justify-center gap-2 rounded-[14px] bg-accent px-3 py-4 font-bold font-display text-[14px] text-bg uppercase tracking-[0.06em] transition hover:brightness-110 active:translate-y-px disabled:cursor-not-allowed disabled:opacity-30 disabled:grayscale-[0.4] sm:min-h-18 sm:gap-2.5 sm:px-7 sm:py-5.5 sm:text-[22px]"
           disabled={done === 0}
           onClick={onFinish}
           type="button"

@@ -74,7 +74,7 @@ export default function ScoreSheet({
             <div className="mb-1 font-mono text-text-3 text-xs tracking-[0.14em]">
               #{String(player.num).padStart(2, "0")}
             </div>
-            <div className="font-bold font-display text-[44px] uppercase leading-[0.95] tracking-tight">
+            <div className="font-bold font-display text-[30px] uppercase leading-[0.95] tracking-tight sm:text-[44px]">
               {player.name}
             </div>
           </div>
@@ -123,7 +123,7 @@ export default function ScoreSheet({
         <div className="mt-1 flex items-stretch gap-3">
           {initialScore != null && (
             <button
-              className="cta-base flex min-h-18 shrink-0 items-center gap-2.5 rounded-[14px] bg-bg-3 px-7 py-5.5 font-bold font-display text-[22px] text-text uppercase tracking-[0.06em] hover:bg-bg-2"
+              className="cta-base flex min-h-14 shrink-0 items-center gap-2.5 rounded-[14px] bg-bg-3 px-4 py-4 font-bold font-display text-[16px] text-text uppercase tracking-[0.06em] hover:bg-bg-2 sm:min-h-18 sm:px-7 sm:py-5.5 sm:text-[22px]"
               onClick={onClear}
               type="button"
             >
@@ -145,7 +145,7 @@ export default function ScoreSheet({
             </button>
           )}
           <button
-            className="flex min-h-18 flex-1 items-center justify-center gap-2.5 rounded-[14px] bg-accent px-7 py-5.5 font-bold font-display text-[22px] text-bg uppercase tracking-[0.06em] active:translate-y-px disabled:cursor-not-allowed disabled:opacity-30 disabled:grayscale-[0.4]"
+            className="flex min-h-14 flex-1 items-center justify-center gap-2.5 rounded-[14px] bg-accent px-4 font-bold font-display text-[16px] text-bg uppercase tracking-[0.06em] active:translate-y-px disabled:cursor-not-allowed disabled:opacity-30 disabled:grayscale-[0.4] sm:min-h-18 sm:px-7 sm:py-5.5 sm:text-[22px]"
             disabled={score == null}
             onClick={save}
             type="button"
@@ -154,7 +154,7 @@ export default function ScoreSheet({
               "SELECT A SCORE"
             ) : (
               <>
-                <span className="text-[28px]">{score}</span>
+                <span className="text-2xl">{score}</span>
                 <span className="opacity-70">·</span>
                 SAVE
               </>
