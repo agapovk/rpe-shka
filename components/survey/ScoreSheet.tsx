@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { Player, ScaleLayout } from "@/features/survey/survey.types";
+import type { Player } from "@/features/survey/survey.types";
 import { rpeColor } from "@/features/survey/survey.utils";
 import RpeScale from "./RpeScale";
 
@@ -12,7 +12,6 @@ interface Props {
   onClose: () => void;
   onSave: (score: number, note: string) => void;
   player: Player;
-  scaleLayout: ScaleLayout;
 }
 
 export default function ScoreSheet({
@@ -22,7 +21,6 @@ export default function ScoreSheet({
   onSave,
   onClear,
   onClose,
-  scaleLayout,
 }: Props) {
   const [score, setScore] = useState<number | null>(initialScore);
   const [note, setNote] = useState<string>(initialNote);
@@ -106,7 +104,7 @@ export default function ScoreSheet({
           How hard was that session?
         </div>
 
-        <RpeScale layout={scaleLayout} onChange={setScore} value={score} />
+        <RpeScale onChange={setScore} value={score} />
 
         <div className="-mt-2 flex flex-wrap gap-4 font-mono text-[10px] tracking-[0.14em]">
           <span style={{ color: rpeColor(2) }}>● LIGHT</span>

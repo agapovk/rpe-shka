@@ -19,5 +19,3 @@ export interface Session {
   rosterIds: number[];
   scores: Record<number, number>;
 }
-
-export type ScaleLayout = "grid" | "row" | "arc";

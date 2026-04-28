@@ -97,10 +97,7 @@ export default function ResultsScreen({ session, onBack, onNew }: Props) {
                 <polyline points="12 19 5 12 12 5" />
               </svg>
             </button>
-            <span
-              className="h-2 w-2 rounded-full bg-accent"
-              // style={{ background: accent, boxShadow: `0 0 12px ${accent}` }}
-            />
+            <span className="h-2 w-2 rounded-full bg-accent" />
             <span>RESULTS · {categoryLabel.toUpperCase()}</span>
           </div>
           <h1 className="m-0 font-bold font-display text-[56px] uppercase leading-[0.95] tracking-tight">

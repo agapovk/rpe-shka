@@ -308,7 +308,6 @@ export default function CaptureScreen({ session, onFinish }: Props) {
           onClose={() => setOpenId(null)}
           onSave={handleSave}
           player={openPlayer}
-          scaleLayout="grid"
         />
       )}
 
