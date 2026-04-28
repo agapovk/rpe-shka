@@ -1,123 +1,135 @@
-# Ultracite Code Standards
+# CLAUDE.md — Контекст проекта RPE Tracker (Next.js)
 
-This project uses **Ultracite**, a zero-config preset that enforces strict code quality standards through automated formatting and linting.
+## 1. Описание проекта
+Веб-приложение для сбора оценок *RPE* (*Rating of Perceived Exertion*) после тренировки. Проект использует упрощенную слоистую архитектуру для быстрой разработки и работы в офлайн-режиме.
 
-## Quick Reference
+## 2. Архитектура и структура проекта
+Проект разделен на 3 логических слоя. Структура папок строго соответствует спецификации:
 
-- **Format code**: `pnpm dlx ultracite fix`
-- **Check for issues**: `pnpm dlx ultracite check`
-- **Diagnose setup**: `pnpm dlx ultracite doctor`
+```
+src/
+├── app/                    ← Next.js страницы (только роутинг и UI)
+│   ├── page.tsx
+│   ├── sessions/
+│   │   └── [id]/
+│   │       ├── survey/page.tsx
+│   │       └── results/page.tsx
+│
+├── features/               ← Вся бизнес-логика по фичам (State, Types, Utils)
+│   ├── session/
+│   │   ├── session.types.ts
+│   │   ├── session.store.ts
+│   │   └── session.utils.ts
+│   └── survey/
+│       ├── survey.types.ts
+│       ├── survey.store.ts
+│       └── survey.utils.ts
+│
+└── components/             ← Чистые UI-компоненты (без логики)
+    ├── ui/
+    │   ├── Button.tsx
+    │   └── Card.tsx
+    └── survey/
+        ├── RpeScaleInput.tsx
+        └── PlayerCard.tsx
+```
 
-Biome (the underlying engine) provides robust linting and formatting. Most issues are automatically fixable.
+## 3. Технологический стек и стандарты кодирования
 
----
+### Стек
+*   **Framework:** Next.js 16 (App Router).
+*   **Библиотеки:** React 19, Tailwind CSS 4.
+*   **Управление состоянием:** Zustand (с плагином `persist`).
+*   **Хранение данных:** `localStorage` (автоматически через Zustand).
+*   **Линтер/Форматтер:** Ultracite (на базе Biome).
+*   **Команды:**
+    *   `pnpm dlx ultracite fix` — автоисправление.
+    *   `pnpm dlx ultracite check` — проверка.
+    *   `pnpm dlx ultracite doctor` — диагностика.
 
-## Core Principles
+### Core Principles (Ultracite Code Standards)
+Код должен быть **доступным, производительным, типобезопасным и поддерживаемым**. Фокус на ясности и явном намерении, а не на краткости.
 
-Write code that is **accessible, performant, type-safe, and maintainable**. Focus on clarity and explicit intent over brevity.
+### Type Safety & Explicitness (Типы)
+*   Использовать явные типы для параметров и возвращаемых значений.
+*   Предпочитать `unknown` вместо `any`.
+*   Использовать `as const` для неизменяемых значений.
+*   Использовать сужение типов (*Type Narrowing*) вместо утверждений типов (*Type Assertions*).
+*   Избегать «магических чисел», использовать именованные константы.
 
-### Type Safety & Explicitness
+### Modern JavaScript/TypeScript (Современный синтаксис)
+*   Использовать стрелочные функции для колбэков.
+*   Предпочитать циклы `for...of`.
+*   Использовать опциональную цепочку (`?.`) и нулл-коалесцинг (`??`).
+*   Использовать деструктуризацию объектов и массивов.
+*   Использовать `const` по умолчанию, `let` только при необходимости, `var` запрещен.
 
-- Use explicit types for function parameters and return values when they enhance clarity
-- Prefer `unknown` over `any` when the type is genuinely unknown
-- Use const assertions (`as const`) for immutable values and literal types
-- Leverage TypeScript's type narrowing instead of type assertions
-- Use meaningful variable names instead of magic numbers - extract constants with descriptive names
+### React & JSX (Рекомендации по React)
+*   Использовать функциональные компоненты вместо классовых.
+*   Вызывать хуки только на верхнем уровне, не условно.
+*   Корректно заполнять массив зависимостей хуков.
+*   Использовать уникальный `key` для элементов в списках (предпочтительно ID, а не индекс).
+*   Передавать детей между открывающим и закрывающим тегом.
+*   Не определять компоненты внутри других компонентов.
+*   Обеспечивать доступность: использовать семантический HTML, *ARIA*-атрибуты, подписи к полям.
 
-### Modern JavaScript/TypeScript
+### Error Handling & Debugging (Обработка ошибок)
+*   Удалять `console.log`, `debugger`, `alert` перед коммитом.
+*   Бросать объекты `Error` с понятными сообщениями.
+*   Использовать осмысленные блоки `try-catch`.
 
-- Use arrow functions for callbacks and short functions
-- Prefer `for...of` loops over `.forEach()` and indexed `for` loops
-- Use optional chaining (`?.`) and nullish coalescing (`??`) for safer property access
-- Prefer template literals over string concatenation
-- Use destructuring for object and array assignments
-- Use `const` by default, `let` only when reassignment is needed, never `var`
+### Code Organization (Организация кода)
+*   Делать функции сфокусированными.
+*   Извлекать сложные условия в переменные с понятными именами.
+*   Предпочитать ранние возвраты (`early returns`) вложенным условиям.
 
-### Async & Promises
+### Security (Безопасность)
+*   Добавлять `rel="noopener"` для ссылок с `target="_blank"`.
+*   Избегать использования `dangerouslySetInnerHTML`.
 
-- Always `await` promises in async functions - don't forget to use the return value
-- Use `async/await` syntax instead of promise chains for better readability
-- Handle errors appropriately in async code with try-catch blocks
-- Don't use async functions as Promise executors
+### Performance (Производительность)
+*   Избегать оператора spread (`...`) в аккумуляторах циклов.
+*   Использовать литералы регулярных выражений на верхнем уровне.
 
-### React & JSX
-
-- Use function components over class components
-- Call hooks at the top level only, never conditionally
-- Specify all dependencies in hook dependency arrays correctly
-- Use the `key` prop for elements in iterables (prefer unique IDs over array indices)
-- Nest children between opening and closing tags instead of passing as props
-- Don't define components inside other components
-- Use semantic HTML and ARIA attributes for accessibility:
-  - Provide meaningful alt text for images
-  - Use proper heading hierarchy
-  - Add labels for form inputs
-  - Include keyboard event handlers alongside mouse events
-  - Use semantic elements (`<button>`, `<nav>`, etc.) instead of divs with roles
-
-### Error Handling & Debugging
-
-- Remove `console.log`, `debugger`, and `alert` statements from production code
-- Throw `Error` objects with descriptive messages, not strings or other values
-- Use `try-catch` blocks meaningfully - don't catch errors just to rethrow them
-- Prefer early returns over nested conditionals for error cases
-
-### Code Organization
-
-- Keep functions focused and under reasonable cognitive complexity limits
-- Extract complex conditions into well-named boolean variables
-- Use early returns to reduce nesting
-- Prefer simple conditionals over nested ternary operators
-- Group related code together and separate concerns
-
-### Security
-
-- Add `rel="noopener"` when using `target="_blank"` on links
-- Avoid `dangerouslySetInnerHTML` unless absolutely necessary
-- Don't use `eval()` or assign directly to `document.cookie`
-- Validate and sanitize user input
-
-### Performance
-
-- Avoid spread syntax in accumulators within loops
-- Use top-level regex literals instead of creating them in loops
-- Prefer specific imports over namespace imports
-- Avoid barrel files (index files that re-export everything)
-- Use proper image components (e.g., Next.js `<Image>`) over `<img>` tags
-
-### Framework-Specific Guidance
-
+### Framework-Specific Guidance (Рекомендации для фреймворков)
 **Next.js:**
-- Use Next.js `<Image>` component for images
-- Use `next/head` or App Router metadata API for head elements
-- Use Server Components for async data fetching instead of async Client Components
-
+*   Использовать компонент `<Image>` от Next.js вместо `<img>`.
 **React 19+:**
-- Use ref as a prop instead of `React.forwardRef`
+*   Использовать `ref` как проп вместо `React.forwardRef`.
 
-**Solid/Svelte/Vue/Qwik:**
-- Use `class` and `for` attributes (not `className` or `htmlFor`)
+## 4. Терминология и типы данных
 
----
+Типы определены в файлах внутри папки `features`.
+```typescript
+// src/features/survey/survey.types.ts
 
-## Testing
+export interface Player {
+  id: string;
+  name: string;
+  num: number;
+}
+export interface RpeEntry {
+  playerId: string;
+  playerName: string;
+  score: number; // Диапазон 1–10
+  note?: string;
+}
+export interface Session {
+  categoryId: number;
+  date: string;
+  id: string;
+  name: string;
+  notes: Record<number, string>;
+  rosterIds: number[];
+  scores: Record<number, number>;
+}
+```
 
-- Write assertions inside `it()` or `test()` blocks
-- Avoid done callbacks in async tests - use async/await instead
-- Don't use `.only` or `.skip` in committed code
-- Keep test suites reasonably flat - avoid excessive `describe` nesting
+## 5. Философия разработки и правила
 
-## When Biome Can't Help
-
-Biome's linter will catch most issues automatically. Focus your attention on:
-
-1. **Business logic correctness** - Biome can't validate your algorithms
-2. **Meaningful naming** - Use descriptive names for functions, variables, and types
-3. **Architecture decisions** - Component structure, data flow, and API design
-4. **Edge cases** - Handle boundary conditions and error states
-5. **User experience** - Accessibility, performance, and usability considerations
-6. **Documentation** - Add comments for complex logic, but prefer self-documenting code
-
----
-
-Most formatting and common issues are automatically fixed by Biome. Run `pnpm dlx ultracite fix` before committing to ensure compliance.
+1.  **Разделение ответственности:**
+    *   **app/**: Только роутинг и композиция компонентов.
+    *   **features/**: Вся логика, типы, работа с состоянием.
+    *   **components/**: Только визуальное представление, без бизнес-логики.
+2.  **Сохранение данных:** Не писать код для сохранения в *localStorage*. Использовать плагин `persist` от Zustand.
+3.  **Философия:** Цель — быстрая реализация без «перемудрения». Стек выбран так, чтобы приложение работало офлайн «из коробки». Архитектура позволяет легко перейти на *Clean Architecture*, усложнив логику внутри папок `features/`.
