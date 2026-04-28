@@ -8,7 +8,7 @@ export interface Session {
   date: string;
   id: string;
   name: string;
-  notes: Record<number, string>;
+  notes: Partial<Record<number, string>>;
   rosterIds: number[];
   scores: Record<number, number>;
 }

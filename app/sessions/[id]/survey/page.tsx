@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { use } from "react";
 import CaptureScreen from "@/components/survey/CaptureScreen";
 import { useSurveyStore } from "@/features/survey/survey.store";
-import { useHydrated } from "@/lib/useHydrated";
+import { useHydrated } from "@/hooks/useHydrated";
 
 export default function SurveyPage({
   params,

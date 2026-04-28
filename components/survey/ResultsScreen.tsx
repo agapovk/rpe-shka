@@ -1,9 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { utils as xlsxUtils, writeFile as xlsxWriteFile } from "xlsx";
 import type { Session } from "@/features/survey/survey.types";
-import { ROSTER, rpeBucket, rpeColor } from "@/features/survey/survey.utils";
+import { rpeBucket, rpeColor } from "@/features/survey/survey.utils";
+import { useResultsScreen } from "@/hooks/useResultsScreen";
+import Stat from "./Stat";
 
 interface Props {
   onBack: () => void;
@@ -11,87 +11,23 @@ interface Props {
   session: Session;
 }
 
-export default function ResultsScreen({ session, onBack, onNew }: Props) {
-  const [sortDesc, setSortDesc] = useState(true);
-
-  const recorded = ROSTER.filter((p) => session.rosterIds.includes(p.id))
-    .map((p) => ({
-      ...p,
-      note: session.notes[p.id],
-      rpe: session.scores[p.id],
-    }))
-    .filter((p): p is typeof p & { rpe: number } => p.rpe != null);
-
-  const stats = useMemo(() => {
-    if (recorded.length === 0) {
-      return { avg: 0, hard: 0, hi: 0, lo: 0 };
-    }
-    const vals = recorded.map((p) => p.rpe);
-    return {
-      avg: vals.reduce((a, b) => a + b, 0) / vals.length,
-      hard: recorded.filter((p) => p.rpe >= 8).length,
-      hi: Math.max(...vals),
-      lo: Math.min(...vals),
-    };
-  }, [recorded]);
-
-  const sorted = [...recorded].sort((a, b) =>
-    sortDesc ? b.rpe - a.rpe : a.rpe - b.rpe
-  );
-
-  const doExport = () => {
-    try {
-      const fileName = `rpe_${session.name.replace(/\s+/g, "_")}.xlsx`;
-      const ws = xlsxUtils.json_to_sheet(
-        recorded.map((p) => ({
-          num: p.num,
-          name: p.name,
-          rpe: p.rpe,
-          note: p.note ?? "",
-        }))
-      );
-      const wb = xlsxUtils.book_new();
-      xlsxUtils.book_append_sheet(wb, ws, "RPE");
-      xlsxWriteFile(wb, fileName);
-    } catch {
-      // export failed silently — user can retry
-      // show toast?
-    }
-  };
+export default function ResultsScreen({ onBack, onNew, session }: Props) {
+  const { doExport, recorded, sortDesc, sorted, stats, toggleSort } =
+    useResultsScreen(session);
 
   return (
     <div className="flex h-full flex-col overflow-hidden">
       <div className="flex min-h-0 flex-1 flex-col gap-5 overflow-y-auto sm:pt-8">
         <header className="flex flex-col gap-2">
           <div className="flex items-center gap-2.5 font-mono text-[11px] text-text-2 uppercase tracking-[0.14em]">
-            {/* <button
-              aria-label="Back to capture"
-              className="flex h-5.5 w-5.5 items-center justify-center border-none bg-transparent text-text-2 hover:text-text"
-              onClick={onBack}
-              type="button"
-            >
-              <svg
-                fill="none"
-                height="14"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2.4"
-                viewBox="0 0 24 24"
-                width="14"
-              >
-                <title>Back to capture</title>
-                <line x1="19" x2="5" y1="12" y2="12" />
-                <polyline points="12 19 5 12 12 5" />
-              </svg>
-            </button> */}
             <span className="h-2 w-2 rounded-full bg-accent" />
             <span>RESULTS · {session.name.toUpperCase()}</span>
           </div>
-          <h1 className="m-0 font-bold font-display text-[30px] uppercase leading-[0.95] tracking-tight sm:text-[56px]">
+          <h1 className="m-0 font-bold font-display text-[32px] uppercase leading-11 tracking-tight sm:text-[56px]">
             {session.name}
           </h1>
         </header>
+
         <section
           className="grid gap-4"
           style={{ gridTemplateColumns: "1.2fr 1fr" }}
@@ -118,6 +54,7 @@ export default function ResultsScreen({ session, onBack, onNew }: Props) {
             />
           </div>
         </section>
+
         <section className="flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <span className="font-mono text-[11px] text-text-2 uppercase tracking-[0.14em]">
@@ -125,7 +62,7 @@ export default function ResultsScreen({ session, onBack, onNew }: Props) {
             </span>
             <button
               className="flex items-center gap-1.5 rounded-lg border border-line bg-bg-2 px-3 py-2 font-mono text-[11px] text-text-2 tracking-[0.14em] hover:border-line-2 hover:text-text"
-              onClick={() => setSortDesc(!sortDesc)}
+              onClick={toggleSort}
               type="button"
             >
               RPE
@@ -204,7 +141,7 @@ export default function ResultsScreen({ session, onBack, onNew }: Props) {
       </div>
 
       <div
-        className="flex shrink-0 items-stretch gap-3 pt-4 sm:pt-6"
+        className="flex shrink-0 items-stretch gap-3 pt-5 sm:pt-6"
         style={{
           background:
             "linear-gradient(to top, var(--color-bg-1) 60%, transparent)",
@@ -259,30 +196,6 @@ export default function ResultsScreen({ session, onBack, onNew }: Props) {
         >
           NEW REPORT
         </button>
-      </div>
-    </div>
-  );
-}
-
-function Stat({
-  label,
-  value,
-  color,
-}: {
-  color?: string;
-  label: string;
-  value: number | string;
-}) {
-  return (
-    <div className="flex flex-col gap-1 rounded-2xl border border-line bg-bg-2 px-2.5 py-2.5 sm:gap-1.5 sm:px-4 sm:py-3.5">
-      <div className="font-mono text-[10px] text-text-2 uppercase tracking-[0.14em] sm:text-[11px] sm:tracking-[0.16em]">
-        {label}
-      </div>
-      <div
-        className="font-bold font-display text-[28px] tabular-nums leading-[0.9] sm:text-[44px]"
-        style={color ? { color } : undefined}
-      >
-        {value}
       </div>
     </div>
   );
