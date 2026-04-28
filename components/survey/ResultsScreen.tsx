@@ -1,7 +1,7 @@
 "use client";
 
-import { csvFormat } from "d3-dsv";
 import { useMemo, useState } from "react";
+import { utils as xlsxUtils, writeFile as xlsxWriteFile } from "xlsx";
 import type { Session } from "@/features/survey/survey.types";
 import {
   CATEGORY,
@@ -50,13 +50,20 @@ export default function ResultsScreen({ session, onBack, onNew }: Props) {
 
   const doExport = () => {
     try {
-      const fileName = `rpe_${session.name.replace(/\s+/g, "_")}_${CATEGORY[session.categoryId].short}.csv`;
-      const csv = csvFormat(recorded);
-      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = fileName;
-      link.click();
+      const categoryShort =
+        CATEGORY.find((c) => c.id === session.categoryId)?.short ?? "";
+      const fileName = `rpe_${session.name.replace(/\s+/g, "_")}_${categoryShort}.xlsx`;
+      const ws = xlsxUtils.json_to_sheet(
+        recorded.map((p) => ({
+          num: p.num,
+          name: p.name,
+          rpe: p.rpe,
+          note: p.note ?? "",
+        }))
+      );
+      const wb = xlsxUtils.book_new();
+      xlsxUtils.book_append_sheet(wb, ws, "RPE");
+      xlsxWriteFile(wb, fileName);
       setExported(true);
     } catch {
       // export failed silently — user can retry
@@ -257,7 +264,7 @@ export default function ResultsScreen({ session, onBack, onNew }: Props) {
                 <polyline points="7 10 12 15 17 10" />
                 <line x1="12" x2="12" y1="15" y2="3" />
               </svg>
-              EXPORT CSV
+              EXPORT XLS
             </>
           )}
         </button>
