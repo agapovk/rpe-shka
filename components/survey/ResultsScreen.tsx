@@ -61,7 +61,7 @@ export default function ResultsScreen({ session, onBack, onNew }: Props) {
 
   return (
     <div className="flex h-full flex-col overflow-hidden">
-      <div className="flex min-h-0 flex-1 flex-col gap-5 overflow-y-auto sm:pt-8">
+      <div className="flex min-h-0 flex-1 flex-col gap-5 overflow-y-auto [scrollbar-width:none] sm:pt-8 [&::-webkit-scrollbar]:hidden">
         <header className="flex flex-col gap-2">
           <div className="flex items-center gap-2.5 font-mono text-[11px] text-text-2 uppercase tracking-[0.14em]">
             {/* <button
