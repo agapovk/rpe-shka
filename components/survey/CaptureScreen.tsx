@@ -73,7 +73,7 @@ export default function CaptureScreen({ session, onFinish }: Props) {
 
   return (
     <>
-      <div className="flex flex-1 flex-col gap-7">
+      <div className="flex min-h-0 flex-1 flex-col gap-7 overflow-y-auto">
         {/* Header */}
         <header className="flex flex-col gap-2">
           <div className="flex items-center gap-2.5 font-mono text-[11px] text-text-2 uppercase tracking-[0.14em]">
@@ -298,23 +298,23 @@ export default function CaptureScreen({ session, onFinish }: Props) {
             )}
           </div>
         </section>
-
-        {openPlayer && (
-          <ScoreSheet
-            initialNote={session.notes[openPlayer.id] ?? ""}
-            initialScore={session.scores[openPlayer.id] ?? null}
-            onClear={handleClear}
-            onClose={() => setOpenId(null)}
-            onSave={handleSave}
-            player={openPlayer}
-            scaleLayout="grid"
-          />
-        )}
       </div>
+
+      {openPlayer && (
+        <ScoreSheet
+          initialNote={session.notes[openPlayer.id] ?? ""}
+          initialScore={session.scores[openPlayer.id] ?? null}
+          onClear={handleClear}
+          onClose={() => setOpenId(null)}
+          onSave={handleSave}
+          player={openPlayer}
+          scaleLayout="grid"
+        />
+      )}
 
       {/* CTA bar */}
       <div
-        className="sticky bottom-0 mt-auto flex items-stretch gap-3 pt-6"
+        className="flex shrink-0 items-stretch gap-3 pt-6"
         style={{
           background:
             "linear-gradient(to top, var(--color-bg-1) 60%, transparent)",
