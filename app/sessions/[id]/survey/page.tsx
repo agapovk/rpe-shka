@@ -28,6 +28,7 @@ export default function SurveyPage({
   return (
     <CaptureScreen
       onFinish={() => router.push(`/sessions/${id}/results`)}
+      onHome={() => router.push("/")}
       session={session}
     />
   );

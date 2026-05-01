@@ -33,7 +33,6 @@ export default function HomePage() {
 
   const summaries = [...sessions].reverse().map(calcSessionSummary);
   const stats = calcHomeStats(sessions);
-  // const atRisk = calcAtRisk(sessions);
 
   return (
     <div className="flex min-h-dvh flex-col items-center md:p-6">
@@ -51,11 +50,11 @@ export default function HomePage() {
               RPE
             </span>
             <span className="font-mono text-[10px] text-text-3 uppercase tracking-[0.18em]">
-              COACH
+              шка
             </span>
           </div>
           <button
-            className="flex items-center gap-2 rounded-full bg-accent px-4 py-2.5 font-bold font-display text-[14px] text-bg uppercase tracking-[0.08em] transition hover:brightness-105 active:translate-y-px"
+            className="flex items-center gap-2 rounded-lg bg-accent px-4 py-2.5 font-bold font-display text-[14px] text-bg uppercase tracking-[0.08em] transition hover:brightness-105 active:translate-y-px"
             onClick={handleNewSession}
             type="button"
           >
@@ -79,8 +78,6 @@ export default function HomePage() {
 
         <div className="flex flex-col gap-4 px-5 pb-6 sm:px-7">
           <StatStrip stats={stats} />
-
-          {/* <AtRiskWidget players={atRisk} /> */}
 
           {/* Sessions list */}
           <div className="mt-1 flex flex-col gap-2.5">

@@ -22,13 +22,11 @@ export default function ScoreSheet({
   onClear,
   onClose,
 }: Props) {
-  const [score, setScore] = useState<number | null>(initialScore);
   const [note, setNote] = useState<string>(initialNote);
 
   useEffect(() => {
-    setScore(initialScore);
     setNote(initialNote);
-  }, [initialScore, initialNote]);
+  }, [initialNote]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -40,9 +38,11 @@ export default function ScoreSheet({
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
 
-  const save = () => {
-    if (score != null) {
-      onSave(score, note);
+  const handleScoreSelect = (n: number) => {
+    if (n === initialScore && note === initialNote) {
+      onClear();
+    } else {
+      onSave(n, note);
     }
   };
 
@@ -100,11 +100,11 @@ export default function ScoreSheet({
           </button>
         </div>
 
-        <div className="-mt-2 font-display text-[18px] text-text-2">
+        {/* <div className="-mt-2 font-display text-[18px] text-text-2">
           How hard was that session?
-        </div>
+        </div> */}
 
-        <RpeScale onChange={setScore} value={score} />
+        <RpeScale onChange={handleScoreSelect} value={initialScore} />
 
         <div className="-mt-2 flex flex-wrap gap-4 font-mono text-[10px] tracking-[0.14em]">
           <span style={{ color: rpeColor(2) }}>● LIGHT</span>
@@ -119,48 +119,6 @@ export default function ScoreSheet({
           placeholder="Add a note (optional) — e.g. tight hamstring, felt sharp"
           value={note}
         />
-
-        <div className="mt-1 flex items-stretch gap-3">
-          {initialScore != null && (
-            <button
-              className="cta-base flex min-h-14 shrink-0 items-center gap-2.5 rounded-[14px] bg-bg-3 px-4 py-4 font-bold font-display text-[16px] text-text uppercase tracking-[0.06em] hover:bg-bg-2 sm:min-h-18 sm:px-7 sm:py-5.5 sm:text-[22px]"
-              onClick={onClear}
-              type="button"
-            >
-              <svg
-                fill="none"
-                height="18"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-                width="18"
-              >
-                <title>Clear</title>
-                <polyline points="3 6 5 6 21 6" />
-                <path d="M19 6l-2 14a2 2 0 01-2 2H9a2 2 0 01-2-2L5 6" />
-              </svg>
-              CLEAR
-            </button>
-          )}
-          <button
-            className="flex min-h-14 flex-1 items-center justify-center gap-2.5 rounded-[14px] bg-accent px-4 font-bold font-display text-[16px] text-bg uppercase tracking-[0.06em] active:translate-y-px disabled:cursor-not-allowed disabled:opacity-30 disabled:grayscale-[0.4] sm:min-h-18 sm:px-7 sm:py-5.5 sm:text-[22px]"
-            disabled={score == null}
-            onClick={save}
-            type="button"
-          >
-            {score == null ? (
-              "SELECT A SCORE"
-            ) : (
-              <>
-                <span className="text-2xl">{score}</span>
-                <span className="opacity-70">·</span>
-                SAVE
-              </>
-            )}
-          </button>
-        </div>
       </div>
     </div>
   );
