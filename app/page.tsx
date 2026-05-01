@@ -36,7 +36,7 @@ export default function HomePage() {
   const stats = calcHomeStats(sessions);
 
   return (
-    <div className="flex min-h-dvh flex-col items-center md:p-6">
+    <div className="scroll-hidden flex h-dvh flex-col items-center overflow-y-auto md:p-6">
       <div className="relative flex w-full max-w-3xl flex-1 flex-col bg-bg-1 md:rounded-[28px] md:border md:border-line">
         {/* Sticky header */}
         <header

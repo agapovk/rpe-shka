@@ -92,15 +92,16 @@ export default function SessionCard({
             >
               {dist.map((count, i) => {
                 const bucketRpe = BUCKET_RPES[i];
-                const h = (count / max) * 100;
+                const heightPct = Math.max((count / max) * 100, 14);
+                const opacity = count === 0 ? 0.18 : 0.4 + (count / max) * 0.6;
                 return (
                   <span
                     className="min-h-1 w-2 rounded-[3px]"
                     key={bucketRpe}
                     style={{
                       background: rpeColor(bucketRpe),
-                      height: `${Math.max(h, 14)}%`,
-                      opacity: count === 0 ? 0.18 : 0.4 + (count / max) * 0.6,
+                      height: `${heightPct}%`,
+                      opacity,
                     }}
                     title={`${count} players`}
                   />
