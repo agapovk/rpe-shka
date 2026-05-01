@@ -87,42 +87,7 @@ export function calcSessionSummary(session: Session): SessionSummary {
   };
 }
 
-export function calcAtRisk(sessions: Session[]): AtRiskPlayer[] {
-  const recent = sessions.slice(-5);
-  const flagMap = new Map<number, number>();
-
-  for (const session of recent) {
-    for (const [idStr, score] of Object.entries(session.scores)) {
-      if (score >= 8) {
-        const id = Number(idStr);
-        flagMap.set(id, (flagMap.get(id) ?? 0) + 1);
-      }
-    }
-  }
-
-  return ROSTER.filter((p) => (flagMap.get(p.id) ?? 0) >= 2)
-    .map((p) => ({ flags: flagMap.get(p.id) ?? 0, id: p.id, name: p.name }))
-    .sort((a, b) => b.flags - a.flags);
-}
-
-export function calcHomeStats(sessions: Session[]): HomeStats {
-  const now = Date.now();
-  const DAY = 24 * 60 * 60 * 1000;
-
-  const sessionsLast30d = sessions.filter(
-    (s) => now - new Date(s.date).getTime() < 30 * DAY
-  ).length;
-
-  const last7Scores = sessions
-    .filter((s) => now - new Date(s.date).getTime() < 7 * DAY)
-    .flatMap((s) => Object.values(s.scores));
-
-  const sevenDayAvg =
-    last7Scores.length > 0
-      ? last7Scores.reduce((a, b) => a + b, 0) / last7Scores.length
-      : 0;
-
-  // Player with the highest average RPE across all sessions
+function findTopLoadedPlayer(sessions: Session[]): string {
   const playerTotals = new Map<number, { count: number; sum: number }>();
   for (const session of sessions) {
     for (const [idStr, score] of Object.entries(session.scores)) {
@@ -148,5 +113,29 @@ export function calcHomeStats(sessions: Session[]): HomeStats {
     }
   }
 
-  return { sevenDayAvg, sessionsLast30d, topLoaded };
+  return topLoaded;
+}
+
+export function calcHomeStats(sessions: Session[]): HomeStats {
+  const now = Date.now();
+  const DAY = 24 * 60 * 60 * 1000;
+
+  const sessionsLast30d = sessions.filter(
+    (s) => now - new Date(s.date).getTime() < 30 * DAY
+  ).length;
+
+  const last7Scores = sessions
+    .filter((s) => now - new Date(s.date).getTime() < 7 * DAY)
+    .flatMap((s) => Object.values(s.scores));
+
+  const sevenDayAvg =
+    last7Scores.length > 0
+      ? last7Scores.reduce((a, b) => a + b, 0) / last7Scores.length
+      : 0;
+
+  return {
+    sevenDayAvg,
+    sessionsLast30d,
+    topLoaded: findTopLoadedPlayer(sessions),
+  };
 }

@@ -126,4 +126,15 @@
       opacity: 1;
     }
   }
+
+  .scroll-hidden {
+    scrollbar-width: none;
+  }
+  .scroll-hidden::-webkit-scrollbar {
+    display: none;
+  }
+
+  .fade-bottom {
+    background: linear-gradient(to top, var(--color-bg-1) 60%, transparent);
+  }
 }

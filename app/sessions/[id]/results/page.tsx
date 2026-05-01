@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { use } from "react";
-import ResultsScreen from "@/components/survey/ResultsScreen";
+import ResultsScreen from "@/components/results/ResultsScreen";
 import { suggestSessionName } from "@/features/session/session.utils";
 import { useSurveyStore } from "@/features/survey/survey.store";
 import { useHydrated } from "@/hooks/useHydrated";

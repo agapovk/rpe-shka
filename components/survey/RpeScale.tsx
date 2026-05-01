@@ -1,6 +1,5 @@
 "use client";
 
-// import type { ScaleLayout } from "@/features/survey/survey.types";
 import { rpeColor } from "@/features/survey/survey.utils";
 
 interface Props {
