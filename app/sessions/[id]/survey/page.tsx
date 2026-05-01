@@ -1,8 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { use } from "react";
+import { use, useEffect } from "react";
 import CaptureScreen from "@/components/survey/CaptureScreen";
+import { suggestSessionName } from "@/features/session/session.utils";
 import { useSurveyStore } from "@/features/survey/survey.store";
 import { useHydrated } from "@/hooks/useHydrated";
 
@@ -15,13 +16,16 @@ export default function SurveyPage({
   const router = useRouter();
   const hydrated = useHydrated();
   const session = useSurveyStore((s) => s.getSession(id));
+  const ensureSession = useSurveyStore((s) => s.ensureSession);
 
-  if (!hydrated) {
-    return null;
-  }
+  useEffect(() => {
+    if (!hydrated) {
+      return;
+    }
+    ensureSession(id, suggestSessionName());
+  }, [hydrated, id, ensureSession]);
 
-  if (!session) {
-    router.replace("/");
+  if (!(hydrated && session)) {
     return null;
   }
 
