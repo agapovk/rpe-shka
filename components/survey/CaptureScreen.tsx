@@ -99,7 +99,7 @@ export default function CaptureScreen({ onFinish, onHome, session }: Props) {
 
         {/* Roster */}
         <section className="flex flex-col gap-3">
-          <div className="flex items-center justify-between">
+          <div className="sticky top-0 z-10 flex items-center justify-between bg-bg-1 py-1">
             <span className="font-mono text-[11px] text-text-2 uppercase tracking-[0.14em]">
               Tap a player to score
             </span>
@@ -120,6 +120,7 @@ export default function CaptureScreen({ onFinish, onHome, session }: Props) {
                   key={pl.id}
                   onToggle={handleToggleRoster}
                   player={pl}
+                  score={session.scores[pl.id]}
                 />
               ) : (
                 <RosterScoreRow
