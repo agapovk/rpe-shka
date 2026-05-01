@@ -20,7 +20,7 @@ export default function ResultsScreen({ onBack, onNew, session }: Props) {
     <div className="flex h-full flex-col overflow-hidden">
       <div className="flex min-h-0 flex-1 flex-col gap-5 overflow-y-auto [scrollbar-width:none] sm:pt-8 [&::-webkit-scrollbar]:hidden">
         <header className="flex flex-col gap-2">
-          <div className="flex items-center gap-2.5 font-mono text-[11px] text-text-2 uppercase tracking-[0.14em]">
+          <div className="flex items-center gap-2.5 font-mono text-[11px] text-text-2 uppercase tracking-widest">
             <span className="h-2 w-2 rounded-full bg-accent" />
             <span>RESULTS · {session.name.toUpperCase()}</span>
           </div>
@@ -40,7 +40,7 @@ export default function ResultsScreen({ onBack, onNew, session }: Props) {
             <div className="font-bold font-display text-[48px] text-accent tabular-nums leading-[0.9] sm:text-[84px]">
               {stats.avg.toFixed(1)}
             </div>
-            <div className="font-mono text-[11px] text-text-3 uppercase tracking-[0.14em]">
+            <div className="font-mono text-[11px] text-text-3 uppercase tracking-widest">
               {rpeBucket(Math.round(stats.avg))}
             </div>
           </div>
@@ -58,11 +58,11 @@ export default function ResultsScreen({ onBack, onNew, session }: Props) {
 
         <section className="flex flex-col gap-3">
           <div className="flex items-center justify-between">
-            <span className="font-mono text-[11px] text-text-2 uppercase tracking-[0.14em]">
+            <span className="font-mono text-[11px] text-text-2 uppercase tracking-widest">
               Individual load
             </span>
             <button
-              className="flex items-center gap-1.5 rounded-lg border border-line bg-bg-2 px-3 py-2 font-mono text-[11px] text-text-2 tracking-[0.14em] hover:border-line-2 hover:text-text"
+              className="flex items-center gap-1.5 rounded-lg border border-line bg-bg-2 px-3 py-2 font-mono text-[11px] text-text-2 tracking-widest hover:border-line-2 hover:text-text"
               onClick={toggleSort}
               type="button"
             >

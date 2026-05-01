@@ -39,7 +39,7 @@ export default function CaptureScreen({ onFinish, onHome, session }: Props) {
       <div className="flex min-h-0 flex-1 flex-col gap-5 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {/* Header */}
         <header className="flex flex-col gap-2">
-          <div className="flex items-center gap-2.5 font-mono text-[11px] text-text-2 uppercase tracking-[0.14em]">
+          <div className="flex items-center gap-2.5 font-mono text-[11px] text-text-2 uppercase tracking-widest">
             <span className="h-2 w-2 rounded-full bg-accent [box-shadow:0_0_12px_var(--color-accent)]" />
             <span>
               SESSION · {done === total && total > 0 ? "READY" : "IN PROGRESS"}
@@ -65,7 +65,7 @@ export default function CaptureScreen({ onFinish, onHome, session }: Props) {
               <span className="mr-2.5 font-medium text-[16px] text-text-3 sm:text-[22px]">
                 / {total}
               </span>
-              <span className="font-medium font-mono text-[11px] text-text-2 uppercase sm:tracking-[0.14em]">
+              <span className="font-medium font-mono text-[11px] text-text-2 uppercase sm:tracking-widest">
                 <span className="hidden sm:inline">PLAYERS</span>
                 SCORED
               </span>
@@ -101,11 +101,11 @@ export default function CaptureScreen({ onFinish, onHome, session }: Props) {
         {/* Roster */}
         <section className="flex flex-col gap-3">
           <div className="sticky top-0 z-10 flex items-center justify-between bg-bg-1 py-1">
-            <span className="font-mono text-[11px] text-text-2 uppercase tracking-[0.14em]">
+            <span className="font-mono text-[11px] text-text-2 uppercase tracking-widest">
               Tap a player to score
             </span>
             <button
-              className="py-1 font-mono text-[11px] text-accent uppercase tracking-[0.14em] underline-offset-4 hover:underline"
+              className="py-1 font-mono text-[11px] text-accent uppercase tracking-widest underline-offset-4 hover:underline"
               onClick={() => setEditingRoster(!editingRoster)}
               type="button"
             >

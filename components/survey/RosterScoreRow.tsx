@@ -30,7 +30,7 @@ export default function RosterScoreRow({ note, onOpen, player, score }: Props) {
         )}
       </span>
       {hasScore ? (
-        <span className="flex items-center gap-3 font-mono text-[10px] tracking-[0.14em]">
+        <span className="flex items-center gap-3 font-mono text-[10px] tracking-widest">
           <span className="flex h-5.5 w-5.5 shrink-0 items-center justify-center rounded-full bg-accent">
             <Check className="h-4 w-4 text-bg-3" />
           </span>
@@ -42,7 +42,7 @@ export default function RosterScoreRow({ note, onOpen, player, score }: Props) {
           </span>
         </span>
       ) : (
-        <span className="flex items-center gap-2.5 font-mono text-[10px] text-text-3 tracking-[0.14em]">
+        <span className="flex items-center gap-2.5 font-mono text-[10px] text-text-3 tracking-widest">
           <span className="font-medium transition-colors group-hover:text-accent">
             TAP TO SCORE
           </span>

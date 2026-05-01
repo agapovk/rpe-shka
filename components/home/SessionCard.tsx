@@ -1,3 +1,4 @@
+import { Trash2 } from "lucide-react";
 import {
   BUCKET_RPES,
   type SessionSummary,
@@ -5,15 +6,45 @@ import {
 import { rpeColor } from "@/features/survey/survey.utils";
 
 interface Props {
+  editing?: boolean;
   onClick: () => void;
+  onDelete?: () => void;
   summary: SessionSummary;
 }
 
-export default function SessionCard({ onClick, summary }: Props) {
+export default function SessionCard({
+  editing,
+  onDelete,
+  onClick,
+  summary,
+}: Props) {
   const { avg, date, dist, done, name, total } = summary;
   const incomplete = done < total;
   const max = Math.max(...dist, 1);
   const avgRounded = Math.max(1, Math.min(10, Math.round(avg)));
+
+  if (editing) {
+    return (
+      <div className="flex items-center gap-3">
+        <button
+          aria-label={`Delete session ${name}`}
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-500/15 text-red-500 transition hover:bg-red-500/25 active:scale-95"
+          onClick={onDelete}
+          type="button"
+        >
+          <Trash2 className="h-4 w-4" />
+        </button>
+        <div className="flex flex-1 flex-col gap-1 rounded-[14px] border border-line bg-bg-2 px-4 py-3.5">
+          <span className="font-mono text-[10.5px] text-text-3 uppercase tracking-widest">
+            {date}
+          </span>
+          <span className="font-display font-semibold text-[20px] text-text leading-[1.1] tracking-[0.005em]">
+            {name}
+          </span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <button
@@ -23,7 +54,7 @@ export default function SessionCard({ onClick, summary }: Props) {
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex min-w-0 flex-1 flex-col gap-1.5">
-          <span className="font-mono text-[10.5px] text-text-3 uppercase tracking-[0.14em]">
+          <span className="font-mono text-[10.5px] text-text-3 uppercase tracking-widest">
             {date}
           </span>
           <span className="font-display font-semibold text-[22px] text-text leading-[1.1] tracking-[0.005em]">
@@ -50,7 +81,7 @@ export default function SessionCard({ onClick, summary }: Props) {
           >
             {done > 0 ? avg.toFixed(1) : "—"}
           </span>
-          <span className="font-mono text-[9.5px] text-text-3 uppercase tracking-[0.14em]">
+          <span className="font-mono text-[9.5px] text-text-3 uppercase tracking-widest">
             AVG RPE
           </span>
         </div>
