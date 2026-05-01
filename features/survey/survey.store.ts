@@ -9,6 +9,7 @@ interface SurveyStore {
   clearScore: (sessionId: string, playerId: number) => void;
   createSession: (name: string) => string;
   deleteSession: (id: string) => void;
+  ensureSession: (id: string, name: string) => void;
   getSession: (id: string) => Session | undefined;
   sessions: Session[];
   setScore: (
@@ -40,6 +41,21 @@ export const useSurveyStore = create<SurveyStore>()(
         };
         set((s) => ({ sessions: [...s.sessions, session] }));
         return id;
+      },
+
+      ensureSession: (id, name) => {
+        if (get().sessions.some((s) => s.id === id)) {
+          return;
+        }
+        const session: Session = {
+          date: new Date().toISOString(),
+          id,
+          name,
+          notes: {},
+          rosterIds: ROSTER.map((p) => p.id),
+          scores: {},
+        };
+        set((s) => ({ sessions: [...s.sessions, session] }));
       },
 
       updateSession: (id, patch) => {

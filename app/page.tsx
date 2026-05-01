@@ -8,7 +8,6 @@ import StatStrip from "@/components/home/StatStrip";
 import {
   calcHomeStats,
   calcSessionSummary,
-  suggestSessionName,
 } from "@/features/session/session.utils";
 import { useSurveyStore } from "@/features/survey/survey.store";
 import { useHydrated } from "@/hooks/useHydrated";
@@ -16,12 +15,11 @@ import { useHydrated } from "@/hooks/useHydrated";
 export default function HomePage() {
   const router = useRouter();
   const hydrated = useHydrated();
-  const { sessions, createSession, deleteSession } = useSurveyStore();
+  const { sessions, deleteSession } = useSurveyStore();
   const [editingSessions, setEditingSessions] = useState(false);
 
   function handleNewSession() {
-    const id = createSession(suggestSessionName());
-    router.push(`/sessions/${id}/survey`);
+    router.push(`/sessions/${crypto.randomUUID()}/survey`);
   }
 
   if (!hydrated) {
