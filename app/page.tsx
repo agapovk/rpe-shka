@@ -1,6 +1,8 @@
 "use client";
 
+import { PlusIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import SessionCard from "@/components/home/SessionCard";
 import StatStrip from "@/components/home/StatStrip";
 import {
@@ -14,7 +16,8 @@ import { useHydrated } from "@/hooks/useHydrated";
 export default function HomePage() {
   const router = useRouter();
   const hydrated = useHydrated();
-  const { sessions, createSession } = useSurveyStore();
+  const { sessions, createSession, deleteSession } = useSurveyStore();
+  const [editingSessions, setEditingSessions] = useState(false);
 
   function handleNewSession() {
     const id = createSession(suggestSessionName());
@@ -58,20 +61,7 @@ export default function HomePage() {
             onClick={handleNewSession}
             type="button"
           >
-            <svg
-              fill="none"
-              height="18"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2.6"
-              viewBox="0 0 24 24"
-              width="18"
-            >
-              <title>New session</title>
-              <line x1="12" x2="12" y1="5" y2="19" />
-              <line x1="5" x2="19" y1="12" y2="12" />
-            </svg>
+            <PlusIcon className="h-4 w-4" />
             NEW SESSION
           </button>
         </header>
@@ -82,25 +72,33 @@ export default function HomePage() {
           {/* Sessions list */}
           <div className="mt-1 flex flex-col gap-2.5">
             <div className="flex items-baseline justify-between">
-              <span className="font-mono text-[11px] text-text-2 uppercase tracking-[0.14em]">
+              <span className="font-mono text-[11px] text-text-2 uppercase tracking-widest">
                 RECENT SESSIONS
               </span>
-              <span className="font-display font-semibold text-[18px] text-text-3 tabular-nums">
-                {sessions.length}
-              </span>
+              {sessions.length > 0 && (
+                <button
+                  className="py-1 font-mono text-[11px] text-accent uppercase tracking-widest underline-offset-4 hover:underline"
+                  onClick={() => setEditingSessions(!editingSessions)}
+                  type="button"
+                >
+                  {editingSessions ? "Done" : "Edit sessions"}
+                </button>
+              )}
             </div>
             {summaries.length === 0 ? (
-              <div className="flex items-center justify-center py-16 font-mono text-[11px] text-text-3 uppercase tracking-[0.14em]">
+              <div className="flex items-center justify-center py-16 font-mono text-[11px] text-text-3 uppercase tracking-widest">
                 No sessions yet — tap NEW SESSION to start.
               </div>
             ) : (
               <div className="flex flex-col gap-2">
                 {summaries.map((summary) => (
                   <SessionCard
+                    editing={editingSessions}
                     key={summary.id}
                     onClick={() =>
                       router.push(`/sessions/${summary.id}/survey`)
                     }
+                    onDelete={() => deleteSession(summary.id)}
                     summary={summary}
                   />
                 ))}

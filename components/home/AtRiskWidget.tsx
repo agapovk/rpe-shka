@@ -21,7 +21,7 @@ export default function AtRiskWidget({ players }: Props) {
       }`}
     >
       <button
-        className="flex w-full cursor-pointer items-center gap-2.5 px-3.5 py-3.25 font-mono text-[#FFB84D] text-[11px] uppercase tracking-[0.14em]"
+        className="flex w-full cursor-pointer items-center gap-2.5 px-3.5 py-3.25 font-mono text-[#FFB84D] text-[11px] uppercase tracking-widest"
         onClick={() => setCollapsed(!collapsed)}
         type="button"
       >

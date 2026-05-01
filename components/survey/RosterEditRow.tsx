@@ -1,3 +1,4 @@
+import { Check } from "lucide-react";
 import type { Player } from "@/features/survey/survey.types";
 import { rpeColor } from "@/features/survey/survey.utils";
 
@@ -23,21 +24,7 @@ export default function RosterEditRow({
       <span
         className={`flex h-5.5 w-5.5 shrink-0 items-center justify-center rounded-md border-[1.5px] transition ${inSession ? "border-accent bg-accent" : "border-line-2"}`}
       >
-        {inSession && (
-          <svg
-            fill="none"
-            height="14"
-            stroke="#0D0D0F"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="3.5"
-            viewBox="0 0 24 24"
-            width="14"
-          >
-            <title>Remove from session</title>
-            <polyline points="4 12 10 18 20 6" />
-          </svg>
-        )}
+        {inSession && <Check className="h-4 w-4 text-bg-3" />}
       </span>
       <span
         className={`w-6 font-medium font-mono text-[13px] ${inSession ? "text-text-2" : "text-text-3"}`}

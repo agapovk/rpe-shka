@@ -8,6 +8,7 @@ import { ROSTER } from "./survey.utils";
 interface SurveyStore {
   clearScore: (sessionId: string, playerId: number) => void;
   createSession: (name: string) => string;
+  deleteSession: (id: string) => void;
   getSession: (id: string) => Session | undefined;
   sessions: Session[];
   setScore: (
@@ -73,6 +74,12 @@ export const useSurveyStore = create<SurveyStore>()(
             const { [playerId]: _n, ...notes } = session.notes;
             return { ...session, notes, scores };
           }),
+        }));
+      },
+
+      deleteSession: (id) => {
+        set((s) => ({
+          sessions: s.sessions.filter((session) => session.id !== id),
         }));
       },
 

@@ -15,7 +15,7 @@ export default function StatStrip({ stats }: Props) {
         <span className="font-bold font-display text-[32px] text-text tabular-nums leading-none">
           {sessionsLast30d}
         </span>
-        <span className="font-mono text-[9.5px] text-text-3 uppercase tracking-[0.14em]">
+        <span className="font-mono text-[9.5px] text-text-3 uppercase tracking-widest">
           SESSIONS 30D
         </span>
       </div>
@@ -28,7 +28,7 @@ export default function StatStrip({ stats }: Props) {
         >
           {sevenDayAvg > 0 ? sevenDayAvg.toFixed(1) : "—"}
         </span>
-        <span className="font-mono text-[9.5px] text-text-3 uppercase tracking-[0.14em]">
+        <span className="font-mono text-[9.5px] text-text-3 uppercase tracking-widest">
           7-DAY AVG
         </span>
       </div>

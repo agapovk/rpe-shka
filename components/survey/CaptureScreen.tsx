@@ -1,5 +1,6 @@
 "use client";
 
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import type { Session } from "@/features/survey/survey.types";
 import { ROSTER } from "@/features/survey/survey.utils";
 import { type Filter, useCaptureScreen } from "@/hooks/useCaptureScreen";
@@ -38,7 +39,7 @@ export default function CaptureScreen({ onFinish, onHome, session }: Props) {
       <div className="flex min-h-0 flex-1 flex-col gap-5 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {/* Header */}
         <header className="flex flex-col gap-2">
-          <div className="flex items-center gap-2.5 font-mono text-[11px] text-text-2 uppercase tracking-[0.14em]">
+          <div className="flex items-center gap-2.5 font-mono text-[11px] text-text-2 uppercase tracking-widest">
             <span className="h-2 w-2 rounded-full bg-accent [box-shadow:0_0_12px_var(--color-accent)]" />
             <span>
               SESSION · {done === total && total > 0 ? "READY" : "IN PROGRESS"}
@@ -64,7 +65,7 @@ export default function CaptureScreen({ onFinish, onHome, session }: Props) {
               <span className="mr-2.5 font-medium text-[16px] text-text-3 sm:text-[22px]">
                 / {total}
               </span>
-              <span className="font-medium font-mono text-[11px] text-text-2 uppercase sm:tracking-[0.14em]">
+              <span className="font-medium font-mono text-[11px] text-text-2 uppercase sm:tracking-widest">
                 <span className="hidden sm:inline">PLAYERS</span>
                 SCORED
               </span>
@@ -100,11 +101,11 @@ export default function CaptureScreen({ onFinish, onHome, session }: Props) {
         {/* Roster */}
         <section className="flex flex-col gap-3">
           <div className="sticky top-0 z-10 flex items-center justify-between bg-bg-1 py-1">
-            <span className="font-mono text-[11px] text-text-2 uppercase tracking-[0.14em]">
+            <span className="font-mono text-[11px] text-text-2 uppercase tracking-widest">
               Tap a player to score
             </span>
             <button
-              className="py-1 font-mono text-[11px] text-accent uppercase tracking-[0.14em] underline-offset-4 hover:underline"
+              className="py-1 font-mono text-[11px] text-accent uppercase tracking-widest underline-offset-4 hover:underline"
               onClick={() => setEditingRoster(!editingRoster)}
               type="button"
             >
@@ -169,20 +170,7 @@ export default function CaptureScreen({ onFinish, onHome, session }: Props) {
           onClick={onHome}
           type="button"
         >
-          <svg
-            fill="none"
-            height="14"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2.4"
-            viewBox="0 0 24 24"
-            width="14"
-          >
-            <title>Back to capture</title>
-            <line x1="19" x2="5" y1="12" y2="12" />
-            <polyline points="12 19 5 12 12 5" />
-          </svg>
+          <ArrowLeft className="h-4 w-4" />
         </button>
         <button
           className="flex min-h-14 flex-1 items-center justify-center gap-2 rounded-[14px] bg-accent px-3 py-4 font-bold font-display text-[14px] text-bg uppercase tracking-[0.06em] transition hover:brightness-110 active:translate-y-px disabled:cursor-not-allowed disabled:opacity-30 disabled:grayscale-[0.4] sm:min-h-18 sm:gap-2.5 sm:px-7 sm:py-5.5 sm:text-[22px]"
@@ -193,20 +181,7 @@ export default function CaptureScreen({ onFinish, onHome, session }: Props) {
           {done === total && total > 0
             ? "VIEW RESULTS"
             : "FINISH & VIEW RESULTS"}
-          <svg
-            fill="none"
-            height="22"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2.5"
-            viewBox="0 0 24 24"
-            width="22"
-          >
-            <title>Finish session</title>
-            <line x1="5" x2="19" y1="12" y2="12" />
-            <polyline points="12 5 19 12 12 19" />
-          </svg>
+          <ArrowRight className="h-4 w-4" />
         </button>
       </div>
     </>

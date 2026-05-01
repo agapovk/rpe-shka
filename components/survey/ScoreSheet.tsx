@@ -1,5 +1,6 @@
 "use client";
 
+import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { Player } from "@/features/survey/survey.types";
 import { rpeColor } from "@/features/survey/survey.utils";
@@ -71,7 +72,7 @@ export default function ScoreSheet({
 
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0 flex-1">
-            <div className="mb-1 font-mono text-text-3 text-xs tracking-[0.14em]">
+            <div className="mb-1 font-mono text-text-3 text-xs tracking-widest">
               #{String(player.num).padStart(2, "0")}
             </div>
             <div className="font-bold font-display text-[30px] uppercase leading-[0.95] tracking-tight sm:text-[44px]">
@@ -84,29 +85,13 @@ export default function ScoreSheet({
             onClick={onClose}
             type="button"
           >
-            <svg
-              fill="none"
-              height="22"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeWidth="2.4"
-              viewBox="0 0 24 24"
-              width="22"
-            >
-              <title>Close</title>
-              <line x1="18" x2="6" y1="6" y2="18" />
-              <line x1="6" x2="18" y1="6" y2="18" />
-            </svg>
+            <X className="h-5 w-5" />
           </button>
         </div>
 
-        {/* <div className="-mt-2 font-display text-[18px] text-text-2">
-          How hard was that session?
-        </div> */}
-
         <RpeScale onChange={handleScoreSelect} value={initialScore} />
 
-        <div className="-mt-2 flex flex-wrap gap-4 font-mono text-[10px] tracking-[0.14em]">
+        <div className="-mt-2 flex flex-wrap gap-4 font-mono text-[10px] tracking-widest">
           <span style={{ color: rpeColor(2) }}>● LIGHT</span>
           <span style={{ color: rpeColor(5) }}>● MODERATE</span>
           <span style={{ color: rpeColor(8) }}>● HARD</span>
