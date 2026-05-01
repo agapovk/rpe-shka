@@ -9,10 +9,11 @@ import ScoreSheet from "./ScoreSheet";
 
 interface Props {
   onFinish: () => void;
+  onHome: () => void;
   session: Session;
 }
 
-export default function CaptureScreen({ onFinish, session }: Props) {
+export default function CaptureScreen({ onFinish, onHome, session }: Props) {
   const {
     closeScore,
     done,
@@ -162,17 +163,26 @@ export default function CaptureScreen({ onFinish, session }: Props) {
             "linear-gradient(to top, var(--color-bg-1) 60%, transparent)",
         }}
       >
-        <div className="flex min-w-20 flex-col justify-center px-1 sm:min-w-27.5">
-          <span
-            className={`font-bold font-display text-[30px] leading-none sm:text-[44px] ${done === 0 ? "text-text-3" : "text-text"}`}
+        <button
+          className="flex aspect-square min-h-14 shrink-0 items-center justify-center gap-2.5 rounded-[14px] bg-bg-3 px-4 py-4 font-bold font-display text-[16px] text-text uppercase tracking-[0.06em] transition hover:bg-bg-2 sm:min-h-18 sm:px-7 sm:py-5.5 sm:text-[22px]"
+          onClick={onHome}
+          type="button"
+        >
+          <svg
+            fill="none"
+            height="14"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2.4"
+            viewBox="0 0 24 24"
+            width="14"
           >
-            {done}
-            <span className="text-[0.6em] text-text-3">/{total}</span>
-          </span>
-          <span className="mt-0.5 font-mono text-[10px] text-text-2 uppercase tracking-[0.16em]">
-            {done === total && total > 0 ? "ALL DONE" : "SCORED"}
-          </span>
-        </div>
+            <title>Back to capture</title>
+            <line x1="19" x2="5" y1="12" y2="12" />
+            <polyline points="12 19 5 12 12 5" />
+          </svg>
+        </button>
         <button
           className="flex min-h-14 flex-1 items-center justify-center gap-2 rounded-[14px] bg-accent px-3 py-4 font-bold font-display text-[14px] text-bg uppercase tracking-[0.06em] transition hover:brightness-110 active:translate-y-px disabled:cursor-not-allowed disabled:opacity-30 disabled:grayscale-[0.4] sm:min-h-18 sm:gap-2.5 sm:px-7 sm:py-5.5 sm:text-[22px]"
           disabled={done === 0}
