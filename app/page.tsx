@@ -1,5 +1,6 @@
 "use client";
 
+import { PlusIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import SessionCard from "@/components/home/SessionCard";
 import StatStrip from "@/components/home/StatStrip";
@@ -58,20 +59,7 @@ export default function HomePage() {
             onClick={handleNewSession}
             type="button"
           >
-            <svg
-              fill="none"
-              height="18"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2.6"
-              viewBox="0 0 24 24"
-              width="18"
-            >
-              <title>New session</title>
-              <line x1="12" x2="12" y1="5" y2="19" />
-              <line x1="5" x2="19" y1="12" y2="12" />
-            </svg>
+            <PlusIcon className="h-4 w-4" />
             NEW SESSION
           </button>
         </header>

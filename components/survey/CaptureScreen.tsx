@@ -1,5 +1,6 @@
 "use client";
 
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import type { Session } from "@/features/survey/survey.types";
 import { ROSTER } from "@/features/survey/survey.utils";
 import { type Filter, useCaptureScreen } from "@/hooks/useCaptureScreen";
@@ -169,20 +170,7 @@ export default function CaptureScreen({ onFinish, onHome, session }: Props) {
           onClick={onHome}
           type="button"
         >
-          <svg
-            fill="none"
-            height="14"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2.4"
-            viewBox="0 0 24 24"
-            width="14"
-          >
-            <title>Back to capture</title>
-            <line x1="19" x2="5" y1="12" y2="12" />
-            <polyline points="12 19 5 12 12 5" />
-          </svg>
+          <ArrowLeft className="h-4 w-4" />
         </button>
         <button
           className="flex min-h-14 flex-1 items-center justify-center gap-2 rounded-[14px] bg-accent px-3 py-4 font-bold font-display text-[14px] text-bg uppercase tracking-[0.06em] transition hover:brightness-110 active:translate-y-px disabled:cursor-not-allowed disabled:opacity-30 disabled:grayscale-[0.4] sm:min-h-18 sm:gap-2.5 sm:px-7 sm:py-5.5 sm:text-[22px]"
@@ -193,20 +181,7 @@ export default function CaptureScreen({ onFinish, onHome, session }: Props) {
           {done === total && total > 0
             ? "VIEW RESULTS"
             : "FINISH & VIEW RESULTS"}
-          <svg
-            fill="none"
-            height="22"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2.5"
-            viewBox="0 0 24 24"
-            width="22"
-          >
-            <title>Finish session</title>
-            <line x1="5" x2="19" y1="12" y2="12" />
-            <polyline points="12 5 19 12 12 19" />
-          </svg>
+          <ArrowRight className="h-4 w-4" />
         </button>
       </div>
     </>

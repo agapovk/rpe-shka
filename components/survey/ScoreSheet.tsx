@@ -1,5 +1,6 @@
 "use client";
 
+import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { Player } from "@/features/survey/survey.types";
 import { rpeColor } from "@/features/survey/survey.utils";
@@ -84,19 +85,7 @@ export default function ScoreSheet({
             onClick={onClose}
             type="button"
           >
-            <svg
-              fill="none"
-              height="22"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeWidth="2.4"
-              viewBox="0 0 24 24"
-              width="22"
-            >
-              <title>Close</title>
-              <line x1="18" x2="6" y1="6" y2="18" />
-              <line x1="6" x2="18" y1="6" y2="18" />
-            </svg>
+            <X className="h-5 w-5" />
           </button>
         </div>
 

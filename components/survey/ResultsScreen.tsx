@@ -1,5 +1,6 @@
 "use client";
 
+import { ArrowDown, ArrowLeft, Download } from "lucide-react";
 import type { Session } from "@/features/survey/survey.types";
 import { rpeBucket, rpeColor } from "@/features/survey/survey.utils";
 import { useResultsScreen } from "@/hooks/useResultsScreen";
@@ -66,24 +67,13 @@ export default function ResultsScreen({ onBack, onNew, session }: Props) {
               type="button"
             >
               RPE
-              <svg
-                fill="none"
-                height="14"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2.4"
+              <ArrowDown
+                className="h-4 w-4"
                 style={{
                   transform: sortDesc ? "rotate(0deg)" : "rotate(180deg)",
                   transition: "transform 0.2s",
                 }}
-                viewBox="0 0 24 24"
-                width="14"
-              >
-                <title>Sort</title>
-                <line x1="12" x2="12" y1="5" y2="19" />
-                <polyline points="19 12 12 19 5 12" />
-              </svg>
+              />
               {sortDesc ? "HIGH → LOW" : "LOW → HIGH"}
             </button>
           </div>
@@ -152,41 +142,14 @@ export default function ResultsScreen({ onBack, onNew, session }: Props) {
           onClick={onBack}
           type="button"
         >
-          <svg
-            fill="none"
-            height="14"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2.4"
-            viewBox="0 0 24 24"
-            width="14"
-          >
-            <title>Back to capture</title>
-            <line x1="19" x2="5" y1="12" y2="12" />
-            <polyline points="12 19 5 12 12 5" />
-          </svg>
+          <ArrowLeft className="h-4 w-4" />
         </button>
         <button
           className="flex min-h-14 shrink-0 items-center justify-center gap-2.5 rounded-[14px] bg-bg-3 px-4 py-4 font-bold font-display text-[16px] text-text uppercase tracking-[0.06em] transition hover:bg-bg-2 sm:min-h-18 sm:px-7 sm:py-5.5 sm:text-[22px]"
           onClick={doExport}
           type="button"
         >
-          <svg
-            fill="none"
-            height="20"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-            width="20"
-          >
-            <title>Export</title>
-            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
-            <polyline points="7 10 12 15 17 10" />
-            <line x1="12" x2="12" y1="15" y2="3" />
-          </svg>
+          <Download className="h-4 w-4" />
           XLSX
         </button>
         <button

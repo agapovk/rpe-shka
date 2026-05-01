@@ -1,3 +1,4 @@
+import { ArrowRight, Check } from "lucide-react";
 import type { Player } from "@/features/survey/survey.types";
 import { rpeColor } from "@/features/survey/survey.utils";
 
@@ -31,19 +32,7 @@ export default function RosterScoreRow({ note, onOpen, player, score }: Props) {
       {hasScore ? (
         <span className="flex items-center gap-3 font-mono text-[10px] tracking-[0.14em]">
           <span className="flex h-5.5 w-5.5 shrink-0 items-center justify-center rounded-full bg-accent">
-            <svg
-              fill="none"
-              height="12"
-              stroke="#0D0D0F"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="3.5"
-              viewBox="0 0 24 24"
-              width="12"
-            >
-              <title>Scored</title>
-              <polyline points="4 12 10 18 20 6" />
-            </svg>
+            <Check className="h-4 w-4 text-bg-3" />
           </span>
           <span
             className="min-w-5.5 text-right font-bold font-display text-[22px] tabular-nums leading-none sm:text-[28px]"
@@ -57,20 +46,7 @@ export default function RosterScoreRow({ note, onOpen, player, score }: Props) {
           <span className="font-medium transition-colors group-hover:text-accent">
             TAP TO SCORE
           </span>
-          <svg
-            fill="none"
-            height="16"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2.4"
-            viewBox="0 0 24 24"
-            width="16"
-          >
-            <title>Tap to score</title>
-            <line x1="5" x2="19" y1="12" y2="12" />
-            <polyline points="12 5 19 12 12 19" />
-          </svg>
+          <ArrowRight className="h-4 w-4" />
         </span>
       )}
     </button>
