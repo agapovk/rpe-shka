@@ -1,5 +1,5 @@
 import { Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   BUCKET_RPES,
   type SessionSummary,
@@ -24,8 +24,15 @@ export default function SessionCard({
   const max = Math.max(...dist, 1);
   const avgRounded = Math.max(1, Math.min(10, Math.round(avg)));
   const [isDeleting, setIsDeleting] = useState(false);
+  const [confirming, setConfirming] = useState(false);
 
-  function handleDelete() {
+  useEffect(() => {
+    if (!editing) {
+      setConfirming(false);
+    }
+  }, [editing]);
+
+  function handleConfirm() {
     setIsDeleting(true);
     setTimeout(() => onDelete?.(), 300);
   }
@@ -64,7 +71,7 @@ export default function SessionCard({
             <span
               className={`flex shrink-0 items-baseline gap-px rounded-full border px-2.5 py-1 font-mono font-semibold text-[12px] tracking-[0.08em] ${
                 incomplete
-                  ? "border-[#FFB84D]/28 bg-[#FFB84D]/10 text-[#FFB84D]"
+                  ? "border-warning/28 bg-warning/10 text-warning"
                   : "border-accent/25 bg-accent/12 text-accent"
               }`}
             >
@@ -114,17 +121,42 @@ export default function SessionCard({
         {/* Delete panel slides in from right */}
         <div
           className={`flex shrink-0 items-center justify-center overflow-hidden bg-red-500/10 transition-all duration-300 ease-out ${
-            editing ? "w-14 border-line border-l" : "w-0"
+            editing
+              ? confirming
+                ? "w-28 border-line border-l"
+                : "w-14 border-line border-l"
+              : "w-0"
           }`}
         >
-          <button
-            aria-label={`Delete session ${name}`}
-            className="flex h-9 w-9 items-center justify-center rounded-full text-red-500 transition hover:bg-red-500/20 active:scale-95"
-            onClick={handleDelete}
-            type="button"
-          >
-            <Trash2 className="h-4 w-4" />
-          </button>
+          {confirming ? (
+            <div className="flex items-center gap-1 px-2">
+              <button
+                aria-label="Confirm delete"
+                className="flex h-8 items-center justify-center rounded-md px-2 font-mono text-[10px] text-red-400 uppercase tracking-widest transition hover:bg-red-500/20 active:scale-95"
+                onClick={handleConfirm}
+                type="button"
+              >
+                YES
+              </button>
+              <button
+                aria-label="Cancel delete"
+                className="flex h-8 items-center justify-center rounded-md px-2 font-mono text-[10px] text-text-3 uppercase tracking-widest transition hover:bg-bg-3 active:scale-95"
+                onClick={() => setConfirming(false)}
+                type="button"
+              >
+                NO
+              </button>
+            </div>
+          ) : (
+            <button
+              aria-label={`Delete session ${name}`}
+              className="flex h-9 w-9 items-center justify-center rounded-full text-red-500 transition hover:bg-red-500/20 active:scale-95"
+              onClick={() => setConfirming(true)}
+              type="button"
+            >
+              <Trash2 className="h-4 w-4" />
+            </button>
+          )}
         </div>
       </div>
     </div>

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import SessionCard from "@/components/home/SessionCard";
 import StatStrip from "@/components/home/StatStrip";
+import ThemeToggle from "@/components/ui/ThemeToggle";
 import {
   calcHomeStats,
   calcSessionSummary,
@@ -37,10 +38,10 @@ export default function HomePage() {
 
   return (
     <div className="scroll-hidden flex h-dvh flex-col items-center overflow-y-auto md:p-6">
-      <div className="relative flex w-full max-w-3xl flex-1 flex-col bg-bg-1 md:rounded-[28px] md:border md:border-line">
+      <div className="relative flex w-full max-w-3xl flex-1 flex-col bg-bg-1 md:rounded-3xl md:border md:border-line">
         {/* Sticky header */}
         <header
-          className="sticky top-0 z-10 flex items-center justify-between px-5 py-5 sm:px-7"
+          className="sticky top-0 z-10 flex items-center justify-between px-5 py-5 sm:px-7 md:rounded-3xl"
           style={{
             background:
               "linear-gradient(to bottom, var(--color-bg-1) 80%, transparent)",
@@ -54,14 +55,17 @@ export default function HomePage() {
               шка
             </span>
           </div>
-          <button
-            className="flex items-center gap-2 rounded-lg bg-accent px-4 py-2.5 font-bold font-display text-[14px] text-bg uppercase tracking-[0.08em] transition hover:brightness-105 active:translate-y-px"
-            onClick={handleNewSession}
-            type="button"
-          >
-            <PlusIcon className="h-4 w-4" />
-            NEW SESSION
-          </button>
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <button
+              className="flex items-center gap-2 rounded-lg bg-accent px-4 py-2 font-bold font-display text-[14px] text-bg uppercase tracking-[0.08em] transition hover:brightness-105 active:translate-y-px"
+              onClick={handleNewSession}
+              type="button"
+            >
+              <PlusIcon className="h-4 w-4" />
+              NEW SESSION
+            </button>
+          </div>
         </header>
 
         <div className="flex flex-col gap-4 px-5 pb-6 sm:px-7">
