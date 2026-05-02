@@ -2,6 +2,7 @@ import type { Player } from "./survey.types";
 
 export const ROSTER: Player[] = [
   { id: 1, name: "AKBASHEV ROMAN", num: 13 },
+  { id: 2, name: "AYUPOV TIMUR", num: 5 },
   { id: 4, name: "BARDACHEV MATVEY", num: 4 },
   { id: 5, name: "BEGIC SILVIJE", num: 2 },
   { id: 6, name: "BOGOMOLSKIY EGOR", num: 19 },
