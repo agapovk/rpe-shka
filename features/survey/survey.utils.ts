@@ -25,21 +25,9 @@ export const ROSTER: Player[] = [
   { id: 24, name: "ZHELEZNOV YURIY", num: 14 },
 ];
 
-const RPE_COLORS = [
-  "oklch(0.78 0.18 145)", // 1
-  "oklch(0.80 0.19 138)", // 2
-  "oklch(0.83 0.19 128)", // 3
-  "oklch(0.86 0.18 105)", // 4
-  "oklch(0.86 0.19 92)", // 5
-  "oklch(0.83 0.19 75)", // 6
-  "oklch(0.78 0.20 55)", // 7
-  "oklch(0.72 0.21 38)", // 8
-  "oklch(0.66 0.22 25)", // 9
-  "oklch(0.60 0.23 18)", // 10
-];
-
 export function rpeColor(n: number): string {
-  return RPE_COLORS[n - 1] ?? RPE_COLORS[0];
+  const clamped = Math.max(1, Math.min(10, Math.round(n)));
+  return `var(--rpe-${clamped})`;
 }
 
 export function rpeBucket(n: number): string {
