@@ -1,13 +1,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSurveyStore } from "@/features/survey/survey.store";
 
-// Returns false on the server and on the first client render,
-// true after mount — by which point localStorage has been read by Zustand.
+// With async IDB storage, Zustand hydration completes after mount.
+// We subscribe to onFinishHydration instead of relying on a simple useEffect delay.
 export function useHydrated() {
-  const [hydrated, setHydrated] = useState(false);
+  const [hydrated, setHydrated] = useState(() =>
+    useSurveyStore.persist.hasHydrated()
+  );
+
   useEffect(() => {
-    setHydrated(true);
+    if (useSurveyStore.persist.hasHydrated()) {
+      setHydrated(true);
+      return;
+    }
+    return useSurveyStore.persist.onFinishHydration(() => {
+      setHydrated(true);
+    });
   }, []);
+
   return hydrated;
 }
