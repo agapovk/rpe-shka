@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { use } from "react";
 import ResultsScreen from "@/components/results/ResultsScreen";
+import { useRosterStore } from "@/features/roster/roster.store";
 import { suggestSessionName } from "@/features/session/session.utils";
 import { useSurveyStore } from "@/features/survey/survey.store";
 import { useHydrated } from "@/hooks/useHydrated";
@@ -16,6 +17,7 @@ export default function ResultsPage({
   const router = useRouter();
   const hydrated = useHydrated();
   const { getSession, createSession } = useSurveyStore();
+  const players = useRosterStore((s) => s.players);
   const session = getSession(id);
 
   if (!hydrated) {
@@ -28,7 +30,10 @@ export default function ResultsPage({
   }
 
   const handleNew = () => {
-    const newId = createSession(suggestSessionName());
+    const newId = createSession(
+      suggestSessionName(),
+      players.map((p) => p.id)
+    );
     router.push(`/sessions/${newId}/survey`);
   };
 
