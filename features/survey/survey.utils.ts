@@ -1,4 +1,13 @@
-import type { Player } from "./survey.types";
+import type { Category, Player } from "./survey.types";
+
+export const DEFAULT_CATEGORIES: Category[] = [
+  { id: "md-4", name: "MD-4" },
+  { id: "md-3", name: "MD-3" },
+  { id: "md-2", name: "MD-2" },
+  { id: "md-1", name: "MD-1" },
+  { id: "md", name: "MD" },
+  { id: "md+1", name: "MD+1" },
+];
 
 export const ROSTER: Player[] = [
   { id: 1, name: "AKBASHEV ROMAN", num: 13 },
