@@ -1,17 +1,17 @@
 "use client";
 
-import { PlusIcon } from "lucide-react";
+import { PlusIcon, Settings2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import SessionCard from "@/components/home/SessionCard";
 import StatStrip from "@/components/home/StatStrip";
-import ThemeToggle from "@/components/ui/ThemeToggle";
 import {
   calcHomeStats,
   calcSessionSummary,
 } from "@/features/session/session.utils";
 import { useSurveyStore } from "@/features/survey/survey.store";
 import { useHydrated } from "@/hooks/useHydrated";
+import { cn } from "@/lib/utils";
 
 export default function HomePage() {
   const router = useRouter();
@@ -55,20 +55,17 @@ export default function HomePage() {
               шка
             </span>
           </div>
-          <div className="flex items-center gap-2">
-            <ThemeToggle />
-            <button
-              className="flex items-center gap-2 rounded-lg bg-accent px-4 py-2 font-bold font-display text-[14px] text-bg uppercase tracking-[0.08em] transition hover:brightness-105 active:translate-y-px"
-              onClick={handleNewSession}
-              type="button"
-            >
-              <PlusIcon className="h-4 w-4" />
-              NEW SESSION
-            </button>
-          </div>
+          <button
+            aria-label="Settings"
+            className="flex h-9 w-9 items-center justify-center rounded-lg text-text-2 transition hover:bg-bg-3 hover:text-text active:scale-95"
+            onClick={() => router.push("/settings")}
+            type="button"
+          >
+            <Settings2 className="h-4 w-4" />
+          </button>
         </header>
 
-        <div className="flex flex-col gap-4 px-5 pb-6 sm:px-7">
+        <div className="flex min-h-0 flex-1 flex-col gap-4 px-5 pb-6 sm:px-7">
           <StatStrip stats={stats} />
 
           {/* Sessions list */}
@@ -89,7 +86,7 @@ export default function HomePage() {
             </div>
             {summaries.length === 0 ? (
               <div className="flex items-center justify-center py-16 font-mono text-[11px] text-text-3 uppercase tracking-widest">
-                No sessions yet — tap NEW SESSION to start.
+                No sessions yet
               </div>
             ) : (
               <div className="flex flex-col gap-2">
@@ -107,6 +104,23 @@ export default function HomePage() {
               </div>
             )}
           </div>
+        </div>
+
+        {/* CTA bar */}
+        <div className="fade-bottom sticky bottom-0 flex shrink-0 items-stretch gap-3 px-5 pt-3 pb-6 sm:px-7">
+          <button
+            className={cn(
+              "flex min-h-14 flex-1 items-center justify-center gap-2 rounded-[14px] bg-accent px-3 py-4",
+              "font-bold font-display text-[14px] text-bg uppercase tracking-[0.06em]",
+              "transition hover:brightness-110 active:translate-y-px",
+              "sm:min-h-18 sm:gap-2.5 sm:px-7 sm:py-5.5 sm:text-[22px]"
+            )}
+            onClick={handleNewSession}
+            type="button"
+          >
+            <PlusIcon className="h-5 w-5" />
+            NEW SESSION
+          </button>
         </div>
       </div>
     </div>
