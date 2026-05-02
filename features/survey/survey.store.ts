@@ -1,7 +1,8 @@
 "use client";
 
 import { create } from "zustand";
-import { devtools, persist } from "zustand/middleware";
+import { createJSONStorage, devtools, persist } from "zustand/middleware";
+import { idbStorage } from "@/lib/idb-storage";
 import type { Session } from "./survey.types";
 import { ROSTER } from "./survey.utils";
 
@@ -105,6 +106,7 @@ export const useSurveyStore = create<SurveyStore>()(
       {
         name: "rpe-storage",
         partialize: ({ sessions }) => ({ sessions }),
+        storage: createJSONStorage(() => idbStorage),
       }
     ),
     { enabled: process.env.NODE_ENV === "development", name: "SurveyStore" }
