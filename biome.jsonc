@@ -8,6 +8,9 @@
   ],
   "linter": {
     "rules": {
+      "performance": {
+        "noBarrelFile": "off"
+      },
       "style": {
         "noNestedTernary": "off",
         "noNonNullAssertion": "off",
