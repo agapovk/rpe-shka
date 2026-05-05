@@ -3,8 +3,8 @@
 import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 import type { Player } from "@/features/survey/survey.types";
-import { ROSTER } from "@/features/survey/survey.utils";
 import { idbStorage } from "@/lib/idb-storage";
+import { ROSTER } from "../survey/survey.utils";
 
 interface RosterStore {
   addPlayer: (name: string, num: number) => void;
@@ -48,6 +48,11 @@ export const useRosterStore = create<RosterStore>()(
       {
         name: "rpe-roster",
         storage: createJSONStorage(() => idbStorage),
+        onRehydrateStorage: () => (rehydratedState) => {
+          if (rehydratedState === undefined) {
+            useRosterStore.setState({ players: ROSTER });
+          }
+        },
       }
     ),
     { enabled: process.env.NODE_ENV === "development", name: "RosterStore" }

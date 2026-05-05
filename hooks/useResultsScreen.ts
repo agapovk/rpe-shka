@@ -2,11 +2,11 @@
 
 import { useMemo, useState } from "react";
 
+import { useRosterStore } from "@/features/roster/roster.store";
 import type { Session } from "@/features/survey//survey.types";
 import {
   calcSessionStats,
   type RecordedPlayer,
-  ROSTER,
   type SessionStats,
 } from "@/features/survey//survey.utils";
 import { exportSessionXlsx } from "@/features/survey/survey.export";
@@ -19,9 +19,11 @@ export function useResultsScreen(session: Session): {
   stats: SessionStats;
   toggleSort: () => void;
 } {
+  const players = useRosterStore((s) => s.players);
   const [sortDesc, setSortDesc] = useState(true);
 
-  const recorded = ROSTER.filter((p) => session.rosterIds.includes(p.id))
+  const recorded = players
+    .filter((p) => session.rosterIds.includes(p.id))
     .map((p) => ({
       ...p,
       note: session.notes[p.id],

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import SessionCard from "@/components/home/SessionCard";
 import StatStrip from "@/components/home/StatStrip";
+import { useRosterStore } from "@/features/roster/roster.store";
 import {
   calcHomeStats,
   calcSessionSummary,
@@ -17,6 +18,7 @@ export default function HomePage() {
   const router = useRouter();
   const hydrated = useHydrated();
   const { sessions, deleteSession } = useSurveyStore();
+  const players = useRosterStore((s) => s.players);
   const [editingSessions, setEditingSessions] = useState(false);
 
   function handleNewSession() {
@@ -34,7 +36,7 @@ export default function HomePage() {
   }
 
   const summaries = [...sessions].reverse().map(calcSessionSummary);
-  const stats = calcHomeStats(sessions);
+  const stats = calcHomeStats(sessions, players);
 
   return (
     <div className="scroll-hidden flex h-dvh flex-col items-center overflow-y-auto md:p-6">

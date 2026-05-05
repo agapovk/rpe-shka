@@ -1,8 +1,8 @@
 "use client";
 
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useRosterStore } from "@/features/roster/roster.store";
 import type { Session } from "@/features/survey/survey.types";
-import { ROSTER } from "@/features/survey/survey.utils";
 import { type Filter, useCaptureScreen } from "@/hooks/useCaptureScreen";
 import { cn } from "@/lib/utils";
 import RosterEditRow from "./RosterEditRow";
@@ -30,6 +30,7 @@ interface Props {
 }
 
 export default function CaptureScreen({ onFinish, onHome, session }: Props) {
+  const players = useRosterStore((s) => s.players);
   const {
     closeScore,
     done,
@@ -140,7 +141,7 @@ export default function CaptureScreen({ onFinish, onHome, session }: Props) {
 
           <div className="flex flex-col overflow-hidden rounded-xl border border-line bg-bg-2">
             {editingRoster
-              ? ROSTER.map((pl) => (
+              ? players.map((pl) => (
                   <RosterEditRow
                     inSession={session.rosterIds.includes(pl.id)}
                     key={pl.id}
