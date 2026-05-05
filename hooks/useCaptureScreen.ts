@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { useRosterStore } from "@/features/roster/roster.store";
 import { suggestSessionName } from "@/features/session/session.utils";
 import { useSurveyStore } from "@/features/survey/survey.store";
 import type { Player, Session } from "@/features/survey/survey.types";
-import { ROSTER } from "@/features/survey/survey.utils";
 
 export type Filter = "all" | "done" | "pending";
 
@@ -28,12 +28,13 @@ export function useCaptureScreen(session: Session): {
   visibleRoster: Player[];
 } {
   const { clearScore, setScore, updateSession } = useSurveyStore();
+  const players = useRosterStore((s) => s.players);
 
   const [openId, setOpenId] = useState<number | null>(null);
   const [filter, setFilter] = useState<Filter>("all");
   const [editingRoster, setEditingRoster] = useState(false);
 
-  const visibleRoster = ROSTER.filter((pl) =>
+  const visibleRoster = players.filter((pl) =>
     session.rosterIds.includes(pl.id)
   );
   const done = visibleRoster.filter(
@@ -43,7 +44,7 @@ export function useCaptureScreen(session: Session): {
   const pct = total ? (done / total) * 100 : 0;
 
   const openPlayer =
-    openId == null ? null : (ROSTER.find((pl) => pl.id === openId) ?? null);
+    openId == null ? null : (players.find((pl) => pl.id === openId) ?? null);
 
   const filtered = visibleRoster.filter((pl) => {
     if (filter === "pending") {

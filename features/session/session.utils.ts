@@ -1,5 +1,4 @@
-import type { Session } from "@/features/survey/survey.types";
-import { ROSTER } from "@/features/survey/survey.utils";
+import type { Player, Session } from "@/features/survey/survey.types";
 
 export function fmtDate(d: Date): string {
   const months = [
@@ -87,7 +86,7 @@ export function calcSessionSummary(session: Session): SessionSummary {
   };
 }
 
-function findTopLoadedPlayer(sessions: Session[]): string {
+function findTopLoadedPlayer(sessions: Session[], players: Player[]): string {
   const playerTotals = new Map<number, { count: number; sum: number }>();
   for (const session of sessions) {
     for (const [idStr, score] of Object.entries(session.scores)) {
@@ -103,7 +102,7 @@ function findTopLoadedPlayer(sessions: Session[]): string {
     const avg = sum / count;
     if (avg > topAvg) {
       topAvg = avg;
-      const player = ROSTER.find((p) => p.id === id);
+      const player = players.find((p) => p.id === id);
       if (player) {
         const parts = player.name.split(" ");
         const firstName = toTitleCase(parts.at(-1) ?? parts[0]);
@@ -116,7 +115,10 @@ function findTopLoadedPlayer(sessions: Session[]): string {
   return topLoaded;
 }
 
-export function calcHomeStats(sessions: Session[]): HomeStats {
+export function calcHomeStats(
+  sessions: Session[],
+  players: Player[]
+): HomeStats {
   const now = Date.now();
   const DAY = 24 * 60 * 60 * 1000;
 
@@ -136,6 +138,6 @@ export function calcHomeStats(sessions: Session[]): HomeStats {
   return {
     sevenDayAvg,
     sessionsLast30d,
-    topLoaded: findTopLoadedPlayer(sessions),
+    topLoaded: findTopLoadedPlayer(sessions, players),
   };
 }
