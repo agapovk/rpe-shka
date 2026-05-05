@@ -11,6 +11,7 @@ Read `AGENTS.md` before starting.
 6. `src/shared/ui/` — перенести shadcn-компоненты из `components/ui/`
 7. `src/shared/lib/` — `srpe.ts` (sRPE = rpe × duration), форматтеры
 8. `src/shared/config/` — константы RPE scale, дефолтные категории (MD-4…MD, Recovery)
+9. `README.md` — чистый технический README: стек, архитектура, структура, команды
 
 **Ветка:** `chore/foundation`  
 **Результат:** `pnpm check` и `pnpm typecheck` зелёные, пустое приложение запускается
