@@ -4,7 +4,7 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Current Phase
 
-- Phase 0 — Foundation (`chore/foundation`) — complete
+- Phase 1 — Entities (`feat/entities`) — in progress
 
 ## Current Goal
 
@@ -26,13 +26,23 @@ Update this file whenever the current phase, active feature, or implementation s
   - components.json — updated aliases to src/shared/ui, src/shared/lib
   - pnpm check + pnpm typecheck: green
 
+- Phase 1 — Entities (`feat/entities`) — partial:
+  - src/shared/ui/ — badge.tsx, item.tsx, separator.tsx added; index.ts updated
+  - src/entities/team/ — model (types, queries), ui (TeamCard, TeamBadge)
+  - src/entities/player/ — model (types, queries), ui (PlayerRow) — PlayerAvatar missing
+  - src/entities/microcycle/ — model (types, queries), ui (MicrocycleCard, MicrocycleBadge)
+  - src/entities/session/ — model (types, queries, SessionStatus), ui (SessionRow, SessionStatusBadge)
+  - src/entities/category/ — model (types, queries), ui (CategoryBadge)
+
 ## In Progress
 
-- None.
+- Phase 1 — Entities (`feat/entities`):
+  - src/entities/player/ui/PlayerAvatar — not yet implemented
 
 ## Next Up
 
-- Phase 1 — Entities: team, player, microcycle, session, category entity slices
+- Phase 1 — Entities: implement PlayerAvatar, then phase complete
+- Phase 2 — Features (TBD)
 
 ## Open Questions
 
