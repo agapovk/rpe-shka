@@ -4,11 +4,11 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Current Phase
 
-- Phase 4 — Microcycle view (`feat/microcycle-view`) — in progress
+- Phase 5 — Session + RPE entry (`feat/session-rpe`) — in progress
 
 ## Current Goal
 
-- Phase 4 — Microcycle detail view: session list + create-session flow
+- Phase 5 — Session detail view: RPE entry per player
 
 ## Completed
 
@@ -49,19 +49,25 @@ Update this file whenever the current phase, active feature, or implementation s
   - src/views/dashboard/ — DashboardView (team selector, empty states, BottomSheet for create), index.ts
   - app/page.tsx — replaced preview page with DashboardView
 
-## In Progress
-
 - Phase 3 — Dashboard (`feat/dashboard`): merged to v1
-- Phase 4 — Microcycle view:
+- Phase 4 — Microcycle view (`feat/microcycle-view`): implementation complete, pending PR
   - src/features/create-session/ — CreateSessionForm (category chips, date, duration)
   - src/widgets/session-list/ — SessionList (rows linking to /sessions/[id])
   - src/views/microcycle/ — MicrocycleView (header, stats, session list, add session sheet)
   - app/microcycles/[id]/page.tsx — route shell
-- Phase 4 — Microcycle view (`feat/microcycle-view`): implementation complete, pending PR
+
+## In Progress
+
+- Phase 5 — Session + RPE entry (`feat/session-rpe`):
+  - `src/entities/session/model/` — added `useSessionEntries` query, exported `SessionEntry` type
+  - `src/features/record-rpe/` — RecordRpe bottom sheet (RPE 1–10 grid, upsert to sessionEntries)
+  - `src/widgets/player-rpe-table/` — PlayerRpeTable (player list + RPE value + sRPE, opens RecordRpe sheet)
+  - `src/views/session/` — SessionView (header with category/date/duration, PlayerRpeTable)
+  - `app/sessions/[id]/page.tsx` — route shell
 
 ## Next Up
 
-- Phase 5 — Session detail view (RPE entry per player)
+- Phase 6 — Reports / export
 
 ## Open Questions
 
