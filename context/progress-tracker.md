@@ -4,11 +4,11 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Current Phase
 
-- Phase 3 — Dashboard (`feat/dashboard`) — in progress
+- Phase 4 — Microcycle view (`feat/microcycle-view`) — in progress
 
 ## Current Goal
 
-- Phase 3 — Dashboard: active microcycle summary, history, and create-microcycle flow
+- Phase 4 — Microcycle detail view: session list + create-session flow
 
 ## Completed
 
@@ -51,11 +51,17 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## In Progress
 
-- Phase 3 — Dashboard (`feat/dashboard`): implementation complete, pending PR
+- Phase 3 — Dashboard (`feat/dashboard`): merged to v1
+- Phase 4 — Microcycle view:
+  - src/features/create-session/ — CreateSessionForm (category chips, date, duration)
+  - src/widgets/session-list/ — SessionList (rows linking to /sessions/[id])
+  - src/views/microcycle/ — MicrocycleView (header, stats, session list, add session sheet)
+  - app/microcycles/[id]/page.tsx — route shell
+- Phase 4 — Microcycle view (`feat/microcycle-view`): implementation complete, pending PR
 
 ## Next Up
 
-- Phase 4 — Microcycle detail view + session creation
+- Phase 5 — Session detail view (RPE entry per player)
 
 ## Open Questions
 
