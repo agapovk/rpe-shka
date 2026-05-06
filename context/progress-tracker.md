@@ -4,11 +4,11 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Current Phase
 
-- Phase 2 — Settings (`feat/settings`) — in progress
+- Phase 3 — Dashboard (`feat/dashboard`) — in progress
 
 ## Current Goal
 
-- Phase 2 — Settings: team/player/category management UI
+- Phase 3 — Dashboard: active microcycle summary, history, and create-microcycle flow
 
 ## Completed
 
@@ -34,7 +34,7 @@ Update this file whenever the current phase, active feature, or implementation s
   - src/entities/session/ — model (types, queries, SessionStatus), ui (SessionRow, SessionStatusBadge)
   - src/entities/category/ — model (types, queries), ui (CategoryBadge)
 
-- Phase 2 — Settings (`feat/settings`) — in progress:
+- Phase 2 — Settings (`feat/settings`) — merged to main:
   - src/shared/ui/ — input.tsx, bottom-sheet.tsx added; index.ts updated
   - src/features/manage-team/ — TeamForm (create/edit team), index.ts
   - src/features/manage-players/ — ManagePlayers (list + PlayerForm + delete), index.ts
@@ -42,13 +42,20 @@ Update this file whenever the current phase, active feature, or implementation s
   - src/views/settings/ — SettingsView (assembles all three features), index.ts
   - app/settings/page.tsx — route shell rendering SettingsView
 
+- Phase 3 — Dashboard (`feat/dashboard`) — in progress:
+  - src/features/create-microcycle/ — CreateMicrocycleForm (name input, creates via Dexie), index.ts
+  - src/widgets/active-microcycle-card/ — ActiveMicrocycleCard (sessions live query, stats, link to microcycle), index.ts
+  - src/widgets/microcycle-history/ — MicrocycleHistory (collapsible, per-item session count), index.ts
+  - src/views/dashboard/ — DashboardView (team selector, empty states, BottomSheet for create), index.ts
+  - app/page.tsx — replaced preview page with DashboardView
+
 ## In Progress
 
-- Phase 2 — Settings (`feat/settings`): implementation complete, pending PR
+- Phase 3 — Dashboard (`feat/dashboard`): implementation complete, pending PR
 
 ## Next Up
 
-- Phase 3 — Dashboard + Microcycle views
+- Phase 4 — Microcycle detail view + session creation
 
 ## Open Questions
 
