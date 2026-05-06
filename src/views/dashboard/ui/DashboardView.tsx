@@ -57,8 +57,8 @@ function TeamSelector({
         <button
           className={`shrink-0 rounded-lg px-3 py-1.5 font-medium text-sm transition-colors ${
             team.id === selectedId
-              ? "bg-accent-primary text-background"
-              : "bg-elevated text-secondary hover:bg-subtle"
+              ? "bg-primary text-background"
+              : "bg-elevated text-muted-foreground hover:bg-subtle"
           }`}
           key={team.id}
           onClick={() => onSelect(team.id!)}
