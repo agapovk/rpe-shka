@@ -4,11 +4,11 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Current Phase
 
-- Phase 5 — Session + RPE entry (`feat/session-rpe`) — in progress
+- Phase 6 — Reports / export (`feat/report-export`) — in progress
 
 ## Current Goal
 
-- Phase 5 — Session detail view: RPE entry per player
+- Phase 6 — Microcycle report view + PDF/CSV/XLSX export
 
 ## Completed
 
@@ -49,25 +49,32 @@ Update this file whenever the current phase, active feature, or implementation s
   - src/views/dashboard/ — DashboardView (team selector, empty states, BottomSheet for create), index.ts
   - app/page.tsx — replaced preview page with DashboardView
 
-- Phase 3 — Dashboard (`feat/dashboard`): merged to v1
-- Phase 4 — Microcycle view (`feat/microcycle-view`): implementation complete, pending PR
+- Phase 4 — Microcycle view (`feat/microcycle-view`): merged to main
   - src/features/create-session/ — CreateSessionForm (category chips, date, duration)
   - src/widgets/session-list/ — SessionList (rows linking to /sessions/[id])
-  - src/views/microcycle/ — MicrocycleView (header, stats, session list, add session sheet)
+  - src/views/microcycle/ — MicrocycleView (header, stats, session list, add session sheet, report link)
   - app/microcycles/[id]/page.tsx — route shell
 
-## In Progress
-
-- Phase 5 — Session + RPE entry (`feat/session-rpe`):
+- Phase 5 — Session + RPE entry (`feat/session-rpe`): merged to main
   - `src/entities/session/model/` — added `useSessionEntries` query, exported `SessionEntry` type
   - `src/features/record-rpe/` — RecordRpe bottom sheet (RPE 1–10 grid, upsert to sessionEntries)
   - `src/widgets/player-rpe-table/` — PlayerRpeTable (player list + RPE value + sRPE, opens RecordRpe sheet)
   - `src/views/session/` — SessionView (header with category/date/duration, PlayerRpeTable)
   - `app/sessions/[id]/page.tsx` — route shell
 
+## In Progress
+
+- Phase 6 — Reports / export (`feat/report-export`):
+  - `src/shared/lib/report.ts` — `PlayerReportRow` type + `aggregateReport` function
+  - `src/entities/microcycle/model/` — added `useMicrocycleReportData` (fetches sessions + entries + players in one live query)
+  - `src/widgets/microcycle-report-summary/` — MicrocycleReportSummary table (player, sessions, duration, avg RPE, sRPE)
+  - `src/features/export-report/` — ExportReport button + bottom sheet with PDF/CSV/XLSX generation
+  - `src/views/microcycle-report/` — MicrocycleReportView (header, stats, summary table, export)
+  - `app/microcycles/[id]/report/page.tsx` — route shell
+
 ## Next Up
 
-- Phase 6 — Reports / export
+- Phase 6 PR + merge
 
 ## Open Questions
 
