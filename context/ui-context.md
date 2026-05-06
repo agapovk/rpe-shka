@@ -93,7 +93,16 @@ Angular and strict — radius is smaller than a typical SaaS product, consistent
 
 ## Component Library
 
-shadcn/ui on top of Tailwind. Components live in `src/shared/ui/`. Use the `shadcn` CLI to add new components. Customize tokens in `globals.css`, not inside component files.
+shadcn/ui on top of Tailwind. Components live in `src/shared/ui/`.
+
+**Rules:**
+- Always use `pnpm dlx shadcn@latest add <component>` to install components that exist in shadcn/ui. Never write them manually.
+- Thin project-specific wrappers (e.g. `BottomSheet` around shadcn `Drawer`) are allowed in `src/shared/ui/` when the wrapper simplifies the API for the project's use cases.
+- Customize tokens in `globals.css`, not inside component files.
+- The shadcn/ui skill is installed at `.agents/skills/shadcn` — it provides component docs and usage examples.
+
+**Installed shadcn components (as of Phase 2):** Badge, Button, Drawer, Input, Item, Separator.
+**Project wrappers:** `BottomSheet` (wraps Drawer for slide-up forms).
 
 ---
 
