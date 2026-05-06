@@ -1,4 +1,5 @@
 import { cn } from "@shared/lib/utils";
+import { Badge } from "@shared/ui";
 import type { Team } from "../model";
 
 interface TeamBadgeProps {
@@ -6,16 +7,15 @@ interface TeamBadgeProps {
   team: Pick<Team, "name">;
 }
 
-// Badge
 export function TeamBadge({ team, className }: TeamBadgeProps) {
   return (
-    <span
+    <Badge
       className={cn(
-        "inline-flex items-center rounded-md bg-elevated px-2 py-0.5 font-medium text-secondary text-xs",
+        "rounded-md bg-elevated px-2 py-0.5 text-secondary text-xs",
         className
       )}
     >
       {team.name}
-    </span>
+    </Badge>
   );
 }

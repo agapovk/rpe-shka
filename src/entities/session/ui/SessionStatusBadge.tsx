@@ -1,7 +1,7 @@
 import { cn } from "@shared/lib/utils";
+import { Badge } from "@shared/ui";
 import type { LucideIcon } from "lucide-react";
 import { CheckCircle2, Circle, CircleDashed } from "lucide-react";
-import { Badge } from "@/src/shared/ui";
 import type { SessionStatus } from "../model";
 
 interface SessionStatusBadgeProps {
