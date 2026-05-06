@@ -1,5 +1,5 @@
-import { cn } from "@shared/lib/utils";
-import { Badge } from "@/src/shared/ui";
+import { cn } from "@shared/lib";
+import { Badge } from "@shared/ui";
 import type { Category } from "../model";
 
 interface CategoryBadgeProps {

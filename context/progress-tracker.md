@@ -4,11 +4,11 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Current Phase
 
-- Phase 1 — Entities (`feat/entities`) — in progress
+- Phase 2 — Settings (`feat/settings`) — in progress
 
 ## Current Goal
 
-- Phase 1 — Entities (teams, players, microcycles, sessions, categories)
+- Phase 2 — Settings: team/player/category management UI
 
 ## Completed
 
@@ -26,27 +26,33 @@ Update this file whenever the current phase, active feature, or implementation s
   - components.json — updated aliases to src/shared/ui, src/shared/lib
   - pnpm check + pnpm typecheck: green
 
-- Phase 1 — Entities (`feat/entities`) — partial:
+- Phase 1 — Entities (`feat/entities`) — merged to main:
   - src/shared/ui/ — badge.tsx, item.tsx, separator.tsx added; index.ts updated
   - src/entities/team/ — model (types, queries), ui (TeamCard, TeamBadge)
-  - src/entities/player/ — model (types, queries), ui (PlayerRow) — PlayerAvatar missing
+  - src/entities/player/ — model (types, queries), ui (PlayerRow) — PlayerAvatar deferred
   - src/entities/microcycle/ — model (types, queries), ui (MicrocycleCard, MicrocycleBadge)
   - src/entities/session/ — model (types, queries, SessionStatus), ui (SessionRow, SessionStatusBadge)
   - src/entities/category/ — model (types, queries), ui (CategoryBadge)
 
+- Phase 2 — Settings (`feat/settings`) — in progress:
+  - src/shared/ui/ — input.tsx, bottom-sheet.tsx added; index.ts updated
+  - src/features/manage-team/ — TeamForm (create/edit team), index.ts
+  - src/features/manage-players/ — ManagePlayers (list + PlayerForm + delete), index.ts
+  - src/features/manage-categories/ — ManageCategories (list + CategoryForm + reorder + reset), index.ts
+  - src/views/settings/ — SettingsView (assembles all three features), index.ts
+  - app/settings/page.tsx — route shell rendering SettingsView
+
 ## In Progress
 
-- Phase 1 — Entities (`feat/entities`):
-  - src/entities/player/ui/PlayerAvatar — not yet implemented
+- Phase 2 — Settings (`feat/settings`): implementation complete, pending PR
 
 ## Next Up
 
-- Phase 1 — Entities: implement PlayerAvatar, then phase complete
-- Phase 2 — Features (TBD)
+- Phase 3 — Dashboard + Microcycle views
 
 ## Open Questions
 
-- None.
+- PlayerAvatar (deferred from Phase 1) — not blocking any current phase.
 
 ## Architecture Decisions
 
