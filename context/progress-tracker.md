@@ -4,11 +4,11 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Current Phase
 
-- Phase 6 — Reports / export (`feat/report-export`) — in progress
+- Phase 7 — PWA (`chore/pwa`) — in progress
 
 ## Current Goal
 
-- Phase 6 — Microcycle report view + PDF/CSV/XLSX export
+- Phase 7 — Install as app on iOS/Android, offline shell caching
 
 ## Completed
 
@@ -56,6 +56,14 @@ Update this file whenever the current phase, active feature, or implementation s
   - app/microcycles/[id]/page.tsx — route shell
 
 - Phase 5 — Session + RPE entry (`feat/session-rpe`): merged to main
+
+- Phase 6 — Reports / export (`feat/report-export`): merged to main
+  - `src/shared/lib/report.ts` — `PlayerReportRow` type + `aggregateReport` function
+  - `src/entities/microcycle/model/` — `useMicrocycleReportData` live query
+  - `src/widgets/microcycle-report-summary/` — MicrocycleReportSummary table
+  - `src/features/export-report/` — PDF/CSV/XLSX export bottom sheet
+  - `src/views/microcycle-report/` — MicrocycleReportView
+  - `app/microcycles/[id]/report/page.tsx` — route shell
   - `src/entities/session/model/` — added `useSessionEntries` query, exported `SessionEntry` type
   - `src/features/record-rpe/` — RecordRpe bottom sheet (RPE 1–10 grid, upsert to sessionEntries)
   - `src/widgets/player-rpe-table/` — PlayerRpeTable (player list + RPE value + sRPE, opens RecordRpe sheet)
@@ -64,17 +72,19 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## In Progress
 
-- Phase 6 — Reports / export (`feat/report-export`):
-  - `src/shared/lib/report.ts` — `PlayerReportRow` type + `aggregateReport` function
-  - `src/entities/microcycle/model/` — added `useMicrocycleReportData` (fetches sessions + entries + players in one live query)
-  - `src/widgets/microcycle-report-summary/` — MicrocycleReportSummary table (player, sessions, duration, avg RPE, sRPE)
-  - `src/features/export-report/` — ExportReport button + bottom sheet with PDF/CSV/XLSX generation
-  - `src/views/microcycle-report/` — MicrocycleReportView (header, stats, summary table, export)
-  - `app/microcycles/[id]/report/page.tsx` — route shell
+- Phase 7 — PWA (`chore/pwa`):
+  - `app/manifest.ts` — Next.js MetadataRoute.Manifest (standalone, dark theme, icon set)
+  - `public/icons/` — icon.svg, icon-192.png, icon-512.png, icon-maskable-512.png
+  - `app/layout.tsx` — appleWebApp meta + Viewport export (themeColor, viewportFit=cover)
+  - `public/sw.js` (cache `rpe-shka-v3`) — hand-rolled SW: cache-first for `/_next/static/`, network-first elsewhere; on offline navigation miss, picks an exact pre-cached shell URL per route family (`/microcycles/0`, `/microcycles/0/report`, `/sessions/0`), then falls back to `/`. Earlier prefix matching for `/microcycles/` was ambiguous (could match the `/0/report` shell first) — fixed by using exact shell lookup with route-pattern dispatch.
+  - `app/register-pwa.tsx` — registers `/sw.js` and runs a warmCache on first online load: fetches every known route shell, parses the HTML for `/_next/static/*` references, and fetches every chunk so the SW caches the full asset graph. Without this, only routes visited online would work offline. Dispatches `rpe-shka:offline-ready` when warmup completes.
+  - `src/shared/ui/offline-ready-toast.tsx` — listens for the offline-ready event and shows a one-time toast confirming the app is fully cached for offline use (gated by localStorage `rpe-shka:offline-ready-ack`). Mounted from `app/layout.tsx`.
+  - `src/views/settings/ui/SettingsView.tsx` — added a back-arrow link to `/` in the header.
+  - Dynamic-route pages converted to client components that read the id from `window.location.pathname` post-mount (`app/microcycles/[id]/page.tsx`, `.../report/page.tsx`, `app/sessions/[id]/page.tsx`). This makes SSR-cached HTML id-agnostic so any cached shell hydrates correctly at any concrete id — fixes the bug where microcycles created offline rendered the wrong (server-baked) id.
 
 ## Next Up
 
-- Phase 6 PR + merge
+- Phase 7 PR + merge
 
 ## Open Questions
 
