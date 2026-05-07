@@ -13,7 +13,8 @@ Run after every change:
 
 ```bash
 pnpm check       # Biome lint + format check
-pnpm typecheck  # TypeScript type check (tsc --noEmit)
+pnpm typecheck   # TypeScript type check (tsc --noEmit)
+pnpm test        # Vitest run (CI mode)
 ```
 
 Run when auto-fixable issues are reported:
@@ -22,7 +23,14 @@ Run when auto-fixable issues are reported:
 pnpm fix         # Biome lint + format auto-fix
 ```
 
-Never commit with failing `check` or `typescript` output.
+Other:
+
+```bash
+pnpm test:watch    # Vitest watch mode
+pnpm test:coverage # Vitest with v8 coverage report
+```
+
+Never commit with failing `check`, `typecheck`, or `test` output.
 
 ## TypeScript
 
@@ -52,6 +60,13 @@ Token names and the RPE scale are defined in `ui-context.md`. In code:
 
 - Use Tailwind utility names that map to tokens (`bg-base`, `text-primary`, `border-default`, etc.) — no raw color classes or hex values.
 - Use RPE-scale tokens (`rpe-low`, `rpe-medium`, `rpe-high`, `rpe-max`) for any load-intensity indicator.
+
+## Testing
+
+- Vitest with `environment: "node"` and `globals: false` — `describe/it/expect` are imported explicitly from `vitest`.
+- Tests live next to the module they cover: `src/**/<module>.test.ts`.
+- Cover pure logic in `shared/lib/**` (math, formatters, aggregation, builder functions). DOM/lib writers (`exportPdf`, `exportXlsx`, `exportCsv`, `triggerDownload`) are not unit-tested — they are verified by manual UI regression.
+- Tests use **relative imports** to reach the unit under test (`./srpe`, `./csv`); production code keeps importing through `@shared/lib`. The biome `noRestrictedImports` rule blocks deep paths everywhere else.
 
 ## Data Access
 
