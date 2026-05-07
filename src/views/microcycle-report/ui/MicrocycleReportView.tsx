@@ -2,8 +2,8 @@
 
 import { useMicrocycle, useMicrocycleReportData } from "@entities/microcycle";
 import { ExportReport } from "@features/export-report";
-import { aggregateReport, formatDate } from "@shared/lib";
-import { Button } from "@shared/ui";
+import { aggregateReport, formatSessionsDateRange } from "@shared/lib";
+import { Button, NotFoundShell } from "@shared/ui";
 import { MicrocycleReportSummary } from "@widgets/microcycle-report-summary";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
@@ -26,32 +26,13 @@ export function MicrocycleReportView({
   }
 
   if (microcycle === null) {
-    return (
-      <div className="flex min-h-full flex-col bg-base">
-        <header className="sticky top-0 z-10 flex h-14 items-center gap-3 border-border border-b bg-surface px-4">
-          <Link href="/">
-            <Button size="icon-sm" variant="ghost">
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-          </Link>
-          <h1 className="font-semibold text-primary">Not found</h1>
-        </header>
-        <div className="flex flex-1 items-center justify-center px-8 py-16 text-center">
-          <p className="text-muted-foreground text-sm">Microcycle not found.</p>
-        </div>
-      </div>
-    );
+    return <NotFoundShell message="Microcycle not found." />;
   }
 
   const { sessions, entries, players } = rawData;
   const rows = aggregateReport(players, sessions, entries);
 
-  const dateRange =
-    sessions.length > 0
-      ? sessions.length === 1
-        ? formatDate(sessions[0].date)
-        : `${formatDate(sessions[0].date)} – ${formatDate(sessions.at(-1)!.date)}`
-      : "No sessions";
+  const dateRange = formatSessionsDateRange(sessions) ?? "No sessions";
 
   const totalSrpe = rows.reduce((sum, r) => sum + r.totalSrpe, 0);
   const totalSessions = sessions.length;

@@ -18,3 +18,15 @@ export function formatSrpe(srpe: number): string {
 export function formatDate(date: Date): string {
   return date.toLocaleDateString("en-GB", { day: "2-digit", month: "short" });
 }
+
+export function formatSessionsDateRange(
+  sessions: { date: Date }[]
+): string | null {
+  if (sessions.length === 0) {
+    return null;
+  }
+  if (sessions.length === 1) {
+    return formatDate(sessions[0].date);
+  }
+  return `${formatDate(sessions[0].date)} – ${formatDate(sessions.at(-1)!.date)}`;
+}
