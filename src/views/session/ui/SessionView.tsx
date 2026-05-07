@@ -3,8 +3,8 @@
 import { useCategory } from "@entities/category";
 import { useMicrocycle } from "@entities/microcycle";
 import { useSession } from "@entities/session";
-import { formatDate, formatDuration } from "@shared/lib/format";
-import { Button } from "@shared/ui";
+import { formatDate, formatDuration } from "@shared/lib";
+import { Button, NotFoundShell } from "@shared/ui";
 import { PlayerRpeTable } from "@widgets/player-rpe-table";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
@@ -23,21 +23,7 @@ export function SessionView({ sessionId }: SessionViewProps) {
   }
 
   if (session === null) {
-    return (
-      <div className="flex min-h-full flex-col bg-base">
-        <header className="sticky top-0 z-10 flex h-14 items-center gap-3 border-border border-b bg-surface px-4">
-          <Link href="/">
-            <Button size="icon-sm" variant="ghost">
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-          </Link>
-          <h1 className="font-semibold text-primary">Not found</h1>
-        </header>
-        <div className="flex flex-1 items-center justify-center px-8 py-16 text-center">
-          <p className="text-muted-foreground text-sm">Session not found.</p>
-        </div>
-      </div>
-    );
+    return <NotFoundShell message="Session not found." />;
   }
 
   const backHref = microcycle?.id ? `/microcycles/${microcycle.id}` : "/";

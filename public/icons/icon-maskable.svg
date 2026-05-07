@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Full bleed dark background (no rounded corners for maskable) -->
+  <rect width="512" height="512" fill="#09090b"/>
+
+  <!-- Content scaled to 80% safe zone (centered, scaled by 0.7 and offset) -->
+  <!-- Checkmark -->
+  <polyline
+    points="181,200 229,253 331,164"
+    fill="none"
+    stroke="#f4f4f5"
+    stroke-width="28"
+    stroke-linejoin="round"
+    stroke-linecap="round"
+  />
+
+  <!-- RPE -->
+  <text
+    x="256" y="416"
+    font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
+    font-size="112"
+    font-weight="800"
+    letter-spacing="4"
+    text-anchor="middle"
+    fill="#f4f4f5"
+  >RPE</text>
+</svg>

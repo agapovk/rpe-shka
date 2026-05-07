@@ -6,7 +6,8 @@ import { ManagePlayers } from "@features/manage-players";
 import { TeamForm } from "@features/manage-team";
 import { db } from "@shared/db";
 import { BottomSheet, Button } from "@shared/ui";
-import { Pencil, Plus, Trash2 } from "lucide-react";
+import { ArrowLeft, Pencil, Plus, Trash2 } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 
 type TeamSheet = { mode: "create" } | { mode: "edit"; team: Team };
@@ -25,7 +26,12 @@ export function SettingsView() {
 
   return (
     <div className="flex min-h-full flex-col bg-base">
-      <header className="sticky top-0 z-10 flex h-14 items-center border-border border-b bg-surface px-4">
+      <header className="sticky top-0 z-10 flex h-14 items-center gap-3 border-border border-b bg-surface px-4">
+        <Link href="/">
+          <Button size="icon-sm" variant="ghost">
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
+        </Link>
         <h1 className="font-semibold text-primary">Settings</h1>
       </header>
 

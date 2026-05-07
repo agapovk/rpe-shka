@@ -1,4 +1,10 @@
-export { formatDate, formatDuration, formatRpe, formatSrpe } from "./format";
+export {
+  formatDate,
+  formatDuration,
+  formatRpe,
+  formatSessionsDateRange,
+  formatSrpe,
+} from "./format";
 export type { PlayerReportRow } from "./report";
 export { aggregateReport } from "./report";
 export { calculateSrpe } from "./srpe";

@@ -3,8 +3,8 @@
 import { useMicrocycle } from "@entities/microcycle";
 import { useSessions } from "@entities/session";
 import { CreateSessionForm } from "@features/create-session";
-import { formatDate, formatDuration } from "@shared/lib/format";
-import { BottomSheet, Button } from "@shared/ui";
+import { formatDuration, formatSessionsDateRange } from "@shared/lib";
+import { BottomSheet, Button, NotFoundShell } from "@shared/ui";
 import { SessionList } from "@widgets/session-list";
 import { ArrowLeft, BarChart2, Plus } from "lucide-react";
 import Link from "next/link";
@@ -24,30 +24,11 @@ export function MicrocycleView({ microcycleId }: MicrocycleViewProps) {
   }
 
   if (microcycle === null) {
-    return (
-      <div className="flex min-h-full flex-col bg-base">
-        <header className="sticky top-0 z-10 flex h-14 items-center gap-3 border-border border-b bg-surface px-4">
-          <Link href="/">
-            <Button size="icon-sm" variant="ghost">
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-          </Link>
-          <h1 className="font-semibold text-primary">Not found</h1>
-        </header>
-        <div className="flex flex-1 items-center justify-center px-8 py-16 text-center">
-          <p className="text-muted-foreground text-sm">Microcycle not found.</p>
-        </div>
-      </div>
-    );
+    return <NotFoundShell message="Microcycle not found." />;
   }
 
   const totalDuration = sessions.reduce((acc, s) => acc + s.duration, 0);
-  const dateRange =
-    sessions.length > 0
-      ? sessions.length === 1
-        ? formatDate(sessions[0].date)
-        : `${formatDate(sessions[0].date)} – ${formatDate(sessions.at(-1)!.date)}`
-      : null;
+  const dateRange = formatSessionsDateRange(sessions);
 
   return (
     <div className="flex min-h-full flex-col bg-base">

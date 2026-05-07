@@ -1,3 +1,3 @@
-export type { Player } from "./model";
-export { usePlayer, usePlayers } from "./model";
-export { PlayerRow } from "./ui";
+export { usePlayer, usePlayers } from "./model/queries";
+export type { Player } from "./model/types";
+export { PlayerRow } from "./ui/PlayerRow";

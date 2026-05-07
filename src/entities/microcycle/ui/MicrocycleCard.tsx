@@ -1,7 +1,5 @@
-import { formatDate } from "@shared/lib/format";
-import { cn } from "@shared/lib/utils";
-
-import type { Microcycle } from "../model";
+import { cn, formatDate } from "@shared/lib";
+import type { Microcycle } from "../model/types";
 
 interface MicrocycleCardProps {
   className?: string;

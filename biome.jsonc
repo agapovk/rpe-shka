@@ -14,7 +14,18 @@
       "style": {
         "noNestedTernary": "off",
         "noNonNullAssertion": "off",
-        "useFilenamingConvention": "off"
+        "useFilenamingConvention": "off",
+        "noRestrictedImports": {
+          "level": "error",
+          "options": {
+            "paths": {
+              "@shared/lib/utils": "Import from @shared/lib (segment public API).",
+              "@shared/lib/format": "Import from @shared/lib (segment public API).",
+              "@shared/lib/srpe": "Import from @shared/lib (segment public API).",
+              "@shared/lib/report": "Import from @shared/lib (segment public API)."
+            }
+          }
+        }
       }
     }
   }

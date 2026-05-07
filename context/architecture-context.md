@@ -8,7 +8,7 @@
 | UI                | Tailwind CSS + shadcn/ui    | Component composition and styling                                 |
 | Local Storage     | Dexie.js (IndexedDB)        | Offline-first browser storage — all core data lives here          |
 | Export            | jsPDF + SheetJS (xlsx)      | On-device PDF, CSV, and XLSX generation                           |
-| PWA               | @serwist/next               | Service worker, asset caching, installability                     |
+| PWA               | Hand-rolled `public/sw.js`  | Service worker, asset caching, installability                     |
 | Future: Cloud DB  | Drizzle ORM + Neon Postgres | Cloud-side storage mirror for sync (Vercel-integrated, free tier) |
 | Future: Sync      | Next.js API routes          | Push/pull sync between local IndexedDB and Neon                   |
 
@@ -155,7 +155,9 @@ Microcycle date range is derived from its sessions: `min(session.date)` → `max
 
 ## PWA Model
 
-- `@serwist/next` registers the service worker; app shell, fonts, page bundles, and visited routes are cached.
+- Hand-rolled service worker at `public/sw.js`, registered from `app/register-pwa.tsx`. App shell, JS chunks, and visited routes are cached.
+- Manifest is generated from `app/manifest.ts` (Next.js MetadataRoute).
+- Dynamic-route pages (`/microcycles/[id]`, `/microcycles/[id]/report`, `/sessions/[id]`) are client-only and read the id from `window.location.pathname` after mount. This keeps SSR-cached HTML id-agnostic so a single cached shell per route family hydrates correctly at any concrete id — required for offline navigation to entities created while offline.
 - Installable on iOS and Android via the PWA manifest.
 - No authentication in V1 — all data is local to the device.
 

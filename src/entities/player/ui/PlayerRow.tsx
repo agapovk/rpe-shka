@@ -1,5 +1,5 @@
-import { cn } from "@shared/lib/utils";
-import type { Player } from "../model";
+import { cn } from "@shared/lib";
+import type { Player } from "../model/types";
 
 interface PlayerRowProps {
   className?: string;
