@@ -89,7 +89,8 @@ src/
   shared/                         — Framework-agnostic foundation
     ui/                           — shadcn/ui re-exports + custom base components
     db/                           — Dexie instance, schema, typed tables
-    lib/                          — sRPE calculation, date/number formatters
+    lib/                          — sRPE calculation, date/number formatters, report aggregation
+      export/                     — pure builders + DOM writers for PDF/CSV/XLSX
     config/                       — App-wide constants (RPE scale, default categories)
 
 public/                           — PWA manifest, app icons
@@ -144,6 +145,7 @@ Microcycle date range is derived from its sessions: `min(session.date)` → `max
 ## Export Model
 
 - All export generation runs entirely on the client — no data leaves the device.
+- Each format is split into a **pure builder** (`buildCsv`, `buildSheetData`, `buildPdfRows` — testable, no DOM/lib) and a **thin writer** (`exportCsv`, `exportXlsx`, `exportPdf` — owns Blob/save/download). Builders live in `src/shared/lib/export/` and are unit-tested; writers are verified manually.
 - **PDF**: `jsPDF` renders a structured report. Delivered via a Blob URL download.
 - **CSV**: plain string construction, Blob URL download.
 - **XLSX**: `SheetJS` builds a workbook from the same data. Blob URL download.
