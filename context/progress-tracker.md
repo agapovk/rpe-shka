@@ -105,7 +105,8 @@ Update this file whenever the current phase, active feature, or implementation s
 - Dexie schema versioned at v1 with 6 tables.
 - CSS tokens defined as raw CSS variables; mapped to Tailwind v4 utilities via @theme inline.
 - noBarrelFile biome rule disabled — FSD architecture requires index.ts slice public APIs.
-- lib/utils.ts kept as-is at root for shadcn CLI compatibility; src/shared/lib/utils.ts is canonical FSD location.
+- biome `style/noRestrictedImports` enforces public-API imports for `@shared/lib` subpaths (utils, format, srpe, report).
+- shadcn `utils` alias points at `@shared/lib` (segment public API), so `shadcn add` generates `import { cn } from "@shared/lib"` rather than a deep import.
 
 ## Session Notes
 
