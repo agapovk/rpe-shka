@@ -22,7 +22,8 @@
               "@shared/lib/utils": "Import from @shared/lib (segment public API).",
               "@shared/lib/format": "Import from @shared/lib (segment public API).",
               "@shared/lib/srpe": "Import from @shared/lib (segment public API).",
-              "@shared/lib/report": "Import from @shared/lib (segment public API)."
+              "@shared/lib/report": "Import from @shared/lib (segment public API).",
+              "@shared/lib/export": "Import from @shared/lib (segment public API)."
             }
           }
         }
