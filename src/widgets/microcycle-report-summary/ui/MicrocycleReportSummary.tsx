@@ -1,9 +1,7 @@
 "use client";
 
 import { getRpeRange } from "@shared/config";
-import type { PlayerReportRow } from "@shared/lib";
-import { formatDuration } from "@shared/lib";
-import { cn } from "@shared/lib/utils";
+import { cn, formatDuration, type PlayerReportRow } from "@shared/lib";
 import { Users } from "lucide-react";
 
 const rpeTextClasses = {

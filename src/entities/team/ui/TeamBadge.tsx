@@ -1,6 +1,6 @@
-import { cn } from "@shared/lib/utils";
+import { cn } from "@shared/lib";
 import { Badge } from "@shared/ui";
-import type { Team } from "../model";
+import type { Team } from "../model/types";
 
 interface TeamBadgeProps {
   className?: string;

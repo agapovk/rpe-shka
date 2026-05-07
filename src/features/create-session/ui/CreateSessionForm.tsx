@@ -2,7 +2,7 @@
 
 import { useCategories } from "@entities/category";
 import { db } from "@shared/db";
-import { cn } from "@shared/lib/utils";
+import { cn } from "@shared/lib";
 import { Button, Input } from "@shared/ui";
 import type * as React from "react";
 import { useState } from "react";

@@ -1,3 +1,4 @@
-export type { Team } from "./model";
-export { useTeam, useTeams } from "./model";
-export { TeamBadge, TeamCard } from "./ui";
+export { useTeam, useTeams } from "./model/queries";
+export type { Team } from "./model/types";
+export { TeamBadge } from "./ui/TeamBadge";
+export { TeamCard } from "./ui/TeamCard";

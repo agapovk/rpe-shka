@@ -3,7 +3,7 @@
 import { useMicrocycle } from "@entities/microcycle";
 import { useSessions } from "@entities/session";
 import { CreateSessionForm } from "@features/create-session";
-import { formatDuration, formatSessionsDateRange } from "@shared/lib/format";
+import { formatDuration, formatSessionsDateRange } from "@shared/lib";
 import { BottomSheet, Button, NotFoundShell } from "@shared/ui";
 import { SessionList } from "@widgets/session-list";
 import { ArrowLeft, BarChart2, Plus } from "lucide-react";

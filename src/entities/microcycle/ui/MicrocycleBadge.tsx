@@ -1,6 +1,6 @@
-import { cn } from "@shared/lib/utils";
+import { cn } from "@shared/lib";
 import { Badge } from "@shared/ui";
-import type { Microcycle } from "../model";
+import type { Microcycle } from "../model/types";
 
 interface MicrocycleBadgeProps {
   className?: string;

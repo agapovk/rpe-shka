@@ -4,11 +4,11 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Current Phase
 
-- Phase 7 — PWA (`chore/pwa`) — in progress
+- Phase 7 — PWA (`chore/pwa`) — done; FSD cleanup in progress on same branch
 
 ## Current Goal
 
-- Phase 7 — Install as app on iOS/Android, offline shell caching
+- Tighten FSD slice public APIs (one barrel per slice) and unify shared/lib imports
 
 ## Completed
 
@@ -72,6 +72,14 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## In Progress
 
+- FSD cleanup (`chore/pwa`):
+  - Removed inner `model/index.ts` and `ui/index.ts` barrels in all 5 entities — only `entities/<x>/index.ts` remains as the public API. `entities/<x>/index.ts` now imports directly from concrete files (`./model/queries`, `./model/types`, `./ui/<Component>`).
+  - Inner ui files now import types from `../model/types` directly (was `../model`).
+  - Unified all `@shared/lib/utils` and `@shared/lib/format` deep imports to `@shared/lib` (16 occurrences across entities/features/widgets/views). Two files where both `cn` and a formatter were imported separately were collapsed into a single `@shared/lib` import.
+  - `shared/lib/report.ts` keeps `import type { Player, Session, SessionEntry } from "@shared/db"` — this file lives in the shared layer and cannot import from entities (FSD).
+  - Decision left in place: domain types continue to live in `shared/db/db.ts` next to the Dexie schema. Entity layer re-exports them as the public domain type. Outside-entity callers (features, widgets, views) only see types via `@entities/*`.
+  - `shared/ui/not-found-shell.tsx` extracted earlier in this branch — see commit `6c80c40`.
+
 - Phase 7 — PWA (`chore/pwa`):
   - `app/manifest.ts` — Next.js MetadataRoute.Manifest (standalone, dark theme, icon set)
   - `public/icons/` — icon.svg, icon-192.png, icon-512.png, icon-maskable-512.png
@@ -84,7 +92,8 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Next Up
 
-- Phase 7 PR + merge
+- Phase 7 + FSD cleanup PR + merge
+- Optional follow-ups (deferred): drop root `lib/utils.ts` shim if shadcn CLI alias allows, split `shared/ui/index.ts` into primitives vs app components when it grows
 
 ## Open Questions
 

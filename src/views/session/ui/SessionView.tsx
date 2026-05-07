@@ -3,7 +3,7 @@
 import { useCategory } from "@entities/category";
 import { useMicrocycle } from "@entities/microcycle";
 import { useSession } from "@entities/session";
-import { formatDate, formatDuration } from "@shared/lib/format";
+import { formatDate, formatDuration } from "@shared/lib";
 import { Button, NotFoundShell } from "@shared/ui";
 import { PlayerRpeTable } from "@widgets/player-rpe-table";
 import { ArrowLeft } from "lucide-react";

@@ -2,7 +2,7 @@
 
 import { getRpeRange, RPE_SCALE } from "@shared/config";
 import { db } from "@shared/db";
-import { cn } from "@shared/lib/utils";
+import { cn } from "@shared/lib";
 
 const rpeRangeClasses = {
   low: "text-rpe-low bg-rpe-low-dim",

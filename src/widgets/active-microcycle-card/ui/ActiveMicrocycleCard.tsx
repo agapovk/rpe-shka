@@ -2,7 +2,7 @@
 
 import type { Microcycle } from "@entities/microcycle";
 import { useSessions } from "@entities/session";
-import { formatDate, formatDuration } from "@shared/lib/format";
+import { formatDate, formatDuration } from "@shared/lib";
 import { Button } from "@shared/ui";
 import { ChevronRight, Layers } from "lucide-react";
 import Link from "next/link";

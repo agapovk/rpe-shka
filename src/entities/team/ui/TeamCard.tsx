@@ -1,6 +1,5 @@
-import { cn } from "@shared/lib/utils";
-
-import type { Team } from "../model";
+import { cn } from "@shared/lib";
+import type { Team } from "../model/types";
 
 interface TeamCardProps {
   className?: string;

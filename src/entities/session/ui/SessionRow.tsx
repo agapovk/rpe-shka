@@ -1,8 +1,6 @@
 import type { Category } from "@shared/db";
-import { formatDate, formatDuration } from "@shared/lib/format";
-import { cn } from "@shared/lib/utils";
-
-import type { Session, SessionStatus } from "../model";
+import { cn, formatDate, formatDuration } from "@shared/lib";
+import type { Session, SessionStatus } from "../model/types";
 import { SessionStatusBadge } from "./SessionStatusBadge";
 
 interface SessionRowProps {

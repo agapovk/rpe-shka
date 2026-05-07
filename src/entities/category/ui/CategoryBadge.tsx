@@ -1,6 +1,6 @@
 import { cn } from "@shared/lib";
 import { Badge } from "@shared/ui";
-import type { Category } from "../model";
+import type { Category } from "../model/types";
 
 interface CategoryBadgeProps {
   category: Pick<Category, "name">;
