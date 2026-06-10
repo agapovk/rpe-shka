@@ -31,9 +31,8 @@ pnpm test         # vitest run
 pnpm test:watch   # vitest (watch mode)
 
 # Lint / Format (Biome через Ultracite)
-pnpm dlx ultracite check   # проверить
-pnpm dlx ultracite fix     # автоисправление
-pnpm dlx ultracite doctor  # диагностика конфига
+pnpm check        # проверить (ultracite check)
+pnpm fix          # автоисправление (ultracite fix)
 ```
 
 Pre-commit хук (husky + lint-staged) автоматически запускает `ultracite fix` на изменённых файлах.
@@ -184,7 +183,7 @@ describe('rpeBucket', () => {
 
 | Что | Конвенция | Пример |
 |-----|-----------|--------|
-| Компоненты | PascalCase | `CaptureScreen.tsx` |
+| Компоненты | файл kebab-case, экспорт PascalCase (правило ultracite) | `capture-screen.tsx` → `CaptureScreen` |
 | Хуки | camelCase с `use` | `useSessionEntries.ts` |
 | Утилиты / мутации | camelCase | `setScore`, `fmtDate` |
 | Папки срезов | kebab-case | `record-rpe/`, `manage-roster/` |

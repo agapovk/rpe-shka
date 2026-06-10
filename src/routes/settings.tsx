@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ThemeToggle } from "#/shared/ui/ThemeToggle";
+import { ThemeToggle } from "#/shared/ui/theme-toggle";
 
 export const Route = createFileRoute("/settings")({ component: SettingsPage });
 

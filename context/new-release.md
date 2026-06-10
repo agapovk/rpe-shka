@@ -95,7 +95,7 @@ slice-name/
 ```
 src/
 ├── routes/
-│   ├── __root.tsx               # Layout: ThemeProvider, ErrorBoundary, шрифты, seed
+│   ├── __root.tsx               # Layout: ThemeProvider, seed
 │   ├── index.tsx                # Главная
 │   ├── sessions.$id.survey.tsx  # Опрос
 │   ├── sessions.$id.results.tsx # Результаты
@@ -136,7 +136,7 @@ src/
 │       └── index.ts
 │
 └── shared/
-    ├── ui/                 # Button, ErrorBoundary, ThemeToggle, ThemeSection, StorageSection
+    ├── ui/                 # Button, ThemeToggle, ThemeSection, StorageSection
     ├── lib/                # cn(), fmtDate()
     ├── context/
     │   └── theme.tsx       # ThemeProvider + useTheme (React Context + localStorage)
@@ -212,7 +212,8 @@ async function setScore(sessionId: string, playerId: number, score: number, note
 
 ### Фаза 1 — Каркас приложения
 Vite + TanStack Router (чистый SPA), Tailwind v4, шрифты, тема,
-`shared/ui` (Button, ErrorBoundary, ThemeToggle), роуты-заглушки, линтер + husky.
+`shared/ui` (Button, ThemeToggle), ошибки рендера через `defaultErrorComponent`
+роутера, роуты-заглушки, линтер + husky.
 Проверка: `pnpm dev` поднимается, все страницы открываются, тема переключается.
 
 ### Фаза 2 — Слой данных

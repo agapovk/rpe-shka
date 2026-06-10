@@ -12,6 +12,6 @@ if (rootElement) {
 	createRoot(rootElement).render(
 		<StrictMode>
 			<RouterProvider router={router} />
-		</StrictMode>,
+		</StrictMode>
 	);
 }

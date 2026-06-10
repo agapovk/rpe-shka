@@ -28,13 +28,13 @@
 - [x] `vite.config.ts` — `tanstackRouter()` + `viteReact()` + `tailwindcss()`, без SSR
 - [x] `index.html` (инлайн-скрипт темы до первой отрисовки) + `src/main.tsx` (RouterProvider)
 - [x] `src/router.tsx` (createRouter)
-- [x] `src/routes/__root.tsx` — ThemeProvider + ErrorBoundary + Outlet
+- [x] `src/routes/__root.tsx` — ThemeProvider + Outlet
 - [x] Роуты-заглушки: `index.tsx`, `sessions.$id.survey.tsx`, `sessions.$id.results.tsx`, `settings.tsx`
 - [x] `src/styles/globals.css` — Tailwind `@theme`: 6 семантических токенов + 4 RPE-бакета через `light-dark()`, тема через `color-scheme`
 - [x] Шрифты через `@fontsource` (Barlow Condensed, Inter)
-- [x] `shared/ui/Button.tsx` — чистый Tailwind, без CVA
-- [x] `shared/ui/ErrorBoundary.tsx`
-- [x] `shared/context/theme.tsx` (ThemeProvider + useTheme) + `shared/ui/ThemeToggle.tsx`
+- [x] `shared/ui/button.tsx` — чистый Tailwind, без CVA
+- [x] Обработка ошибок рендера — `defaultErrorComponent` роутера (свой ErrorBoundary не нужен)
+- [x] `shared/context/theme.tsx` (ThemeProvider + useTheme) + `shared/ui/theme-toggle.tsx`
 - [x] Biome + husky + lint-staged
 - [x] Скрипты в `package.json`: dev / build / start / typecheck / test / test:watch / check:fix
 - [x] Проверка: `pnpm dev` → HTTP 200, `pnpm build` → ✓, `tsc --noEmit` → ✓, `biome check` → ✓
@@ -94,8 +94,8 @@
 - [ ] Проверка: avg/hi/lo/≥8 считаются верно, XLSX открывается
 
 ### 3.6 Settings: остальное
-- [ ] `shared/ui/ThemeSection.tsx` (выбор Light/Dark/System)
-- [ ] `shared/ui/StorageSection.tsx` (использование IndexedDB + CLEAR ALL)
+- [ ] `shared/ui/theme-section.tsx` (выбор Light/Dark/System)
+- [ ] `shared/ui/storage-section.tsx` (использование IndexedDB + CLEAR ALL)
 
 ---
 
@@ -120,7 +120,7 @@
 ```
 □ pnpm build — без ошибок
 □ tsc --noEmit — без ошибок
-□ pnpm dlx ultracite check — чист
+□ pnpm check — чист (ultracite)
 □ pnpm test — все тесты зелёные
 □ Базовый флоу: создать → оценить → результаты → XLSX
 □ Офлайн: DevTools Offline → приложение работает, данные сохраняются

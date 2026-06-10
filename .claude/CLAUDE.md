@@ -45,7 +45,7 @@ src/
 │   ├── manage-roster/      # CRUD игроков
 │   └── manage-categories/  # CRUD категорий
 └── shared/
-    ├── ui/          ← Button, ErrorBoundary, ThemeToggle (без shadcn)
+    ├── ui/          ← Button, ThemeToggle (без shadcn); файлы kebab-case
     ├── lib/         ← cn(), fmtDate()
     ├── context/     ← ThemeProvider
     └── db/          ← Dexie instance + типы сущностей + seed
@@ -67,8 +67,8 @@ slice-name/
 pnpm dev                    # dev-сервер
 pnpm build                  # production build
 pnpm test                   # Vitest
-pnpm dlx ultracite fix      # автоисправление
-pnpm dlx ultracite check    # проверка
+pnpm fix                    # автоисправление (ultracite)
+pnpm check                  # проверка (ultracite)
 ```
 
 > **Пакетный менеджер: только `pnpm`.**
@@ -141,7 +141,7 @@ git push origin feat/phase-N-название
 
 ### Перед созданием PR
 ```bash
-pnpm dlx ultracite check    # линтер чист
+pnpm check                  # линтер чист (ultracite)
 tsc --noEmit                # типы чисты
 pnpm build                  # сборка проходит
 ```

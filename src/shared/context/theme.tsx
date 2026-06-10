@@ -15,8 +15,8 @@ const isTheme = (value: unknown): value is Theme =>
 	value === "dark" || value === "light" || value === "system";
 
 interface ThemeContextValue {
-	theme: Theme;
 	setTheme: (theme: Theme) => void;
+	theme: Theme;
 }
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
