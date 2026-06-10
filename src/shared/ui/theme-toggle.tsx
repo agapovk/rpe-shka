@@ -1,6 +1,6 @@
 import { Moon, Sun, SunMoon } from "lucide-react";
-import { type Theme, useTheme } from "#/shared/context/theme";
-import { cn } from "#/shared/lib/cn";
+import { type Theme, useTheme } from "@/shared/context/theme";
+import { cn } from "@/shared/lib/cn";
 
 const OPTIONS: { value: Theme; icon: typeof Sun; label: string }[] = [
 	{ value: "light", icon: Sun, label: "Светлая" },

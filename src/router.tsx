@@ -2,7 +2,7 @@ import {
 	createRouter as createTanStackRouter,
 	type ErrorComponentProps,
 } from "@tanstack/react-router";
-import { Button } from "#/shared/ui/button";
+import { Button } from "@/shared/ui/button";
 import { routeTree } from "./routeTree.gen";
 
 function ErrorScreen({ error }: ErrorComponentProps) {
@@ -20,7 +20,6 @@ export function getRouter() {
 		routeTree,
 		scrollRestoration: true,
 		defaultPreload: "intent",
-		defaultPreloadStaleTime: 0,
 		defaultErrorComponent: ErrorScreen,
 	});
 
