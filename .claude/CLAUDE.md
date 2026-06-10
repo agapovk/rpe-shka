@@ -1,4 +1,4 @@
-# CLAUDE.md — Контекст проекта RPE Tracker (TanStack Start)
+# CLAUDE.md — Контекст проекта RPE Tracker (Vite + TanStack Router)
 
 ## 1. Описание проекта
 Офлайн PWA для сбора оценок *RPE* (*Rating of Perceived Exertion*) после тренировки.
@@ -18,8 +18,8 @@
 ## 2. Целевой стек
 | Слой | Технология |
 |------|-----------|
-| Framework | **TanStack Start v1** (Vite, SPA-режим — SSR выключен) |
-| Routing | **TanStack Router** (file-based) |
+| Framework | **Vite + React 19** (чистый SPA, без SSR) |
+| Routing | **TanStack Router** (file-based, `@tanstack/router-plugin`) |
 | Local DB | **Dexie.js** + `useLiveQuery` |
 | UI state | `useState` + React Context |
 | Тема | React Context + localStorage |
@@ -29,7 +29,7 @@
 | Tests | **Vitest** |
 | Lint | Ultracite / Biome |
 
-**Убраны:** Next.js, Zustand, idb-keyval, shadcn, Radix UI, class-variance-authority.
+**Убраны:** Next.js, TanStack Start (SSR не нужен — заменён на чистый Vite SPA), Zustand, idb-keyval, shadcn, Radix UI, class-variance-authority.
 
 ## 3. Архитектура — Vertical Slice Architecture
 
@@ -45,7 +45,7 @@ src/
 │   ├── manage-roster/      # CRUD игроков
 │   └── manage-categories/  # CRUD категорий
 └── shared/
-    ├── ui/          ← Button, ErrorBoundary, ThemeToggle (без shadcn)
+    ├── ui/          ← Button, ThemeToggle (без shadcn); файлы kebab-case
     ├── lib/         ← cn(), fmtDate()
     ├── context/     ← ThemeProvider
     └── db/          ← Dexie instance + типы сущностей + seed
@@ -67,9 +67,13 @@ slice-name/
 pnpm dev                    # dev-сервер
 pnpm build                  # production build
 pnpm test                   # Vitest
-pnpm dlx ultracite fix      # автоисправление
-pnpm dlx ultracite check    # проверка
+pnpm fix                    # автоисправление (ultracite)
+pnpm check                  # проверка (ultracite)
 ```
+
+> **Пакетный менеджер: только `pnpm`.**
+> Не использовать `npm`, `npx`, `yarn` ни для установки, ни для просмотра пакетов.
+> Для информации о пакетах: `pnpm info <pkg>`. Для глобальных инструментов: `pnpm dlx`.
 
 ## 5. Стандарты кодирования
 
@@ -137,7 +141,7 @@ git push origin feat/phase-N-название
 
 ### Перед созданием PR
 ```bash
-pnpm dlx ultracite check    # линтер чист
+pnpm check                  # линтер чист (ultracite)
 tsc --noEmit                # типы чисты
 pnpm build                  # сборка проходит
 ```

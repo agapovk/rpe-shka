@@ -1,4 +1,4 @@
-# План: RPE Tracker — TanStack Start + Dexie + PWA (VSA, local-first)
+# План: RPE Tracker — Vite + TanStack Router + Dexie + PWA (VSA, local-first)
 
 ## Context
 
@@ -8,7 +8,7 @@
 ни код, ни данные не мигрируем — приложение стартует с чистой БД и дефолтным ростером.
 
 Цели:
-1. **Освоить TanStack Start** — изучить новый стек.
+1. **Освоить TanStack Router** (file-based) на чистом Vite SPA.
 2. **Изучить Vertical Slice Architecture (VSA)** — следующий шаг после FSD.
 3. **Local-first PWA** — устанавливаемое приложение, работает полностью офлайн.
 4. **Портфолио уровня middle frontend** — чистый код, понятная архитектура, без лишних зависимостей.
@@ -22,8 +22,8 @@
 
 | Вопрос | Решение | Причина |
 |--------|---------|---------|
-| Framework | **TanStack Start v1** | Стабильный v1, Vite-based, file-based routing |
-| SSR | **Выключен (SPA-режим)** | Сервера нет; IndexedDB существует только в браузере — SSR дал бы лишь проблемы гидрации |
+| Framework | **Vite + React 19 (чистый SPA)** | Сервера нет; Start в SPA-режиме давал бы только обёртку над Router + риск молодой экосистемы |
+| SSR | **Нет** | IndexedDB существует только в браузере — SSR дал бы лишь проблемы гидрации; сборка — чистая статика |
 | Local DB | **Dexie.js** | Лучший DX для IndexedDB, типобезопасный |
 | Реактивные запросы | **`useLiveQuery`** (dexie-react-hooks) | Нативная реактивность: UI обновляется при любом изменении DB |
 | UI state | **`useState`** + React Context | Простое приложение — нет смысла в глобальном стейт-менеджере |
@@ -47,7 +47,7 @@
 ## Зависимости
 
 ```
-@tanstack/react-start, @tanstack/react-router   ← framework + routing
+@tanstack/react-router, @tanstack/router-plugin ← routing (file-based, Vite-плагин)
 react, react-dom (^19)
 dexie, dexie-react-hooks                        ← local DB
 tailwindcss (^4), @tailwindcss/vite             ← стили
@@ -95,7 +95,7 @@ slice-name/
 ```
 src/
 ├── routes/
-│   ├── __root.tsx               # Layout: ThemeProvider, ErrorBoundary, шрифты, seed
+│   ├── __root.tsx               # Layout: ThemeProvider, seed
 │   ├── index.tsx                # Главная
 │   ├── sessions.$id.survey.tsx  # Опрос
 │   ├── sessions.$id.results.tsx # Результаты
@@ -136,7 +136,7 @@ src/
 │       └── index.ts
 │
 └── shared/
-    ├── ui/                 # Button, ErrorBoundary, ThemeToggle, ThemeSection, StorageSection
+    ├── ui/                 # Button, ThemeToggle, ThemeSection, StorageSection
     ├── lib/                # cn(), fmtDate()
     ├── context/
     │   └── theme.tsx       # ThemeProvider + useTheme (React Context + localStorage)
@@ -211,8 +211,9 @@ async function setScore(sessionId: string, playerId: number, score: number, note
 ### Фаза 0 — Документация `context/` ✓
 
 ### Фаза 1 — Каркас приложения
-TanStack Start в SPA-режиме (SSR выключен), Tailwind v4, шрифты, тема,
-`shared/ui` (Button, ErrorBoundary, ThemeToggle), роуты-заглушки, линтер + husky.
+Vite + TanStack Router (чистый SPA), Tailwind v4, шрифты, тема,
+`shared/ui` (Button, ThemeToggle), ошибки рендера через `defaultErrorComponent`
+роутера, роуты-заглушки, линтер + husky.
 Проверка: `pnpm dev` поднимается, все страницы открываются, тема переключается.
 
 ### Фаза 2 — Слой данных
@@ -248,5 +249,5 @@ TanStack Start в SPA-режиме (SSR выключен), Tailwind v4, шриф
 
 ## Открытые риски
 
-- **TanStack Start v1** — молодая экосистема, держим версии зафиксированными.
+- **TanStack Router** — активно развивается, держим версии зафиксированными (без `latest` в package.json).
 - **`useLiveQuery` + `undefined`** — до загрузки возвращает `undefined`. Обработать во всех компонентах (skeleton/null).

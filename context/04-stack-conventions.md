@@ -4,7 +4,7 @@
 
 | Роль | Библиотека | Версия |
 |------|-----------|--------|
-| Framework | `@tanstack/react-start` | ^1.x |
+| Framework | `vite` + `react` (чистый SPA) | ^8.x / ^19.x |
 | Routing | `@tanstack/react-router` | ^1.x |
 | Local DB | `dexie` | ^4.x |
 | Реактивные запросы | `dexie-react-hooks` | ^1.x |
@@ -23,7 +23,7 @@
 ## Команды
 
 ```bash
-pnpm dev          # Dev-сервер (Vite + TanStack Start)
+pnpm dev          # Dev-сервер (Vite)
 pnpm build        # Production build
 pnpm start        # Запустить production build локально
 pnpm typecheck    # tsc --noEmit
@@ -31,9 +31,8 @@ pnpm test         # vitest run
 pnpm test:watch   # vitest (watch mode)
 
 # Lint / Format (Biome через Ultracite)
-pnpm dlx ultracite check   # проверить
-pnpm dlx ultracite fix     # автоисправление
-pnpm dlx ultracite doctor  # диагностика конфига
+pnpm check        # проверить (ultracite check)
+pnpm fix          # автоисправление (ultracite fix)
 ```
 
 Pre-commit хук (husky + lint-staged) автоматически запускает `ultracite fix` на изменённых файлах.
@@ -94,31 +93,35 @@ src/
 
 **Tailwind v4** — конфигурация через `@theme {}` в `globals.css`, не через `tailwind.config.js`.
 
-**CSS-переменные темы** (dark/light переключаются классом `dark` на `<html>`):
+**Цветовые токены** — каждый определён один раз через `light-dark()`,
+темы переключаются `color-scheme` на `<html>` (никакого класса `.dark`):
 ```css
---color-bg, --color-bg-1, --color-bg-2, --color-bg-3
---color-text, --color-text-2, --color-text-3
---color-line, --color-line-2
---color-accent    /* основной акцентный цвет */
---color-warning
+--color-bg        /* фон страницы */
+--color-surface   /* карточки, инпуты, контейнеры */
+--color-text      /* основной текст */
+--color-muted     /* вторичный текст */
+--color-line      /* границы */
+--color-accent    /* акцент */
+```
+Для редких опасных действий — стандартный `red-500` из Tailwind, отдельного токена нет.
+
+**RPE-цвета** — по бакету, не по баллу (oklch):
+```css
+--color-rpe-light      /* 1–3 */
+--color-rpe-moderate   /* 4–6 */
+--color-rpe-hard       /* 7–8 */
+--color-rpe-maximal    /* 9–10 */
 ```
 
-**RPE-цвета** (1–10, oklch, зелёный → красный):
-```css
---rpe-1 … --rpe-10
-```
-
-Используются в `rpeColor(n)` → `var(--rpe-7)` и в `.rpe-btn` компоненте.
+**Правило использования:** только зарегистрированные утилиты (`bg-surface`, `text-muted`,
+`border-line`, `font-display`). Никаких arbitrary values `[var(--…)]` и inline `style`.
 
 **Шрифты:**
 - `--font-display`: Barlow Condensed (цифры, заголовки)
 - `--font-sans`: Inter (основной текст)
-- `--font-mono`: JetBrains Mono (данные, коды)
 
-**Кастомные CSS-классы** (в `@layer components`):
-- `.rpe-btn` — круглые кнопки RPE с glow-эффектом
-- `.bar-fill` — анимированный прогресс-бар (Results)
-- `.sheet-anim` — slide-up анимация ScoreSheet
+**Кастомных CSS-классов нет** — компоненты стилизуются утилитами на месте.
+Анимации добавляются точечно (`@keyframes`) когда появляется компонент.
 
 ---
 
@@ -128,8 +131,9 @@ src/
 // shared/context/theme.tsx
 type Theme = 'dark' | 'light' | 'system'
 
-// Хранит выбор в localStorage под ключом 'rpe-theme'
-// Применяет class 'dark' на document.documentElement
+// Хранит выбор в localStorage под ключом 'rpe-theme', дефолт — 'system'
+// Применяет color-scheme на document.documentElement:
+//   'system' → 'light dark' (браузер сам следит за системной темой)
 // useTheme() — хук для чтения и смены темы
 ```
 
@@ -179,7 +183,7 @@ describe('rpeBucket', () => {
 
 | Что | Конвенция | Пример |
 |-----|-----------|--------|
-| Компоненты | PascalCase | `CaptureScreen.tsx` |
+| Компоненты | файл kebab-case, экспорт PascalCase (правило ultracite) | `capture-screen.tsx` → `CaptureScreen` |
 | Хуки | camelCase с `use` | `useSessionEntries.ts` |
 | Утилиты / мутации | camelCase | `setScore`, `fmtDate` |
 | Папки срезов | kebab-case | `record-rpe/`, `manage-roster/` |

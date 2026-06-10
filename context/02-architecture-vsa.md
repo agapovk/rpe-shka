@@ -49,10 +49,10 @@ FSD — горизонтально:        VSA — вертикально:
 ```
 slices/record-rpe/
 ├── ui/
-│   ├── CaptureScreen.tsx   # Основной экран опроса
-│   ├── ScoreSheet.tsx      # Bottom-sheet модал для оценки
-│   ├── RpeScale.tsx        # 10 кнопок 1–10
-│   └── RosterScoreRow.tsx  # Строка игрока в списке
+│   ├── capture-screen.tsx   # Основной экран опроса
+│   ├── score-sheet.tsx      # Bottom-sheet модал для оценки
+│   ├── rpe-scale.tsx        # 10 кнопок 1–10
+│   └── roster-score-row.tsx # Строка игрока в списке
 ├── model.ts                # Вычисляемые типы + валидация (без Dexie, без React)
 ├── queries.ts              # useLiveQuery хуки — только чтение
 ├── mutations.ts            # async функции записи в Dexie
@@ -120,11 +120,10 @@ export { setScore, clearScore } from './mutations'
 ```
 shared/
 ├── ui/
-│   ├── Button.tsx          # Простой Tailwind-компонент, без CVA
-│   ├── ErrorBoundary.tsx   # Class-based error boundary
-│   ├── ThemeToggle.tsx     # Кнопка переключения темы
-│   ├── ThemeSection.tsx    # Блок темы в Settings (Light/Dark/System)
-│   └── StorageSection.tsx  # Блок Storage в Settings (использование + CLEAR ALL)
+│   ├── button.tsx          # Простой Tailwind-компонент, без CVA
+│   ├── theme-toggle.tsx    # Кнопка переключения темы
+│   ├── theme-section.tsx   # Блок темы в Settings (Light/Dark/System)
+│   └── storage-section.tsx # Блок Storage в Settings (использование + CLEAR ALL)
 ├── lib/
 │   ├── utils.ts            # cn() для className merging
 │   └── date.ts             # fmtDate()

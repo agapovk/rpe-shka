@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ru">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta
+			name="theme-color"
+			media="(prefers-color-scheme: light)"
+			content="#fafafa"
+		>
+		<meta
+			name="theme-color"
+			media="(prefers-color-scheme: dark)"
+			content="#111113"
+		>
+		<title>RPE Tracker</title>
+		<script>
+		"use strict";
+		// Тема до первой отрисовки; дефолт (system) задан в CSS как color-scheme: light dark
+		const theme = localStorage.getItem("rpe-theme");
+		if (theme === "light" || theme === "dark") {
+			document.documentElement.dataset.theme = theme;
+		}
+		</script>
+	</head>
+	<body>
+		<div id="root"></div>
+		<script type="module" src="/src/main.tsx"></script>
+	</body>
+</html>
