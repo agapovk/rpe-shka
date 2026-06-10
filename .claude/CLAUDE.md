@@ -10,12 +10,15 @@
 - `context/03-data-model.md` — Dexie-схема, типы
 - `context/04-stack-conventions.md` — стек, команды, соглашения
 - `context/05-migration-status.md` — живой чек-лист фаз
-- `context/new-release.md` — план миграции, принятые решения
+- `context/new-release.md` — план разработки, принятые решения
+
+Предыдущая версия (Next.js) — в ветке `legacy` (тег `v1.0.0`), используется только
+как референс UI и логики. Код и данные не мигрируем, пишем с нуля.
 
 ## 2. Целевой стек
 | Слой | Технология |
 |------|-----------|
-| Framework | **TanStack Start v1** (Vite-based) |
+| Framework | **TanStack Start v1** (Vite, SPA-режим — SSR выключен) |
 | Routing | **TanStack Router** (file-based) |
 | Local DB | **Dexie.js** + `useLiveQuery` |
 | UI state | `useState` + React Context |
@@ -40,13 +43,12 @@ src/
 │   ├── view-results/       # Результаты сессии + XLSX
 │   ├── manage-session/     # CRUD сессий, список
 │   ├── manage-roster/      # CRUD игроков
-│   ├── manage-categories/  # CRUD категорий
-│   └── theme-toggle/       # Тема
+│   └── manage-categories/  # CRUD категорий
 └── shared/
-    ├── ui/          ← Button, ErrorBoundary (без shadcn)
+    ├── ui/          ← Button, ErrorBoundary, ThemeToggle (без shadcn)
     ├── lib/         ← cn(), fmtDate()
     ├── context/     ← ThemeProvider
-    └── db/          ← Dexie instance + seed
+    └── db/          ← Dexie instance + типы сущностей + seed
 ```
 
 Структура каждого среза:

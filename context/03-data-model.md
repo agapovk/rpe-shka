@@ -1,24 +1,24 @@
 # Модель данных
 
-## TypeScript-типы (domain)
+## Типы сущностей — `shared/db/dexie.ts`
 
-Живут в `model.ts` каждого среза. Это «view-модели» — то, с чем работает UI.
+Сущности (Player, Category, Session, RpeEntry) — общий словарь домена: они нужны
+нескольким срезам, а срезы друг из друга не импортируют. Поэтому типы живут рядом
+со схемой в `shared/db/` и импортируются оттуда.
 
 ```typescript
-// slices/manage-roster/model.ts
+// shared/db/dexie.ts
 export interface Player {
   id: number       // auto-increment (Dexie ++id)
   name: string     // «Иванов Иван»
   num: number      // номер на футболке (1–99)
 }
 
-// slices/manage-categories/model.ts
 export interface Category {
   id: string       // uuid
   name: string     // «MD-2»
 }
 
-// slices/manage-session/model.ts
 export interface Session {
   id: string             // uuid
   name: string           // «Тренировка 9 Jun»
@@ -27,7 +27,6 @@ export interface Session {
   rosterIds: number[]    // список Player.id включённых в сессию
 }
 
-// slices/record-rpe/model.ts
 export interface RpeEntry {
   id: string        // `${sessionId}-${playerId}` — детерминированный
   sessionId: string
@@ -35,9 +34,13 @@ export interface RpeEntry {
   score: number     // 1–10
   note?: string
 }
+```
 
-// Вычисляемые (не хранятся в DB):
+## Вычисляемые типы — `model.ts` срезов
 
+Не хранятся в DB, специфичны для сценария — живут в своём срезе.
+
+```typescript
 // slices/manage-session/model.ts
 export interface SessionSummary {
   done: number      // сколько игроков оценено
@@ -69,17 +72,11 @@ export interface SessionStats {
 // shared/db/dexie.ts
 import Dexie, { type Table } from 'dexie'
 
-// DB-типы = domain-типы (совпадают в этом проекте, нет нормализации)
-export type DbPlayer    = Player
-export type DbCategory  = Category
-export type DbSession   = Session
-export type DbRpeEntry  = RpeEntry
-
 class RpeDatabase extends Dexie {
-  players!:    Table<DbPlayer,   number>  // PK: number (auto-increment)
-  categories!: Table<DbCategory, string>  // PK: string (uuid)
-  sessions!:   Table<DbSession,  string>  // PK: string (uuid)
-  rpeEntries!: Table<DbRpeEntry, string>  // PK: string (compound key)
+  players!:    Table<Player,   number>  // PK: number (auto-increment)
+  categories!: Table<Category, string>  // PK: string (uuid)
+  sessions!:   Table<Session,  string>  // PK: string (uuid)
+  rpeEntries!: Table<RpeEntry, string>  // PK: string (compound key)
 
   constructor() {
     super('rpe-db')
@@ -101,6 +98,12 @@ export const db = new RpeDatabase()
 `id = \`${sessionId}-${playerId}\`` — при повторном `db.rpeEntries.put()` Dexie делает upsert
 (не дублирует запись). Это позволяет вызывать `setScore()` идемпотентно.
 
+### Политика «осиротевших» rosterIds
+
+Если игрок удалён из ростера, его `id` остаётся в `rosterIds` старых сессий.
+**Не каскадим**: историю не трогаем, при чтении просто фильтруем id, для которых
+игрок не найден. История сессий важнее ссылочной целостности.
+
 ---
 
 ## Индексы и запросы
@@ -117,6 +120,9 @@ export const db = new RpeDatabase()
 
 ## Дефолтные данные (seed)
 
+При первом запуске сеем дефолтный ростер и категории. Никакой миграции старых данных нет —
+приложение всегда стартует с чистой БД.
+
 ```typescript
 // shared/db/seed.ts
 
@@ -129,8 +135,8 @@ export const DEFAULT_CATEGORIES: Category[] = [
   { id: 'md+1', name: 'MD+1' },
 ]
 
-// 22 игрока волейбольной команды (номера 1–97, имена на кириллице)
-export const ROSTER: Omit<DbPlayer, 'id'>[] = [
+// 22 игрока команды (номера 1–97, имена на кириллице)
+export const ROSTER: Omit<Player, 'id'>[] = [
   { name: 'Иванов Иван', num: 1 },
   // ...
 ]
@@ -144,61 +150,13 @@ export async function seedDatabase() {
 }
 ```
 
----
-
-## Миграция старых данных (Zustand → Dexie)
-
-Запускается один раз при первом запуске нового приложения.
-Старые данные хранились в IndexedDB под ключами `rpe-storage` и `rpe-roster`
-(Zustand `persist` сериализует их как JSON).
-
-```typescript
-// shared/db/seed.ts
-export async function migrateFromZustand() {
-  const count = await db.sessions.count()
-  if (count > 0) return  // уже мигрировали или нет данных
-
-  // Сессии и категории из survey store
-  const surveyRaw = localStorage.getItem('rpe-storage')
-  if (surveyRaw) {
-    const { sessions = [], categories = [] } = JSON.parse(surveyRaw).state ?? {}
-
-    await db.transaction('rw', db.sessions, db.rpeEntries, db.categories, async () => {
-      if (categories.length > 0) await db.categories.bulkPut(categories)
-
-      for (const s of sessions) {
-        await db.sessions.put({
-          id: s.id, name: s.name, date: s.date,
-          categoryId: s.categoryId, rosterIds: s.rosterIds ?? [],
-        })
-        // scores: Record<playerId, score> + notes: Record<playerId, note>
-        for (const [pid, score] of Object.entries(s.scores ?? {})) {
-          await db.rpeEntries.put({
-            id: `${s.id}-${pid}`,
-            sessionId: s.id,
-            playerId: Number(pid),
-            score: score as number,
-            note: s.notes?.[pid],
-          })
-        }
-      }
-    })
-  }
-
-  // Ростер из roster store
-  const rosterRaw = localStorage.getItem('rpe-roster')
-  if (rosterRaw) {
-    const { players = [] } = JSON.parse(rosterRaw).state ?? {}
-    if (players.length > 0) await db.players.bulkPut(players)
-  }
-}
-```
-
-Вызывается в `__root.tsx` один раз при монтировании, до рендера приложения.
+Вызывается в `__root.tsx` один раз при монтировании, вместе с запросом
+`navigator.storage.persist()` — без него браузер вправе выселить IndexedDB
+при нехватке места, а это единственная копия данных.
 
 ---
 
-## Versioning (Dexie миграции)
+## Versioning (Dexie миграции схемы)
 
 Если в будущем схема изменится — Dexie умеет мигрировать через `version(N).upgrade()`:
 
