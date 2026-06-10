@@ -1,108 +1,113 @@
-# Статус миграции
+# Статус разработки
 
-Ветка: `feat/tanstack-migration` (создать от `main`)
+Каждая фаза — отдельная ветка `feat/phase-N-…` → PR в `main`.
+Референс UI и логики — ветка `legacy` (тег `v1.0.0`). Код и данные оттуда не мигрируем, пишем с нуля.
 
 ---
 
 ## Фаза 0 — Документация `context/`
 
-- [x] `context/new-release.md` — план миграции, стек, решения
+- [x] `context/new-release.md` — план, стек, решения
 - [x] `context/01-overview.md` — приложение, домен, флоу
-- [x] `context/02-architecture-vsa.md` — VSA, правила, маппинг
-- [x] `context/03-data-model.md` — типы, Dexie-схема, миграция
+- [x] `context/02-architecture-vsa.md` — VSA, правила
+- [x] `context/03-data-model.md` — типы, Dexie-схема
 - [x] `context/04-stack-conventions.md` — стек, команды, соглашения
 - [x] `context/05-migration-status.md` — этот файл
 
 ---
 
-## Фаза 1 — Next.js → TanStack Start
+## Фаза 1 — Каркас приложения
 
-**Цель:** приложение запускается на TanStack Start, UI не меняется.
+**Цель:** пустое приложение на TanStack Start запускается, все роуты открываются, тема переключается.
 
-- [ ] Установить `@tanstack/react-start`, `@tanstack/react-router`, `@vitejs/plugin-react`, `@tailwindcss/vite`
-- [ ] Удалить `next`, `next-themes`, `postcss`, `shadcn`, `radix-ui`, `class-variance-authority`
-- [ ] Удалить файлы: `next.config.mjs`, `next-env.d.ts`, `postcss.config.mjs`, `components.json`
-- [ ] Создать `vite.config.ts`
-- [ ] Создать `src/router.tsx` (createRouter)
-- [ ] Создать `src/routes/__root.tsx` (ThemeProvider, ErrorBoundary, шрифты)
-- [ ] Создать маршруты: `index.tsx`, `sessions.$id.survey.tsx`, `sessions.$id.results.tsx`, `settings.tsx`
-- [ ] Перенести `app/globals.css` → `src/styles/globals.css`
-- [ ] Шрифты: `next/font` → `@fontsource/*` или Google Fonts `<link>`
-- [ ] Переписать `Button` как чистый Tailwind-компонент (без CVA, без Radix Slot)
-- [ ] Создать `shared/context/theme.tsx` (ThemeProvider + useTheme)
-- [ ] Обновить `package.json` скрипты (dev/build/start через Vite)
-- [ ] Проверка: `pnpm dev` поднимается, все страницы открываются
+- [ ] Инициализировать проект: `package.json`, `tsconfig.json`, pnpm
+- [ ] Установить `@tanstack/react-start`, `@tanstack/react-router`, `react@19`, `@vitejs/plugin-react`, `tailwindcss@4`, `@tailwindcss/vite`
+- [ ] `vite.config.ts` — **SPA-режим, SSR выключен**
+- [ ] `src/router.tsx` (createRouter)
+- [ ] `src/routes/__root.tsx` — ThemeProvider, ErrorBoundary, шрифты
+- [ ] Роуты-заглушки: `index.tsx`, `sessions.$id.survey.tsx`, `sessions.$id.results.tsx`, `settings.tsx`
+- [ ] `src/styles/globals.css` — Tailwind `@theme`, переменные темы, RPE-цвета (референс — `app/globals.css` в ветке `legacy`)
+- [ ] Шрифты через `@fontsource` (Barlow Condensed, Inter, JetBrains Mono)
+- [ ] `shared/ui/Button.tsx` — чистый Tailwind, без CVA
+- [ ] `shared/ui/ErrorBoundary.tsx`
+- [ ] `shared/context/theme.tsx` (ThemeProvider + useTheme) + `shared/ui/ThemeToggle.tsx`
+- [ ] Ultracite/Biome + husky + lint-staged
+- [ ] Скрипты в `package.json`: dev / build / start / typecheck / test
+- [ ] Проверка: `pnpm dev`, `pnpm build`, `tsc --noEmit` — без ошибок
 
 ---
 
-## Фаза 2 — Zustand + idb-keyval → Dexie
+## Фаза 2 — Слой данных (Dexie)
 
-**Цель:** данные переехали в Dexie, приложение работает как раньше.
+**Цель:** БД создаётся, дефолтные данные сеются при первом запуске.
 
 - [ ] Установить `dexie`, `dexie-react-hooks`
-- [ ] Удалить `zustand`, `idb-keyval`
-- [ ] Создать `shared/db/dexie.ts` (схема: players, categories, sessions, rpeEntries)
-- [ ] Создать `shared/db/seed.ts` (migrateFromZustand + seedDatabase)
-- [ ] Вызвать `migrateFromZustand()` + `seedDatabase()` в `__root.tsx` при монтировании
-- [ ] Удалить `lib/idb-storage.ts`
-- [ ] Удалить `features/survey/survey.store.ts`
-- [ ] Удалить `features/roster/roster.store.ts`
-- [ ] Проверка: старые данные подхватились, новые сессии создаются
+- [ ] `shared/db/dexie.ts` — схема + типы сущностей (Player, Category, Session, RpeEntry)
+- [ ] `shared/db/seed.ts` — `seedDatabase()`: дефолтный ростер + категории MD-4…MD+1
+- [ ] В `__root.tsx` при старте: `seedDatabase()` + `navigator.storage.persist()`
+- [ ] Проверка: в DevTools → IndexedDB видна `rpe-db` с игроками и категориями
 
 ---
 
-## Фаза 3 — Реструктуризация под VSA
+## Фаза 3 — Срезы (по одному, каждый целиком: model → queries/mutations → ui → роут)
 
-**Цель:** код разложен по срезам, поведение не изменилось.
+### 3.1 `manage-roster`
+- [ ] `queries.ts` — usePlayers
+- [ ] `mutations.ts` — addPlayer, updatePlayer, removePlayer
+- [ ] `ui/` — RosterSection, RosterEditRow
+- [ ] Подключить в `settings.tsx`
+- [ ] Проверка: CRUD игроков работает, список реактивен
 
-- [ ] Создать `src/slices/record-rpe/` — перенести CaptureScreen, ScoreSheet, RpeScale, RosterRows
-- [ ] Создать `src/slices/view-results/` — перенести ResultsScreen, Stat, exportXlsx, calcSessionStats
-- [ ] Создать `src/slices/manage-session/` — перенести SessionCard, StatStrip, calcSessionSummary, calcHomeStats
-- [ ] Создать `src/slices/manage-roster/` — перенести RosterSection, RosterEditRow
-- [ ] Создать `src/slices/manage-categories/` — перенести CategoriesSection
-- [ ] Создать `src/slices/theme-toggle/` — перенести ThemeToggle, ThemeSection
-- [ ] Перенести `components/ui/ErrorBoundary.tsx` → `shared/ui/`
-- [ ] Перенести `lib/utils.ts` → `shared/lib/utils.ts`
-- [ ] Перенести `fmtDate`, `suggestSessionName` → `shared/lib/date.ts`
-- [ ] Удалить старые папки `components/`, `features/`, `hooks/`, `lib/`
-- [ ] Проверка: `tsc --noEmit` чист, приложение работает
+### 3.2 `manage-categories`
+- [ ] `queries.ts` — useCategories
+- [ ] `mutations.ts` — addCategory, updateCategory, removeCategory
+- [ ] `ui/` — CategoriesSection
+- [ ] Подключить в `settings.tsx`
+- [ ] Проверка: CRUD категорий работает
+
+### 3.3 `manage-session`
+- [ ] `model.ts` — calcSessionSummary, calcHomeStats, suggestSessionName
+- [ ] `queries.ts` — useSessions
+- [ ] `mutations.ts` — createSession, deleteSession, duplicateSession, updateSession
+- [ ] `ui/` — SessionCard, StatStrip, NewSessionButton
+- [ ] Подключить в `index.tsx` (главная)
+- [ ] Проверка: создание/удаление/дублирование сессий, статистика шапки
+
+### 3.4 `record-rpe`
+- [ ] `model.ts` — валидация score/note
+- [ ] `queries.ts` — useSessionEntries, useSessionPlayers
+- [ ] `mutations.ts` — setScore, clearScore, updateSessionName
+- [ ] `ui/` — CaptureScreen, ScoreSheet, RpeScale, RosterScoreRow
+- [ ] Подключить в `sessions.$id.survey.tsx`
+- [ ] Проверка: оценки ставятся/снимаются, прогресс 18/22, фильтры ALL/DONE/PENDING
+
+### 3.5 `view-results`
+- [ ] `model.ts` — rpeColor, rpeBucket, calcSessionStats
+- [ ] `queries.ts` — useSessionWithEntries
+- [ ] `mutations.ts` — exportXlsx через `await import('xlsx')`
+- [ ] `ui/` — ResultsScreen, Stat, таблица игроков
+- [ ] Подключить в `sessions.$id.results.tsx`
+- [ ] Проверка: avg/hi/lo/≥8 считаются верно, XLSX открывается
+
+### 3.6 Settings: остальное
+- [ ] `shared/ui/ThemeSection.tsx` (выбор Light/Dark/System)
+- [ ] `shared/ui/StorageSection.tsx` (использование IndexedDB + CLEAR ALL)
 
 ---
 
-## Фаза 4 — Подключить Dexie к UI
-
-**Цель:** Zustand убран, весь data-слой через Dexie + useLiveQuery.
-
-- [ ] `slices/record-rpe/queries.ts` — useSessionEntries, useSessionPlayers
-- [ ] `slices/record-rpe/mutations.ts` — setScore, clearScore, updateSessionName
-- [ ] `slices/view-results/queries.ts` — useSessionWithEntries
-- [ ] `slices/manage-session/queries.ts` — useSessions
-- [ ] `slices/manage-session/mutations.ts` — createSession, deleteSession, duplicateSession, updateSession
-- [ ] `slices/manage-roster/queries.ts` — usePlayers
-- [ ] `slices/manage-roster/mutations.ts` — addPlayer, updatePlayer, removePlayer
-- [ ] `slices/manage-categories/queries.ts` — useCategories
-- [ ] `slices/manage-categories/mutations.ts` — addCategory, updateCategory, removeCategory
-- [ ] Заменить все `useSurveyStore` / `useRosterStore` → useLiveQuery хуки
-- [ ] Заменить Zustand-мутации → прямые вызовы Dexie
-- [ ] Убрать `useHydrated` → обработать `undefined` от `useLiveQuery` (skeleton/null)
-- [ ] UI-стейт (открыт ScoreSheet, активный фильтр, режим редактирования) → `useState`
-- [ ] Проверка: создать сессию → расставить RPE → Results считает верно → XLSX открывается
-
----
-
-## Фаза 5 — PWA + тесты + деплой
+## Фаза 4 — PWA + тесты + деплой
 
 **Цель:** устанавливаемое PWA, тесты зелёные, живое демо.
 
 - [ ] Установить `vite-plugin-pwa`
-- [ ] Настроить manifest (name, icons 192/512/maskable, theme_color)
-- [ ] Настроить Workbox (precache assets, NetworkFirst для HTML)
+- [ ] Manifest: name, icons 192/512/maskable, theme_color
+- [ ] Workbox: precache app shell, стратегия **CacheFirst**, `registerType: 'autoUpdate'`
 - [ ] Проверить Lighthouse: installable, offline works
 - [ ] Установить `vitest`
-- [ ] Написать тесты: `rpeBucket`, `calcSessionStats`, `calcSessionSummary`, `calcHomeStats`
+- [ ] Тесты: `rpeBucket`, `calcSessionStats`, `calcSessionSummary`, `calcHomeStats`
 - [ ] `pnpm test` зелёный
 - [ ] Задеплоить (Netlify / Cloudflare Pages / Vercel)
-- [ ] Написать README портфолио-уровня
+- [ ] README портфолио-уровня
 
 ---
 
@@ -116,5 +121,4 @@
 □ Базовый флоу: создать → оценить → результаты → XLSX
 □ Офлайн: DevTools Offline → приложение работает, данные сохраняются
 □ PWA: Lighthouse installable score
-□ Миграция: проверить со старыми данными в localStorage
 ```

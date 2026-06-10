@@ -11,7 +11,7 @@
 | Стилизация | `tailwindcss` | ^4.x |
 | Слияние классов | `tailwind-merge` + `clsx` | — |
 | Иконки | `lucide-react` | — |
-| Экспорт | `xlsx` | — |
+| Экспорт | `xlsx` (только dynamic import) | — |
 | PWA | `vite-plugin-pwa` | — |
 | Тесты | `vitest` | — |
 | Lint/Format | `@biomejs/biome` + `ultracite` | — |
@@ -60,7 +60,7 @@ src/
 
 ## Стиль кода (Ultracite/Biome)
 
-Полная спецификация: [`.claude/CLAUDE.md`](../.claude/CLAUDE.md) и [`AGENTS.md`](../AGENTS.md).
+Полная спецификация: [`.claude/CLAUDE.md`](../.claude/CLAUDE.md).
 
 Ключевые правила:
 
@@ -142,8 +142,9 @@ type Theme = 'dark' | 'light' | 'system'
 Конфигурация в `vite.config.ts`:
 - `registerType: 'autoUpdate'` — SW обновляется автоматически
 - `manifest`: name, short_name, icons (192×192, 512×512, maskable)
-- `workbox.globPatterns` — precache всех assets
-- `workbox.runtimeCaching` — стратегия `NetworkFirst` для роутов, `CacheFirst` для assets
+- `workbox.globPatterns` — precache всего app shell (SPA: единственный HTML + assets)
+- Стратегия — **CacheFirst**: на поле связь *мерцает*, NetworkFirst висел бы до
+  таймаута на каждой навигации. Обновления подтягивает autoUpdate SW в фоне.
 
 Offline: приложение работает полностью из кэша SW + IndexedDB. Нет сетевых запросов.
 
@@ -183,5 +184,5 @@ describe('rpeBucket', () => {
 | Утилиты / мутации | camelCase | `setScore`, `fmtDate` |
 | Папки срезов | kebab-case | `record-rpe/`, `manage-roster/` |
 | CSS-переменные | kebab-case с префиксом | `--color-accent`, `--rpe-7` |
-| DB-типы | PascalCase с `Db` (если отличаются от domain) | `DbSession` |
+| Типы сущностей | PascalCase, живут в `shared/db/dexie.ts` | `Session`, `RpeEntry` |
 | Env-переменные | UPPER_SNAKE через `VITE_` | `VITE_APP_VERSION` |
