@@ -1,20 +1,13 @@
-# Dependencies
-node_modules/
-
-# Build outputs
-dist/
-.next/
-out/
-coverage/
-
-# TypeScript
-*.tsbuildinfo
-next-env.d.ts
-
-# OS
+node_modules
 .DS_Store
-
-# Env
+dist
+dist-ssr
+*.local
 .env
-.env.local
-.env.*.local
+.nitro
+.tanstack
+.wrangler
+.output
+.vinxi
+__unconfig*
+todos.json
