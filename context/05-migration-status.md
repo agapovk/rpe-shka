@@ -16,24 +16,28 @@
 
 ---
 
-## Фаза 1 — Каркас приложения
+## Фаза 1 — Каркас приложения ✓
 
-**Цель:** пустое приложение на TanStack Start запускается, все роуты открываются, тема переключается.
+**Цель:** пустое SPA (Vite + TanStack Router) запускается, все роуты открываются, тема переключается.
 
-- [ ] Инициализировать проект: `package.json`, `tsconfig.json`, pnpm
-- [ ] Установить `@tanstack/react-start`, `@tanstack/react-router`, `react@19`, `@vitejs/plugin-react`, `tailwindcss@4`, `@tailwindcss/vite`
-- [ ] `vite.config.ts` — **SPA-режим, SSR выключен**
-- [ ] `src/router.tsx` (createRouter)
-- [ ] `src/routes/__root.tsx` — ThemeProvider, ErrorBoundary, шрифты
-- [ ] Роуты-заглушки: `index.tsx`, `sessions.$id.survey.tsx`, `sessions.$id.results.tsx`, `settings.tsx`
-- [ ] `src/styles/globals.css` — Tailwind `@theme`, переменные темы, RPE-цвета (референс — `app/globals.css` в ветке `legacy`)
-- [ ] Шрифты через `@fontsource` (Barlow Condensed, Inter, JetBrains Mono)
-- [ ] `shared/ui/Button.tsx` — чистый Tailwind, без CVA
-- [ ] `shared/ui/ErrorBoundary.tsx`
-- [ ] `shared/context/theme.tsx` (ThemeProvider + useTheme) + `shared/ui/ThemeToggle.tsx`
-- [ ] Ultracite/Biome + husky + lint-staged
-- [ ] Скрипты в `package.json`: dev / build / start / typecheck / test
-- [ ] Проверка: `pnpm dev`, `pnpm build`, `tsc --noEmit` — без ошибок
+> Решение в ходе фазы: TanStack Start убран — для офлайн-SPA без сервера он давал только
+> обёртку над Router. Чистый Vite + `@tanstack/router-plugin`, сборка — статика.
+
+- [x] Инициализировать проект: `package.json`, `tsconfig.json`, pnpm
+- [x] Установить `@tanstack/react-router`, `@tanstack/router-plugin`, `react@19`, `@vitejs/plugin-react`, `tailwindcss@4`, `@tailwindcss/vite`
+- [x] `vite.config.ts` — `tanstackRouter()` + `viteReact()` + `tailwindcss()`, без SSR
+- [x] `index.html` (инлайн-скрипт темы до первой отрисовки) + `src/main.tsx` (RouterProvider)
+- [x] `src/router.tsx` (createRouter)
+- [x] `src/routes/__root.tsx` — ThemeProvider + ErrorBoundary + Outlet
+- [x] Роуты-заглушки: `index.tsx`, `sessions.$id.survey.tsx`, `sessions.$id.results.tsx`, `settings.tsx`
+- [x] `src/styles/globals.css` — Tailwind `@theme inline`, light/dark переменные, RPE-цвета
+- [x] Шрифты через `@fontsource` (Barlow Condensed, Inter, JetBrains Mono)
+- [x] `shared/ui/Button.tsx` — чистый Tailwind, без CVA
+- [x] `shared/ui/ErrorBoundary.tsx`
+- [x] `shared/context/theme.tsx` (ThemeProvider + useTheme) + `shared/ui/ThemeToggle.tsx`
+- [x] Biome + husky + lint-staged
+- [x] Скрипты в `package.json`: dev / build / start / typecheck / test / test:watch / check:fix
+- [x] Проверка: `pnpm dev` → HTTP 200, `pnpm build` → ✓, `tsc --noEmit` → ✓, `biome check` → ✓
 
 ---
 

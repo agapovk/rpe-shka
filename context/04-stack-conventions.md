@@ -4,7 +4,7 @@
 
 | Роль | Библиотека | Версия |
 |------|-----------|--------|
-| Framework | `@tanstack/react-start` | ^1.x |
+| Framework | `vite` + `react` (чистый SPA) | ^8.x / ^19.x |
 | Routing | `@tanstack/react-router` | ^1.x |
 | Local DB | `dexie` | ^4.x |
 | Реактивные запросы | `dexie-react-hooks` | ^1.x |
@@ -23,7 +23,7 @@
 ## Команды
 
 ```bash
-pnpm dev          # Dev-сервер (Vite + TanStack Start)
+pnpm dev          # Dev-сервер (Vite)
 pnpm build        # Production build
 pnpm start        # Запустить production build локально
 pnpm typecheck    # tsc --noEmit
