@@ -8,7 +8,7 @@ function SurveyPage() {
 	const { id } = Route.useParams();
 	return (
 		<main className="mx-auto max-w-xl px-4 py-8">
-			<p className="text-(--tx-2)">Опрос — сессия {id}</p>
+			<p className="text-muted">Опрос — сессия {id}</p>
 		</main>
 	);
 }

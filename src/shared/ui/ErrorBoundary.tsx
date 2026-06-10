@@ -21,7 +21,7 @@ export class ErrorBoundary extends Component<Props, State> {
 			return (
 				this.props.fallback ?? (
 					<div className="flex min-h-screen items-center justify-center p-8">
-						<p className="text-tx-2">Что-то пошло не так.</p>
+						<p className="text-muted">Что-то пошло не так.</p>
 					</div>
 				)
 			);

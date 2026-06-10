@@ -30,8 +30,8 @@
 - [x] `src/router.tsx` (createRouter)
 - [x] `src/routes/__root.tsx` — ThemeProvider + ErrorBoundary + Outlet
 - [x] Роуты-заглушки: `index.tsx`, `sessions.$id.survey.tsx`, `sessions.$id.results.tsx`, `settings.tsx`
-- [x] `src/styles/globals.css` — Tailwind `@theme inline`, light/dark переменные, RPE-цвета
-- [x] Шрифты через `@fontsource` (Barlow Condensed, Inter, JetBrains Mono)
+- [x] `src/styles/globals.css` — Tailwind `@theme`: 6 семантических токенов + 4 RPE-бакета через `light-dark()`, тема через `color-scheme`
+- [x] Шрифты через `@fontsource` (Barlow Condensed, Inter)
 - [x] `shared/ui/Button.tsx` — чистый Tailwind, без CVA
 - [x] `shared/ui/ErrorBoundary.tsx`
 - [x] `shared/context/theme.tsx` (ThemeProvider + useTheme) + `shared/ui/ThemeToggle.tsx`

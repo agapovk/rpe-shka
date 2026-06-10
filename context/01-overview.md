@@ -22,7 +22,8 @@
 | 7–8 | HARD | оранжевый |
 | 9–10 | MAXIMAL | красный |
 
-Цвета заданы CSS-переменными `--rpe-1` … `--rpe-10` в `src/styles/globals.css`.
+Цвета заданы CSS-переменными `--color-rpe-light|moderate|hard|maximal` в
+`src/styles/globals.css` — один цвет на бакет, не на балл.
 
 ### Session (Сессия тренировки)
 - Создаётся тренером с именем и датой
@@ -132,7 +133,7 @@ SETTINGS (/settings)
 **`calcHomeStats(sessions, players)`** → `{ sessionsLast30d, sevenDayAvg, topLoaded }`
 - Статистика для шапки главной страницы
 
-**`rpeColor(n)`** → CSS variable string (`var(--rpe-7)`)
+**`rpeColor(n)`** → CSS variable string (`var(--color-rpe-hard)` для n=7)
 **`rpeBucket(n)`** → `'LIGHT' | 'MODERATE' | 'HARD' | 'MAXIMAL'`
 
 ---

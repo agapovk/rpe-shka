@@ -10,7 +10,9 @@ import {
 export type Theme = "dark" | "light" | "system";
 
 const STORAGE_KEY = "rpe-theme";
-const DEFAULT_THEME: Theme = "dark";
+
+const isTheme = (value: unknown): value is Theme =>
+	value === "dark" || value === "light" || value === "system";
 
 interface ThemeContextValue {
 	theme: Theme;
@@ -19,37 +21,24 @@ interface ThemeContextValue {
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
-function resolveApplied(theme: Theme): "dark" | "light" {
+// data-theme выбирает color-scheme в CSS (light-dark() токены);
+// без атрибута действует дефолт "light dark" — браузер следует системе
+function applyTheme(theme: Theme): void {
 	if (theme === "system") {
-		return window.matchMedia("(prefers-color-scheme: dark)").matches
-			? "dark"
-			: "light";
+		delete document.documentElement.dataset.theme;
+		return;
 	}
-	return theme;
-}
-
-function applyClass(applied: "dark" | "light"): void {
-	document.documentElement.classList.toggle("dark", applied === "dark");
+	document.documentElement.dataset.theme = theme;
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
 	const [theme, setThemeState] = useState<Theme>(() => {
-		if (typeof window === "undefined") return DEFAULT_THEME;
-		const stored = localStorage.getItem(STORAGE_KEY) as Theme | null;
-		return stored ?? DEFAULT_THEME;
+		const stored = localStorage.getItem(STORAGE_KEY);
+		return isTheme(stored) ? stored : "system";
 	});
 
 	useEffect(() => {
-		applyClass(resolveApplied(theme));
-	}, [theme]);
-
-	// Keep system theme in sync when prefers-color-scheme changes
-	useEffect(() => {
-		if (theme !== "system") return;
-		const mq = window.matchMedia("(prefers-color-scheme: dark)");
-		const handler = () => applyClass(resolveApplied("system"));
-		mq.addEventListener("change", handler);
-		return () => mq.removeEventListener("change", handler);
+		applyTheme(theme);
 	}, [theme]);
 
 	const setTheme = useCallback((next: Theme) => {
@@ -62,6 +51,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
 export function useTheme(): ThemeContextValue {
 	const ctx = useContext(ThemeContext);
-	if (!ctx) throw new Error("useTheme must be used inside ThemeProvider");
+	if (!ctx) {
+		throw new Error("useTheme must be used inside ThemeProvider");
+	}
 	return ctx;
 }
