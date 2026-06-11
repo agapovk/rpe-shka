@@ -27,7 +27,7 @@ function CategoryNameInput({
 	return (
 		<>
 			<input
-				className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted/50"
+				className="min-w-0 flex-1 bg-transparent font-display font-medium text-lg outline-none placeholder:font-normal placeholder:font-sans placeholder:text-muted/50 placeholder:text-sm"
 				onChange={(e) => setName(e.target.value)}
 				onKeyDown={(e) => {
 					if (e.key === "Enter") {
@@ -107,7 +107,9 @@ export function CategoriesSection() {
 							/>
 						) : (
 							<>
-								<span className="flex-1 text-sm">{cat.name}</span>
+								<span className="flex-1 font-display font-medium text-lg">
+									{cat.name}
+								</span>
 								{confirmingId === cat.id ? (
 									<>
 										<button

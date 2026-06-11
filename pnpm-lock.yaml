@@ -8,10 +8,10 @@ importers:
 
   .:
     dependencies:
-      '@fontsource/barlow-condensed':
+      '@fontsource/inter':
         specifier: ^5.2.8
         version: 5.2.8
-      '@fontsource/inter':
+      '@fontsource/oswald':
         specifier: ^5.2.8
         version: 5.2.8
       '@tanstack/react-router':
@@ -228,11 +228,11 @@ packages:
   '@emnapi/wasi-threads@1.2.1':
     resolution: {integrity: sha512-uTII7OYF+/Mes/MrcIOYp5yOtSMLBWSIoLPpcgwipoiKbli6k322tcoFsxoIIxPDqW01SQGAgko4EzZi2BNv2w==}
 
-  '@fontsource/barlow-condensed@5.2.8':
-    resolution: {integrity: sha512-cmCWNfh7oCmfarGDlhiJRkl4HOgt9aOqki7IYtDOaI3qLCeEO/8VjiZeAx/2PEPf4K36YxXDjAlOWwW/anQUZA==}
-
   '@fontsource/inter@5.2.8':
     resolution: {integrity: sha512-P6r5WnJoKiNVV+zvW2xM13gNdFhAEpQ9dQJHt3naLvfg+LkF2ldgSLiF4T41lf1SQCM9QmkqPTn4TH568IRagg==}
+
+  '@fontsource/oswald@5.2.8':
+    resolution: {integrity: sha512-DFoPK1BqsFIQhVjs2xgO/oL9veF9oUJgFojEWIU+nazUrfqsBDtAMI4n9L9CZFX3kQNDLcCyzKx1xoEDvQT4WQ==}
 
   '@jridgewell/gen-mapping@0.3.13':
     resolution: {integrity: sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA==}
@@ -1458,9 +1458,9 @@ snapshots:
       tslib: 2.8.1
     optional: true
 
-  '@fontsource/barlow-condensed@5.2.8': {}
-
   '@fontsource/inter@5.2.8': {}
+
+  '@fontsource/oswald@5.2.8': {}
 
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:
