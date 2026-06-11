@@ -123,34 +123,38 @@ export const db = new RpeDatabase()
 При первом запуске сеем дефолтный ростер и категории. Никакой миграции старых данных нет —
 приложение всегда стартует с чистой БД.
 
+`seed.ts` — только данные (без импорта `db`, чтобы не было цикла модулей):
+
 ```typescript
 // shared/db/seed.ts
-
 export const DEFAULT_CATEGORIES: Category[] = [
   { id: 'md-4', name: 'MD-4' },
-  { id: 'md-3', name: 'MD-3' },
-  { id: 'md-2', name: 'MD-2' },
-  { id: 'md-1', name: 'MD-1' },
-  { id: 'md',   name: 'MD'   },
-  { id: 'md+1', name: 'MD+1' },
+  // … MD-3, MD-2, MD-1, MD, MD+1
 ]
 
-// 22 игрока команды (номера 1–97, имена на кириллице)
+// 22 игрока команды
 export const ROSTER: Omit<Player, 'id'>[] = [
-  { name: 'Иванов Иван', num: 1 },
+  { name: 'AKBASHEV ROMAN', num: 13 },
   // ...
 ]
-
-export async function seedDatabase() {
-  const playerCount = await db.players.count()
-  if (playerCount === 0) await db.players.bulkAdd(ROSTER)
-
-  const catCount = await db.categories.count()
-  if (catCount === 0) await db.categories.bulkPut(DEFAULT_CATEGORIES)
-}
 ```
 
-Вызывается в `__root.tsx` один раз при монтировании, вместе с запросом
+Сид — через событие `populate` в конструкторе `RpeDatabase`:
+
+```typescript
+// shared/db/dexie.ts (в конструкторе)
+this.on('populate', (tx) => {
+  tx.table('players').bulkAdd(ROSTER)
+  tx.table('categories').bulkAdd(DEFAULT_CATEGORIES)
+})
+```
+
+**Почему `populate`, а не функция с проверкой `count()`:** у count-подхода гонка —
+React StrictMode в dev вызывает эффект дважды, оба вызова видят пустую таблицу до
+коммита первого `bulkAdd` → ростер задваивается. `populate` выполняется внутри
+versionchange-транзакции ровно один раз при создании БД — гонки нет в принципе.
+
+В `__root.tsx` при монтировании: `db.open()` (создаёт БД и запускает сид) + запрос
 `navigator.storage.persist()` — без него браузер вправе выселить IndexedDB
 при нехватке места, а это единственная копия данных.
 

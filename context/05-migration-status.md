@@ -41,15 +41,21 @@
 
 ---
 
-## Фаза 2 — Слой данных (Dexie)
+## Фаза 2 — Слой данных (Dexie) ✓
 
 **Цель:** БД создаётся, дефолтные данные сеются при первом запуске.
 
-- [ ] Установить `dexie`, `dexie-react-hooks`
-- [ ] `shared/db/dexie.ts` — схема + типы сущностей (Player, Category, Session, RpeEntry)
-- [ ] `shared/db/seed.ts` — `seedDatabase()`: дефолтный ростер + категории MD-4…MD+1
-- [ ] В `__root.tsx` при старте: `seedDatabase()` + `navigator.storage.persist()`
-- [ ] Проверка: в DevTools → IndexedDB видна `rpe-db` с игроками и категориями
+> Решение в ходе фазы: сид через `db.on('populate')` вместо `seedDatabase()` с проверкой
+> `count()` — у count-подхода гонка (StrictMode-эффект в dev вызывается дважды, оба вызова
+> видели пустую таблицу → 44 игрока вместо 22). `populate` выполняется атомарно ровно один
+> раз при создании БД.
+
+- [x] Установить `dexie`, `dexie-react-hooks`
+- [x] `shared/db/dexie.ts` — схема + типы сущностей (Player, Category, Session, RpeEntry) + populate-сид
+- [x] `shared/db/seed.ts` — данные сида: дефолтный ростер (22 игрока) + категории MD-4…MD+1
+- [x] В `__root.tsx` при старте: `db.open()` + `navigator.storage.persist()`
+- [x] Проверка (headless Chromium): `rpe-db` создаётся, 22 игрока + 6 категорий, повторная
+      загрузка не дублирует, удалённый игрок не пересеивается
 
 ---
 
