@@ -59,49 +59,61 @@
 
 ---
 
-## Фаза 3 — Срезы (по одному, каждый целиком: model → queries/mutations → ui → роут)
+## Фаза 3 — Срезы (по одному, каждый целиком: model → queries/mutations → ui → роут) ✓
 
-### 3.1 `manage-roster`
-- [ ] `queries.ts` — usePlayers
-- [ ] `mutations.ts` — addPlayer, updatePlayer, removePlayer
-- [ ] `ui/` — RosterSection, RosterEditRow
-- [ ] Подключить в `settings.tsx`
-- [ ] Проверка: CRUD игроков работает, список реактивен
+> Решения в ходе фазы:
+> - цвета RPE — только классами (`text-rpe-*` / `bg-rpe-*`), функции-мапперы в model
+>   срезов; inline-стили и arbitrary values не используются (динамика — квантованными
+>   утилитами и сегментными барами)
+> - правило `noBarrelFile` выключено для `slices/*/index.ts` (override в biome.json) —
+>   публичный API среза через index.ts это осознанное VSA-решение
+> - язык UI — английский (как в legacy)
 
-### 3.2 `manage-categories`
-- [ ] `queries.ts` — useCategories
-- [ ] `mutations.ts` — addCategory, updateCategory, removeCategory
-- [ ] `ui/` — CategoriesSection
-- [ ] Подключить в `settings.tsx`
-- [ ] Проверка: CRUD категорий работает
+### 3.1 `manage-roster` ✓
+- [x] `queries.ts` — usePlayers
+- [x] `mutations.ts` — addPlayer, updatePlayer, removePlayer
+- [x] `ui/` — RosterSection, RosterEditRow
+- [x] Подключить в `settings.tsx`
+- [x] Проверка: CRUD игроков работает, список реактивен
 
-### 3.3 `manage-session`
-- [ ] `model.ts` — calcSessionSummary, calcHomeStats, suggestSessionName
-- [ ] `queries.ts` — useSessions
-- [ ] `mutations.ts` — createSession, deleteSession, duplicateSession, updateSession
-- [ ] `ui/` — SessionCard, StatStrip, NewSessionButton
-- [ ] Подключить в `index.tsx` (главная)
-- [ ] Проверка: создание/удаление/дублирование сессий, статистика шапки
+### 3.2 `manage-categories` ✓
+- [x] `queries.ts` — useCategories
+- [x] `mutations.ts` — addCategory, updateCategory, removeCategory
+- [x] `ui/` — CategoriesSection
+- [x] Подключить в `settings.tsx`
+- [x] Проверка: CRUD категорий работает
 
-### 3.4 `record-rpe`
-- [ ] `model.ts` — валидация score/note
-- [ ] `queries.ts` — useSessionEntries, useSessionPlayers
-- [ ] `mutations.ts` — setScore, clearScore, updateSessionName
-- [ ] `ui/` — CaptureScreen, ScoreSheet, RpeScale, RosterScoreRow
-- [ ] Подключить в `sessions.$id.survey.tsx`
-- [ ] Проверка: оценки ставятся/снимаются, прогресс 18/22, фильтры ALL/DONE/PENDING
+### 3.3 `manage-session` ✓
+- [x] `model.ts` — calcSessionSummary, calcHomeStats, suggestSessionName
+- [x] `queries.ts` — useSessions (+ useAllEntries, useRosterPlayers)
+- [x] `mutations.ts` — createSession, deleteSession (каскад rpeEntries), duplicateSession, updateSession
+- [x] `ui/` — HomeScreen, SessionCard, StatStrip, NewSessionButton
+- [x] Подключить в `index.tsx` (главная)
+- [x] Проверка: создание/удаление/дублирование сессий, статистика шапки
 
-### 3.5 `view-results`
-- [ ] `model.ts` — rpeColor, rpeBucket, calcSessionStats
-- [ ] `queries.ts` — useSessionWithEntries
-- [ ] `mutations.ts` — exportXlsx через `await import('xlsx')`
-- [ ] `ui/` — ResultsScreen, Stat, таблица игроков
-- [ ] Подключить в `sessions.$id.results.tsx`
-- [ ] Проверка: avg/hi/lo/≥8 считаются верно, XLSX открывается
+### 3.4 `record-rpe` ✓
+- [x] `model.ts` — валидация score/note
+- [x] `queries.ts` — useSession, useSessionEntries, useSessionPlayers
+- [x] `mutations.ts` — setScore, clearScore, updateSessionName (+ toggleSessionPlayer)
+- [x] `ui/` — CaptureScreen, ScoreSheet, RpeScale, RosterScoreRow, SessionRosterRow
+- [x] Подключить в `sessions.$id.survey.tsx`
+- [x] Проверка: оценки ставятся/снимаются, прогресс x/22, фильтры ALL/DONE/PENDING
 
-### 3.6 Settings: остальное
-- [ ] `shared/ui/theme-section.tsx` (выбор Light/Dark/System)
-- [ ] `shared/ui/storage-section.tsx` (использование IndexedDB + CLEAR ALL)
+### 3.5 `view-results` ✓
+- [x] `model.ts` — rpeBucket + классы цветов, calcSessionStats, joinRecorded
+- [x] `queries.ts` — useSessionWithEntries
+- [x] `mutations.ts` — exportXlsx через `await import('xlsx')` (отдельный чанк 282 КБ)
+- [x] `ui/` — ResultsScreen, Stat, таблица игроков
+- [x] Подключить в `sessions.$id.results.tsx`
+- [x] Проверка: avg/hi/lo/≥8 считаются верно, XLSX скачивается
+
+### 3.6 Settings: остальное ✓
+- [x] `shared/ui/theme-section.tsx` (выбор Light/Dark/System)
+- [x] `shared/ui/storage-section.tsx` (использование + persisted-статус + CLEAR ALL)
+
+**Runtime-проверка фазы (headless Chromium, 33 шага):** полный флоу создать → оценить →
+фильтры → edit roster → результаты → XLSX → дубль/удаление → настройки → CLEAR ALL →
+populate пересеял; межвкладочная реактивность Dexie; ошибок в консоли нет.
 
 ---
 
