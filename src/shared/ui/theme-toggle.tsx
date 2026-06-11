@@ -3,9 +3,9 @@ import { type Theme, useTheme } from "@/shared/context/theme";
 import { cn } from "@/shared/lib/cn";
 
 const OPTIONS: { value: Theme; icon: typeof Sun; label: string }[] = [
-	{ value: "light", icon: Sun, label: "Светлая" },
-	{ value: "system", icon: SunMoon, label: "Системная" },
-	{ value: "dark", icon: Moon, label: "Тёмная" },
+	{ value: "light", icon: Sun, label: "Light" },
+	{ value: "system", icon: SunMoon, label: "System" },
+	{ value: "dark", icon: Moon, label: "Dark" },
 ];
 
 export function ThemeToggle() {
