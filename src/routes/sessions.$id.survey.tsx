@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { CaptureScreen } from "@/slices/record-rpe";
 
 export const Route = createFileRoute("/sessions/$id/survey")({
 	component: SurveyPage,
@@ -6,9 +7,5 @@ export const Route = createFileRoute("/sessions/$id/survey")({
 
 function SurveyPage() {
 	const { id } = Route.useParams();
-	return (
-		<main className="mx-auto max-w-xl px-4 py-8">
-			<p className="text-muted">Опрос — сессия {id}</p>
-		</main>
-	);
+	return <CaptureScreen sessionId={id} />;
 }

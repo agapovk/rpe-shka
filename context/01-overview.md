@@ -86,9 +86,11 @@
 │  Иванов Иван · #10       │
 │                          │
 │  ①②③④⑤⑥⑦⑧⑨⑩           │
+│  тап → сохранить+закрыть │
+│  тап по тому же → сброс  │
 │                          │
-│  [Заметка...]            │
-│  [CLEAR]  [SAVE]         │
+│  [Заметка...] (коммит    │
+│   при закрытии шита)     │
 └──────────────────────────┘
          │ FINISH
          ▼
@@ -126,15 +128,16 @@ SETTINGS (/settings)
 - `hi` / `lo` — максимум / минимум
 - `hard` — количество игроков с RPE ≥ 8
 
-**`calcSessionSummary(session)`** → `{ done, total, avg, dist }`
+**`calcSessionSummary(session, entries)`** → `{ done, total, avg, dist }`
 - `done` / `total` — сколько игроков оценено
 - `dist` — распределение по 5 бакетам (1–2, 3–4, 5–6, 7–8, 9–10) для визуализации
 
-**`calcHomeStats(sessions, players)`** → `{ sessionsLast30d, sevenDayAvg, topLoaded }`
+**`calcHomeStats(sessions, entries)`** → `{ sessionsLast30d, sevenDayAvg }`
 - Статистика для шапки главной страницы
 
-**`rpeColor(n)`** → CSS variable string (`var(--color-rpe-hard)` для n=7)
+RPE-словарь (бакеты и цвета) — общий для срезов, живёт в `shared/lib/rpe.ts`:
 **`rpeBucket(n)`** → `'LIGHT' | 'MODERATE' | 'HARD' | 'MAXIMAL'`
+**`rpeTextClass(n)` / `rpeBgClass(n)`** → Tailwind-класс (`text-rpe-hard` для n=7)
 
 ---
 

@@ -32,6 +32,10 @@ export interface RpeEntry {
 export const rpeEntryId = (sessionId: string, playerId: number): string =>
 	`${sessionId}-${playerId}`;
 
+// единый порядок игроков во всех списках; индекс в схеме не нужен — ростер маленький
+export const byPlayerName = (a: Player, b: Player): number =>
+	a.name.localeCompare(b.name);
+
 class RpeDatabase extends Dexie {
 	players!: EntityTable<Player, "id">;
 	categories!: Table<Category, string>;
