@@ -220,7 +220,12 @@ export function CaptureScreen({ sessionId }: CaptureScreenProps) {
 			</section>
 
 			<section className="flex flex-col gap-3 pb-4">
-				<div className="flex items-center justify-between">
+				<div
+					className={cn(
+						"flex items-center justify-between py-3",
+						editingRoster && "sticky top-0 z-10 bg-bg"
+					)}
+				>
 					<h2 className="font-medium text-muted text-xs uppercase tracking-widest">
 						{editingRoster ? "Select players" : "Tap a player to score"}
 					</h2>
