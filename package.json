@@ -1,7 +1,7 @@
 {
   "dependencies": {
-    "@fontsource/barlow-condensed": "^5.2.8",
     "@fontsource/inter": "^5.2.8",
+    "@fontsource/oswald": "^5.2.8",
     "@tanstack/react-router": "^1.170.15",
     "@tanstack/react-router-devtools": "^1.167.0",
     "clsx": "^2.1.1",

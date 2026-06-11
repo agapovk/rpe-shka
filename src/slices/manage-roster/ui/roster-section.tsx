@@ -59,7 +59,7 @@ export function RosterSection() {
 							<span className="w-10 shrink-0 text-muted text-sm tabular-nums">
 								#{player.num}
 							</span>
-							<span className="flex-1 truncate text-sm uppercase">
+							<span className="flex-1 truncate font-display font-medium text-lg">
 								{player.name}
 							</span>
 							{confirmingId === player.id ? (

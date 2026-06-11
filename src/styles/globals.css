@@ -1,12 +1,12 @@
 @import "tailwindcss";
-@import "@fontsource/barlow-condensed/400.css";
-@import "@fontsource/barlow-condensed/700.css";
+@import "@fontsource/oswald/400.css";
+@import "@fontsource/oswald/700.css";
 @import "@fontsource/inter/400.css";
 @import "@fontsource/inter/500.css";
 @import "@fontsource/inter/600.css";
 
 @theme {
-	--font-display: "Barlow Condensed", system-ui, sans-serif;
+	--font-display: "Oswald", system-ui, sans-serif;
 	--font-sans: "Inter", system-ui, sans-serif;
 
 	--color-bg: light-dark(#fafafa, #111113);

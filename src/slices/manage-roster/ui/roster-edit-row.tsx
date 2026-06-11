@@ -56,7 +56,7 @@ export function RosterEditRow({
 				value={num}
 			/>
 			<input
-				className="min-w-0 flex-1 bg-transparent text-sm uppercase outline-none placeholder:text-muted/50 placeholder:normal-case"
+				className="min-w-0 flex-1 bg-transparent font-display font-medium text-lg outline-none placeholder:font-normal placeholder:font-sans placeholder:text-muted/50 placeholder:text-sm"
 				onChange={(e) => setName(e.target.value)}
 				onKeyDown={handleKeyDown}
 				placeholder="Player name"
