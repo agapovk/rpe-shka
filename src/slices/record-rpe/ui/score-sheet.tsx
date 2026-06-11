@@ -1,4 +1,4 @@
-import { X } from "lucide-react";
+import { UserX, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { Player } from "@/shared/db/dexie";
 import { rpeTextClass } from "@/shared/lib/rpe";
@@ -15,6 +15,7 @@ const BUCKET_LEGEND = [
 interface ScoreSheetProps {
 	initialNote: string;
 	initialScore: number | null;
+	onAbsent: () => void;
 	onClose: (note: string) => void;
 	onPick: (score: number, note: string) => void;
 	player: Player;
@@ -23,6 +24,7 @@ interface ScoreSheetProps {
 export function ScoreSheet({
 	initialNote,
 	initialScore,
+	onAbsent,
 	onClose,
 	onPick,
 	player,
@@ -110,6 +112,15 @@ export function ScoreSheet({
 					placeholder="Add a note (optional) — e.g. tight hamstring"
 					value={note}
 				/>
+
+				<button
+					className="flex min-h-12 items-center justify-center gap-2 rounded-xl border border-line bg-surface font-bold font-display text-muted uppercase tracking-wide transition-colors hover:text-text"
+					onClick={onAbsent}
+					type="button"
+				>
+					<UserX className="h-4 w-4" />
+					Did not train
+				</button>
 			</div>
 		</div>
 	);

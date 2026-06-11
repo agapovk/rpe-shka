@@ -108,6 +108,13 @@ export function CaptureScreen({ sessionId }: CaptureScreenProps) {
 		setOpenPlayerId(null);
 	};
 
+	const handleAbsent = (): void => {
+		if (openPlayerId !== null) {
+			toggleSessionPlayer(sessionId, openPlayerId);
+		}
+		setOpenPlayerId(null);
+	};
+
 	return (
 		<main className="mx-auto flex min-h-dvh w-full max-w-xl flex-col gap-5 px-4 py-6">
 			<header className="flex flex-col gap-2">
@@ -280,6 +287,7 @@ export function CaptureScreen({ sessionId }: CaptureScreenProps) {
 					initialNote={openEntry?.note ?? ""}
 					initialScore={openEntry?.score ?? null}
 					key={openPlayer.id}
+					onAbsent={handleAbsent}
 					onClose={handleClose}
 					onPick={handlePick}
 					player={openPlayer}

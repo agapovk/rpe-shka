@@ -1,5 +1,6 @@
 import { useLiveQuery } from "dexie-react-hooks";
 import {
+	byPlayerName,
 	db,
 	type Player,
 	type RpeEntry,
@@ -25,6 +26,6 @@ export const useSessionWithEntries = (
 		return {
 			session,
 			entries: entries.filter((e) => roster.has(e.playerId)),
-			players: players.filter((p) => roster.has(p.id)),
+			players: players.filter((p) => roster.has(p.id)).sort(byPlayerName),
 		};
 	}, [sessionId]);
