@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ThemeToggle } from "@/shared/ui/theme-toggle";
+import { CategoriesSection } from "@/slices/manage-categories";
 import { RosterSection } from "@/slices/manage-roster";
 
 export const Route = createFileRoute("/settings")({ component: SettingsPage });
@@ -14,6 +15,7 @@ function SettingsPage() {
 				</h2>
 				<ThemeToggle />
 			</section>
+			<CategoriesSection />
 			<RosterSection />
 		</main>
 	);
