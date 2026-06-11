@@ -1,157 +1,65 @@
-# CLAUDE.md — Контекст проекта RPE Tracker (Vite + TanStack Router)
+# CLAUDE.md
 
-## 1. Описание проекта
-Офлайн PWA для сбора оценок *RPE* (*Rating of Perceived Exertion*) после тренировки.
-Тренер на поле → собирает оценки 1–10 → смотрит аналитику. Без интернета, без бэкенда.
+Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-specific instructions as needed.
 
-Подробный контекст — в папке `context/`:
-- `context/01-overview.md` — домен, флоу, терминология
-- `context/02-architecture-vsa.md` — VSA, правила срезов
-- `context/03-data-model.md` — Dexie-схема, типы
-- `context/04-stack-conventions.md` — стек, команды, соглашения
-- `context/05-migration-status.md` — живой чек-лист фаз
-- `context/new-release.md` — план разработки, принятые решения
+**Tradeoff:** These guidelines bias toward caution over speed. For trivial tasks, use judgment.
 
-Предыдущая версия (Next.js) — в ветке `legacy` (тег `v1.0.0`), используется только
-как референс UI и логики. Код и данные не мигрируем, пишем с нуля.
+## 1. Think Before Coding
 
-## 2. Целевой стек
-| Слой | Технология |
-|------|-----------|
-| Framework | **Vite + React 19** (чистый SPA, без SSR) |
-| Routing | **TanStack Router** (file-based, `@tanstack/router-plugin`) |
-| Local DB | **Dexie.js** + `useLiveQuery` |
-| UI state | `useState` + React Context |
-| Тема | React Context + localStorage |
-| Стилизация | **Tailwind CSS v4** (без shadcn) |
-| Архитектура | **VSA** (`src/slices/` + `src/shared/`) |
-| PWA | **vite-plugin-pwa** |
-| Tests | **Vitest** |
-| Lint | Ultracite / Biome |
+**Don't assume. Don't hide confusion. Surface tradeoffs.**
 
-**Убраны:** Next.js, TanStack Start (SSR не нужен — заменён на чистый Vite SPA), Zustand, idb-keyval, shadcn, Radix UI, class-variance-authority.
+Before implementing:
+- State your assumptions explicitly. If uncertain, ask.
+- If multiple interpretations exist, present them - don't pick silently.
+- If a simpler approach exists, say so. Push back when warranted.
+- If something is unclear, stop. Name what's confusing. Ask.
 
-## 3. Архитектура — Vertical Slice Architecture
+## 2. Simplicity First
 
-Каждый срез = один пользовательский сценарий. Срезы не импортируют друг друга.
+**Minimum code that solves the problem. Nothing speculative.**
 
+- No features beyond what was asked.
+- No abstractions for single-use code.
+- No "flexibility" or "configurability" that wasn't requested.
+- No error handling for impossible scenarios.
+- If you write 200 lines and it could be 50, rewrite it.
+
+Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
+
+## 3. Surgical Changes
+
+**Touch only what you must. Clean up only your own mess.**
+
+When editing existing code:
+- Don't "improve" adjacent code, comments, or formatting.
+- Don't refactor things that aren't broken.
+- Match existing style, even if you'd do it differently.
+- If you notice unrelated dead code, mention it - don't delete it.
+
+When your changes create orphans:
+- Remove imports/variables/functions that YOUR changes made unused.
+- Don't remove pre-existing dead code unless asked.
+
+The test: Every changed line should trace directly to the user's request.
+
+## 4. Goal-Driven Execution
+
+**Define success criteria. Loop until verified.**
+
+Transform tasks into verifiable goals:
+- "Add validation" → "Write tests for invalid inputs, then make them pass"
+- "Fix the bug" → "Write a test that reproduces it, then make it pass"
+- "Refactor X" → "Ensure tests pass before and after"
+
+For multi-step tasks, state a brief plan:
 ```
-src/
-├── routes/          ← Тонкий слой: только createFileRoute + импорт из slices
-├── slices/
-│   ├── record-rpe/         # Оценить игрока
-│   ├── view-results/       # Результаты сессии + XLSX
-│   ├── manage-session/     # CRUD сессий, список
-│   ├── manage-roster/      # CRUD игроков
-│   └── manage-categories/  # CRUD категорий
-└── shared/
-    ├── ui/          ← Button, ThemeToggle (без shadcn); файлы kebab-case
-    ├── lib/         ← cn(), fmtDate()
-    ├── context/     ← ThemeProvider
-    └── db/          ← Dexie instance + типы сущностей + seed
-```
-
-Структура каждого среза:
-```
-slice-name/
-├── ui/          # React-компоненты
-├── model.ts     # Типы + чистые функции (без side effects)
-├── queries.ts   # useLiveQuery хуки (только чтение)
-├── mutations.ts # async функции → Dexie (не хуки)
-└── index.ts     # Публичный API
+1. [Step] → verify: [check]
+2. [Step] → verify: [check]
+3. [Step] → verify: [check]
 ```
 
-## 4. Команды
+Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
 
-```bash
-pnpm dev                    # dev-сервер
-pnpm build                  # production build
-pnpm test                   # Vitest
-pnpm fix                    # автоисправление (ultracite)
-pnpm check                  # проверка (ultracite)
-```
+---
 
-> **Пакетный менеджер: только `pnpm`.**
-> Не использовать `npm`, `npx`, `yarn` ни для установки, ни для просмотра пакетов.
-> Для информации о пакетах: `pnpm info <pkg>`. Для глобальных инструментов: `pnpm dlx`.
-
-## 5. Стандарты кодирования
-
-### Типы
-- Явные типы для параметров и возвращаемых значений
-- `unknown` вместо `any`; сужение типов вместо type assertions
-- `as const` для неизменяемых значений; именованные константы вместо magic numbers
-
-### Синтаксис
-- Стрелочные функции для колбэков; `for...of`; `const` по умолчанию
-- Опциональная цепочка `?.` и нулл-коалесцинг `??`; деструктуризация
-
-### React
-- Функциональные компоненты; хуки только на верхнем уровне
-- Уникальный `key` (id, не index); семантический HTML + ARIA
-- `ref` как проп (React 19+), не `React.forwardRef`
-- Не определять компоненты внутри компонентов
-
-### Код
-- Без `console.log`, `debugger`, `alert` в коммитах
-- Ранние возвраты вместо вложенных условий
-- Комментарии только если WHY неочевиден
-
-### Безопасность
-- `rel="noopener"` для `target="_blank"`
-- Не использовать `dangerouslySetInnerHTML`
-
-## 6. Порядок работы с Git
-
-### Принципы
-- **`main` — защищённая ветка.** Прямые коммиты запрещены. Только через Pull Request.
-- **Одна фаза — одна ветка.** Называть по паттерну `feat/phase-N-название`.
-- **PR = завершённая единица работы.** Ветка должна компилироваться и проходить линтер.
-
-### Жизненный цикл ветки
-
-```
-main
- └─ feat/phase-1-tanstack-start     # работа
-      └─ PR → main                  # ревью + мёрж
- └─ feat/phase-2-dexie              # следующая фаза
-      └─ PR → main
- ...
-```
-
-### Именование веток
-
-| Тип | Паттерн | Пример |
-|-----|---------|--------|
-| Фаза миграции | `feat/phase-N-короткое-описание` | `feat/phase-1-tanstack-start` |
-| Фича | `feat/название` | `feat/session-duplicates` |
-| Исправление | `fix/описание` | `fix/rpe-scale-mobile` |
-| Рефакторинг | `chore/описание` | `chore/cleanup-types` |
-
-### Создание ветки для фазы
-
-```bash
-git checkout main
-git pull origin main
-git checkout -b feat/phase-N-название
-# ... работа ...
-git push origin feat/phase-N-название
-# создать PR через GitHub UI
-```
-
-### Перед созданием PR
-```bash
-pnpm check                  # линтер чист (ultracite)
-tsc --noEmit                # типы чисты
-pnpm build                  # сборка проходит
-```
-
-### Что НЕ делать
-- Не делать `git push --force` в `main`
-- Не мёржить ветку в `main` напрямую (только через PR)
-- Не коммитить сгенерированные файлы (`node_modules`, `.next`, `dist`)
-- Не пропускать хуки `--no-verify`
-
-### Теги
-- `v1.0.0` — legacy Next.js версия (ветка `legacy`)
-- Следующий тег ставится после завершения всех фаз и деплоя
+**These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
