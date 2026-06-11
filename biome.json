@@ -18,5 +18,17 @@
   },
   "formatter": {
     "indentStyle": "tab"
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["**/src/slices/*/index.ts"],
+      "linter": {
+        "rules": {
+          "performance": {
+            "noBarrelFile": "off"
+          }
+        }
+      }
+    }
+  ]
 }
