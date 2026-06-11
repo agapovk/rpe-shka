@@ -63,6 +63,7 @@ function CategoryNameInput({
 export function CategoriesSection() {
 	const categories = useCategories();
 	const [editingId, setEditingId] = useState<string | null>(null);
+	const [confirmingId, setConfirmingId] = useState<string | null>(null);
 	const [adding, setAdding] = useState(false);
 
 	if (!categories) {
@@ -107,22 +108,43 @@ export function CategoriesSection() {
 						) : (
 							<>
 								<span className="flex-1 text-sm">{cat.name}</span>
-								<button
-									aria-label={`Edit ${cat.name}`}
-									className="p-1 text-muted transition-colors hover:text-text"
-									onClick={() => setEditingId(cat.id)}
-									type="button"
-								>
-									<Pencil className="h-3.5 w-3.5" />
-								</button>
-								<button
-									aria-label={`Delete ${cat.name}`}
-									className="p-1 text-muted transition-colors hover:text-red-500"
-									onClick={() => removeCategory(cat.id)}
-									type="button"
-								>
-									<Trash2 className="h-3.5 w-3.5" />
-								</button>
+								{confirmingId === cat.id ? (
+									<>
+										<button
+											className="rounded-md px-2 py-1 font-medium text-red-500 text-xs uppercase tracking-widest hover:bg-red-500/10"
+											onClick={() => removeCategory(cat.id)}
+											type="button"
+										>
+											Yes
+										</button>
+										<button
+											className="rounded-md px-2 py-1 font-medium text-muted text-xs uppercase tracking-widest hover:bg-line/40"
+											onClick={() => setConfirmingId(null)}
+											type="button"
+										>
+											No
+										</button>
+									</>
+								) : (
+									<>
+										<button
+											aria-label={`Edit ${cat.name}`}
+											className="p-1 text-muted transition-colors hover:text-text"
+											onClick={() => setEditingId(cat.id)}
+											type="button"
+										>
+											<Pencil className="h-3.5 w-3.5" />
+										</button>
+										<button
+											aria-label={`Delete ${cat.name}`}
+											className="p-1 text-muted transition-colors hover:text-red-500"
+											onClick={() => setConfirmingId(cat.id)}
+											type="button"
+										>
+											<Trash2 className="h-3.5 w-3.5" />
+										</button>
+									</>
+								)}
 							</>
 						)}
 					</div>

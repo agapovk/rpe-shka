@@ -12,13 +12,13 @@ export function ThemeToggle() {
 	const { theme, setTheme } = useTheme();
 
 	return (
-		<div className="flex gap-1 rounded-lg border border-line bg-surface p-1">
+		<div className="flex gap-3 rounded-lg border border-line bg-surface p-1">
 			{OPTIONS.map(({ value, icon: Icon, label }) => (
 				<button
 					aria-label={label}
 					aria-pressed={theme === value}
 					className={cn(
-						"flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm transition-colors",
+						"flex flex-1 items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-sm transition-colors",
 						theme === value
 							? "bg-bg text-text shadow-sm"
 							: "text-muted hover:text-text"

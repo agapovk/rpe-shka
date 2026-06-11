@@ -9,14 +9,12 @@ import {
 import { useState } from "react";
 import { cn } from "@/shared/lib/cn";
 import {
-	calcSessionStats,
-	isFlagged,
-	joinRecorded,
-	RPE_SEGMENTS,
+	RPE_VALUES,
 	rpeBgClass,
 	rpeBucket,
 	rpeTextClass,
-} from "../model";
+} from "@/shared/lib/rpe";
+import { calcSessionStats, isFlagged, joinRecorded } from "../model";
 import { exportXlsx } from "../mutations";
 import { useSessionWithEntries } from "../queries";
 import { Stat } from "./stat";
@@ -85,14 +83,14 @@ export function ResultsScreen({ sessionId }: ResultsScreenProps) {
 							recorded.length > 0 ? rpeTextClass(stats.hi) : undefined
 						}
 						label="High"
-						value={stats.hi}
+						value={recorded.length > 0 ? stats.hi : "—"}
 					/>
 					<Stat
 						colorClass={
 							recorded.length > 0 ? rpeTextClass(stats.lo) : undefined
 						}
 						label="Low"
-						value={stats.lo}
+						value={recorded.length > 0 ? stats.lo : "—"}
 					/>
 					<Stat label="Players" value={recorded.length} />
 					<Stat
@@ -150,7 +148,7 @@ export function ResultsScreen({ sessionId }: ResultsScreenProps) {
 								className="flex gap-0.5"
 								role="img"
 							>
-								{RPE_SEGMENTS.map((seg) => (
+								{RPE_VALUES.map((seg) => (
 									<span
 										className={cn(
 											"h-2 flex-1 rounded-full",

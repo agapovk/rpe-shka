@@ -4,7 +4,8 @@ import { useState } from "react";
 import type { Session } from "@/shared/db/dexie";
 import { cn } from "@/shared/lib/cn";
 import { fmtDate } from "@/shared/lib/date";
-import { rpeTextClass, type SessionSummary } from "../model";
+import { rpeTextClass } from "@/shared/lib/rpe";
+import type { SessionSummary } from "../model";
 import { deleteSession, duplicateSession } from "../mutations";
 
 const BUCKET_LABELS = ["1-2", "3-4", "5-6", "7-8", "9-10"] as const;
@@ -29,20 +30,31 @@ const barHeight = (count: number, max: number): string => {
 };
 
 interface SessionCardProps {
+	categoryName?: string;
 	editing: boolean;
 	session: Session;
 	summary: SessionSummary;
 }
 
-export function SessionCard({ editing, session, summary }: SessionCardProps) {
+export function SessionCard({
+	categoryName,
+	editing,
+	session,
+	summary,
+}: SessionCardProps) {
 	const navigate = useNavigate();
 	const [confirming, setConfirming] = useState(false);
 	const { avg, dist, done, total } = summary;
 	const incomplete = done < total;
 	const maxCount = Math.max(...dist, 1);
 
-	const openSurvey = (): void => {
-		navigate({ to: "/sessions/$id/survey", params: { id: session.id } });
+	// завершённую сессию открывают ради цифр — сразу в результаты
+	const openSession = (): void => {
+		if (incomplete || total === 0) {
+			navigate({ to: "/sessions/$id/survey", params: { id: session.id } });
+		} else {
+			navigate({ to: "/sessions/$id/results", params: { id: session.id } });
+		}
 	};
 
 	return (
@@ -53,13 +65,16 @@ export function SessionCard({ editing, session, summary }: SessionCardProps) {
 					!editing && "hover:bg-line/30"
 				)}
 				disabled={editing}
-				onClick={openSurvey}
+				onClick={openSession}
 				type="button"
 			>
 				<div className="flex items-start justify-between gap-3">
 					<div className="flex min-w-0 flex-col gap-0.5">
 						<span className="text-[10px] text-muted uppercase tracking-widest">
 							{fmtDate(session.date)}
+							{categoryName && (
+								<span className="text-accent"> · {categoryName}</span>
+							)}
 						</span>
 						<span className="truncate font-display font-semibold text-xl leading-tight">
 							{session.name}

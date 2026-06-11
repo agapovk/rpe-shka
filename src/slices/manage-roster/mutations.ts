@@ -12,5 +12,19 @@ export async function updatePlayer(
 }
 
 export async function removePlayer(id: number): Promise<void> {
-	await db.players.delete(id);
+	// каскад: без него оценки-сироты искажали бы 7-day avg,
+	// а мёртвые id в rosterIds — знаменатель done/total
+	await db.transaction(
+		"rw",
+		db.players,
+		db.rpeEntries,
+		db.sessions,
+		async () => {
+			await db.rpeEntries.where("playerId").equals(id).delete();
+			await db.sessions.toCollection().modify((s) => {
+				s.rosterIds = s.rosterIds.filter((rosterId) => rosterId !== id);
+			});
+			await db.players.delete(id);
+		}
+	);
 }

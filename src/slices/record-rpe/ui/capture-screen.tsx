@@ -7,10 +7,16 @@ import type { ScoreFilter } from "../model";
 import {
 	clearScore,
 	setScore,
+	setSessionCategory,
 	toggleSessionPlayer,
 	updateSessionName,
 } from "../mutations";
-import { useSession, useSessionEntries, useSessionPlayers } from "../queries";
+import {
+	useAllPlayers,
+	useCategories,
+	useSession,
+	useSessionEntries,
+} from "../queries";
 import { RosterScoreRow } from "./roster-score-row";
 import { ScoreSheet } from "./score-sheet";
 import { SessionRosterRow } from "./session-roster-row";
@@ -31,7 +37,8 @@ export function CaptureScreen({ sessionId }: CaptureScreenProps) {
 	const navigate = useNavigate();
 	const session = useSession(sessionId);
 	const entries = useSessionEntries(sessionId);
-	const players = useSessionPlayers();
+	const players = useAllPlayers();
+	const categories = useCategories();
 	const [filter, setFilter] = useState<ScoreFilter>("all");
 	const [editingRoster, setEditingRoster] = useState(false);
 	const [openPlayerId, setOpenPlayerId] = useState<number | null>(null);
@@ -81,16 +88,22 @@ export function CaptureScreen({ sessionId }: CaptureScreenProps) {
 		: null;
 	const openEntry = openPlayerId ? scoreByPlayer.get(openPlayerId) : undefined;
 
-	const handleSave = (score: number, note: string): void => {
-		if (openPlayerId !== null) {
+	const handlePick = (score: number, note: string): void => {
+		if (openPlayerId === null) {
+			return;
+		}
+		if (openEntry?.score === score) {
+			clearScore(sessionId, openPlayerId);
+		} else {
 			setScore(sessionId, openPlayerId, score, note);
 		}
 		setOpenPlayerId(null);
 	};
 
-	const handleClear = (): void => {
-		if (openPlayerId !== null) {
-			clearScore(sessionId, openPlayerId);
+	const handleClose = (note: string): void => {
+		// без кнопки Save заметка коммитится при закрытии шита
+		if (openEntry && note.trim() !== (openEntry.note ?? "")) {
+			setScore(sessionId, openEntry.playerId, openEntry.score, note);
 		}
 		setOpenPlayerId(null);
 	};
@@ -105,8 +118,45 @@ export function CaptureScreen({ sessionId }: CaptureScreenProps) {
 				<input
 					className="w-full border-transparent border-b bg-transparent py-0.5 font-bold font-display text-3xl uppercase leading-none tracking-tight outline-none transition-colors hover:border-line focus:border-accent"
 					defaultValue={session.name}
-					onChange={(e) => updateSessionName(sessionId, e.target.value)}
+					onBlur={(e) => {
+						const trimmed = e.target.value.trim();
+						if (trimmed) {
+							updateSessionName(sessionId, trimmed);
+						} else {
+							e.target.value = session.name;
+						}
+					}}
+					onKeyDown={(e) => {
+						if (e.key === "Enter") {
+							e.currentTarget.blur();
+						}
+					}}
 				/>
+				{categories && categories.length > 0 && (
+					<div className="flex flex-wrap gap-1.5 pt-1">
+						{categories.map((cat) => {
+							const selected = session.categoryId === cat.id;
+							return (
+								<button
+									aria-pressed={selected}
+									className={cn(
+										"rounded-full border px-2.5 py-1 font-medium text-[10px] uppercase tracking-wider transition-colors",
+										selected
+											? "border-accent/30 bg-accent/10 text-accent"
+											: "border-line text-muted hover:text-text"
+									)}
+									key={cat.id}
+									onClick={() =>
+										setSessionCategory(sessionId, selected ? undefined : cat.id)
+									}
+									type="button"
+								>
+									{cat.name}
+								</button>
+							);
+						})}
+					</div>
+				)}
 			</header>
 
 			<section className="flex flex-col gap-3 border-line border-y py-4">
@@ -149,11 +199,11 @@ export function CaptureScreen({ sessionId }: CaptureScreenProps) {
 						className="flex gap-0.5"
 						role="img"
 					>
-						{roster.map((p, i) => (
+						{roster.map((p) => (
 							<span
 								className={cn(
 									"h-1.5 flex-1 rounded-full",
-									i < done ? "bg-accent" : "bg-line"
+									scoreByPlayer.has(p.id) ? "bg-accent" : "bg-line"
 								)}
 								key={p.id}
 							/>
@@ -229,9 +279,9 @@ export function CaptureScreen({ sessionId }: CaptureScreenProps) {
 				<ScoreSheet
 					initialNote={openEntry?.note ?? ""}
 					initialScore={openEntry?.score ?? null}
-					onClear={handleClear}
-					onClose={() => setOpenPlayerId(null)}
-					onSave={handleSave}
+					key={openPlayer.id}
+					onClose={handleClose}
+					onPick={handlePick}
 					player={openPlayer}
 				/>
 			)}

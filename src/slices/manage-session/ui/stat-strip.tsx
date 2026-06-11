@@ -1,5 +1,6 @@
 import { cn } from "@/shared/lib/cn";
-import { type HomeStats, rpeTextClass } from "../model";
+import { rpeTextClass } from "@/shared/lib/rpe";
+import type { HomeStats } from "../model";
 
 interface StatStripProps {
 	stats: HomeStats;

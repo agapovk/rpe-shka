@@ -1,8 +1,8 @@
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { Player } from "@/shared/db/dexie";
-import { cn } from "@/shared/lib/cn";
-import { NOTE_MAX_LENGTH, rpeTextClass } from "../model";
+import { rpeTextClass } from "@/shared/lib/rpe";
+import { NOTE_MAX_LENGTH } from "../model";
 import { RpeScale } from "./rpe-scale";
 
 const BUCKET_LEGEND = [
@@ -15,46 +15,45 @@ const BUCKET_LEGEND = [
 interface ScoreSheetProps {
 	initialNote: string;
 	initialScore: number | null;
-	onClear: () => void;
-	onClose: () => void;
-	onSave: (score: number, note: string) => void;
+	onClose: (note: string) => void;
+	onPick: (score: number, note: string) => void;
 	player: Player;
 }
 
 export function ScoreSheet({
 	initialNote,
 	initialScore,
-	onClear,
 	onClose,
-	onSave,
+	onPick,
 	player,
 }: ScoreSheetProps) {
-	const [score, setScore] = useState<number | null>(initialScore);
 	const [note, setNote] = useState(initialNote);
 
 	useEffect(() => {
 		const onKey = (e: KeyboardEvent): void => {
 			if (e.key === "Escape") {
-				onClose();
+				onClose(note);
 			}
 		};
 		window.addEventListener("keydown", onKey);
 		return () => window.removeEventListener("keydown", onKey);
-	}, [onClose]);
+	}, [onClose, note]);
 
-	const handleSave = (): void => {
-		if (score === null) {
-			return;
-		}
-		onSave(score, note);
-	};
+	// фон под шитом не должен прокручиваться
+	useEffect(() => {
+		const previous = document.body.style.overflow;
+		document.body.style.overflow = "hidden";
+		return () => {
+			document.body.style.overflow = previous;
+		};
+	}, []);
 
 	return (
 		<div className="fixed inset-0 z-50 flex items-end justify-center">
 			<button
 				aria-label="Close"
 				className="absolute inset-0 bg-black/55 backdrop-blur-xs"
-				onClick={onClose}
+				onClick={() => onClose(note)}
 				type="button"
 			/>
 			<div
@@ -76,52 +75,41 @@ export function ScoreSheet({
 					<button
 						aria-label="Close"
 						className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-line bg-surface text-muted transition-colors hover:text-text"
-						onClick={onClose}
+						onClick={() => onClose(note)}
 						type="button"
 					>
 						<X className="h-5 w-5" />
 					</button>
 				</div>
 
-				<RpeScale onSelect={setScore} value={score} />
+				<RpeScale onSelect={(n) => onPick(n, note)} value={initialScore} />
 
-				<div className="flex flex-wrap gap-4 text-[10px] uppercase tracking-widest">
-					{BUCKET_LEGEND.map(({ label, sample }) => (
-						<span className={rpeTextClass(sample)} key={label}>
-							● {label}
-						</span>
-					))}
+				<div className="flex flex-wrap items-center justify-between gap-2">
+					<div className="flex flex-wrap gap-4 text-[10px] uppercase tracking-widest">
+						{BUCKET_LEGEND.map(({ label, sample }) => (
+							<span className={rpeTextClass(sample)} key={label}>
+								● {label}
+							</span>
+						))}
+					</div>
+					<p className="text-[10px] text-muted uppercase tracking-widest">
+						{initialScore === null ? "Tap to save" : "Tap same score to clear"}
+					</p>
 				</div>
 
 				<input
 					className="min-h-12 w-full rounded-xl border border-line bg-surface px-4 py-3 text-sm outline-none placeholder:text-muted/60 focus:border-accent"
+					enterKeyHint="done"
 					maxLength={NOTE_MAX_LENGTH}
 					onChange={(e) => setNote(e.target.value)}
+					onKeyDown={(e) => {
+						if (e.key === "Enter") {
+							onClose(note);
+						}
+					}}
 					placeholder="Add a note (optional) — e.g. tight hamstring"
 					value={note}
 				/>
-
-				<div className="flex gap-3">
-					<button
-						className="min-h-12 rounded-xl px-5 font-bold font-display text-red-500 uppercase tracking-wide transition-colors hover:bg-red-500/10 disabled:opacity-30"
-						disabled={initialScore === null}
-						onClick={onClear}
-						type="button"
-					>
-						Clear
-					</button>
-					<button
-						className={cn(
-							"min-h-12 flex-1 rounded-xl bg-accent font-bold font-display text-bg uppercase tracking-wide transition",
-							"hover:brightness-110 active:translate-y-px disabled:cursor-not-allowed disabled:opacity-30"
-						)}
-						disabled={score === null}
-						onClick={handleSave}
-						type="button"
-					>
-						Save
-					</button>
-				</div>
 			</div>
 		</div>
 	);

@@ -37,6 +37,13 @@ export async function updateSessionName(
 	await db.sessions.update(sessionId, { name: trimmed });
 }
 
+export async function setSessionCategory(
+	sessionId: string,
+	categoryId: string | undefined
+): Promise<void> {
+	await db.sessions.update(sessionId, { categoryId });
+}
+
 export async function toggleSessionPlayer(
 	sessionId: string,
 	playerId: number

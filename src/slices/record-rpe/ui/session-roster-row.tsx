@@ -1,7 +1,7 @@
 import { Check } from "lucide-react";
 import type { Player } from "@/shared/db/dexie";
 import { cn } from "@/shared/lib/cn";
-import { rpeTextClass } from "../model";
+import { rpeTextClass } from "@/shared/lib/rpe";
 
 interface SessionRosterRowProps {
 	inSession: boolean;

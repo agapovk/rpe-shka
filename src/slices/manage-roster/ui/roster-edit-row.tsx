@@ -9,6 +9,7 @@ interface RosterEditRowProps {
 	initialNum?: string;
 	onCancel: () => void;
 	onSubmit: (name: string, num: number) => void;
+	takenNums: number[];
 }
 
 export function RosterEditRow({
@@ -16,6 +17,7 @@ export function RosterEditRow({
 	initialNum = "",
 	onCancel,
 	onSubmit,
+	takenNums,
 }: RosterEditRowProps) {
 	const [name, setName] = useState(initialName);
 	const [num, setNum] = useState(initialNum);
@@ -24,7 +26,10 @@ export function RosterEditRow({
 		const trimmed = name.trim();
 		const parsed = Number.parseInt(num, 10);
 		const numValid =
-			!Number.isNaN(parsed) && parsed >= NUM_MIN && parsed <= NUM_MAX;
+			!Number.isNaN(parsed) &&
+			parsed >= NUM_MIN &&
+			parsed <= NUM_MAX &&
+			!takenNums.includes(parsed);
 		if (!(trimmed && numValid)) {
 			return;
 		}

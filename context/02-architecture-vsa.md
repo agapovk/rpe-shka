@@ -126,7 +126,8 @@ shared/
 │   └── storage-section.tsx # Блок Storage в Settings (использование + CLEAR ALL)
 ├── lib/
 │   ├── utils.ts            # cn() для className merging
-│   └── date.ts             # fmtDate()
+│   ├── date.ts             # fmtDate()
+│   └── rpe.ts              # словарь RPE: rpeBucket, rpeTextClass, rpeBgClass, RPE_VALUES
 ├── context/
 │   └── theme.tsx           # ThemeProvider + useTheme (React Context + localStorage)
 └── db/
@@ -136,7 +137,9 @@ shared/
 
 **Тест для shared/:** «Это переносимо в другой проект или нужно всем срезам сразу?»
 Утилиты (`cn`, `fmtDate`) — переносимы. Типы сущностей и схема — словарь, общий для всех
-срезов. А вот калькуляция `calcSessionStats` — логика одного сценария, ей место в срезе.
+срезов. Бакеты RPE и их цвета (`shared/lib/rpe.ts`) — тоже словарь: их используют три среза,
+и границы бакетов должны меняться в одном месте. А вот калькуляция `calcSessionStats` —
+логика одного сценария, ей место в срезе.
 
 ---
 

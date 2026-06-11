@@ -1,4 +1,4 @@
-import { db, type Session } from "@/shared/db/dexie";
+import { db } from "@/shared/db/dexie";
 import { suggestSessionName } from "./model";
 
 export async function createSession(): Promise<string> {
@@ -33,11 +33,4 @@ export async function duplicateSession(id: string): Promise<string | null> {
 		date: new Date().toISOString(),
 	});
 	return newId;
-}
-
-export async function updateSession(
-	id: string,
-	patch: Partial<Pick<Session, "name" | "categoryId" | "rosterIds">>
-): Promise<void> {
-	await db.sessions.update(id, patch);
 }

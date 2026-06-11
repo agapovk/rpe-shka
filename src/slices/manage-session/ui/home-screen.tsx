@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Settings2 } from "lucide-react";
 import { useState } from "react";
 import { calcHomeStats, calcSessionSummary } from "../model";
-import { useAllEntries, useRosterPlayers, useSessions } from "../queries";
+import { useAllEntries, useCategories, useSessions } from "../queries";
 import { NewSessionButton } from "./new-session-button";
 import { SessionCard } from "./session-card";
 import { StatStrip } from "./stat-strip";
@@ -10,14 +10,15 @@ import { StatStrip } from "./stat-strip";
 export function HomeScreen() {
 	const sessions = useSessions();
 	const entries = useAllEntries();
-	const players = useRosterPlayers();
+	const categories = useCategories();
 	const [editing, setEditing] = useState(false);
 
-	if (!(sessions && entries && players)) {
+	if (!(sessions && entries && categories)) {
 		return null;
 	}
 
-	const stats = calcHomeStats(sessions, entries, players);
+	const stats = calcHomeStats(sessions, entries);
+	const categoryNames = new Map(categories.map((c) => [c.id, c.name]));
 
 	return (
 		<main className="mx-auto flex min-h-dvh w-full max-w-xl flex-col px-4 py-6">
@@ -65,6 +66,11 @@ export function HomeScreen() {
 					<div className="flex flex-col gap-2">
 						{sessions.map((session) => (
 							<SessionCard
+								categoryName={
+									session.categoryId
+										? categoryNames.get(session.categoryId)
+										: undefined
+								}
 								editing={editing}
 								key={session.id}
 								session={session}

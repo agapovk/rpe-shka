@@ -1,5 +1,6 @@
 import { useLiveQuery } from "dexie-react-hooks";
 import {
+	type Category,
 	db,
 	type Player,
 	type RpeEntry,
@@ -15,5 +16,8 @@ export const useSessionEntries = (sessionId: string): RpeEntry[] | undefined =>
 		[sessionId]
 	);
 
-export const useSessionPlayers = (): Player[] | undefined =>
+export const useAllPlayers = (): Player[] | undefined =>
 	useLiveQuery(() => db.players.orderBy("num").toArray());
+
+export const useCategories = (): Category[] | undefined =>
+	useLiveQuery(() => db.categories.toArray());

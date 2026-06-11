@@ -8,6 +8,7 @@ import { RosterEditRow } from "./roster-edit-row";
 export function RosterSection() {
 	const players = usePlayers();
 	const [editingId, setEditingId] = useState<number | null>(null);
+	const [confirmingId, setConfirmingId] = useState<number | null>(null);
 	const [adding, setAdding] = useState(false);
 
 	if (!players) {
@@ -49,6 +50,9 @@ export function RosterSection() {
 							key={player.id}
 							onCancel={() => setEditingId(null)}
 							onSubmit={(name, num) => handleUpdate(player, name, num)}
+							takenNums={players
+								.filter((p) => p.id !== player.id)
+								.map((p) => p.num)}
 						/>
 					) : (
 						<div className="flex items-center gap-3 px-4 py-3" key={player.id}>
@@ -58,22 +62,43 @@ export function RosterSection() {
 							<span className="flex-1 truncate text-sm uppercase">
 								{player.name}
 							</span>
-							<button
-								aria-label={`Edit ${player.name}`}
-								className="p-1 text-muted transition-colors hover:text-text"
-								onClick={() => setEditingId(player.id)}
-								type="button"
-							>
-								<Pencil className="h-3.5 w-3.5" />
-							</button>
-							<button
-								aria-label={`Remove ${player.name}`}
-								className="p-1 text-muted transition-colors hover:text-red-500"
-								onClick={() => removePlayer(player.id)}
-								type="button"
-							>
-								<Trash2 className="h-3.5 w-3.5" />
-							</button>
+							{confirmingId === player.id ? (
+								<>
+									<button
+										className="rounded-md px-2 py-1 font-medium text-red-500 text-xs uppercase tracking-widest hover:bg-red-500/10"
+										onClick={() => removePlayer(player.id)}
+										type="button"
+									>
+										Yes
+									</button>
+									<button
+										className="rounded-md px-2 py-1 font-medium text-muted text-xs uppercase tracking-widest hover:bg-line/40"
+										onClick={() => setConfirmingId(null)}
+										type="button"
+									>
+										No
+									</button>
+								</>
+							) : (
+								<>
+									<button
+										aria-label={`Edit ${player.name}`}
+										className="p-1 text-muted transition-colors hover:text-text"
+										onClick={() => setEditingId(player.id)}
+										type="button"
+									>
+										<Pencil className="h-3.5 w-3.5" />
+									</button>
+									<button
+										aria-label={`Remove ${player.name}`}
+										className="p-1 text-muted transition-colors hover:text-red-500"
+										onClick={() => setConfirmingId(player.id)}
+										type="button"
+									>
+										<Trash2 className="h-3.5 w-3.5" />
+									</button>
+								</>
+							)}
 						</div>
 					)
 				)}
@@ -82,6 +107,7 @@ export function RosterSection() {
 					<RosterEditRow
 						onCancel={() => setAdding(false)}
 						onSubmit={handleAdd}
+						takenNums={players.map((p) => p.num)}
 					/>
 				)}
 
