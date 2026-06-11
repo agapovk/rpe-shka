@@ -1,20 +1,20 @@
 # RPE Tracker
 
-Офлайн PWA для сбора оценок RPE (Rating of Perceived Exertion) после тренировки.
-Тренер на поле → собирает оценки 1–10 → смотрит аналитику. Без интернета, без бэкенда.
+Офлайн PWA для тренера: собирает оценки нагрузки (RPE 1–10) от игроков после тренировки. Работает без интернета — все данные в IndexedDB.
 
-**Стек:** Vite + React 19 (SPA) · TanStack Router (file-based) · Dexie.js (IndexedDB) ·
-Tailwind CSS v4 · Vertical Slice Architecture.
+**[Live demo →](https://rpe-shka.vercel.app)**
 
-Подробный контекст и план разработки — в папке [context/](context/).
+---
+
+**Стек:** Vite + React 19 · TanStack Router · Dexie.js · Tailwind CSS v4 · vite-plugin-pwa
+
+**Архитектура:** Vertical Slice Architecture — каждый срез (record-rpe, view-results, manage-session, manage-roster) изолирован и содержит UI / model / queries / mutations.
+
+---
 
 ```bash
 pnpm install
-pnpm dev        # dev-сервер на :3000
-pnpm build      # production build (статика в dist/)
-pnpm typecheck  # tsc --noEmit
-pnpm check      # biome
+pnpm dev      # :3000
+pnpm build
+pnpm test     # vitest, 22 теста
 ```
-
-> Полноценный README (демо, скриншоты, архитектура) — после фазы 4, см.
-> [context/05-migration-status.md](context/05-migration-status.md).
