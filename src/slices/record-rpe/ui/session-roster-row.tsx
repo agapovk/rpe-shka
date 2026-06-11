@@ -25,14 +25,6 @@ export function SessionRosterRow({
 			onClick={() => onToggle(player.id)}
 			type="button"
 		>
-			<span
-				className={cn(
-					"flex h-5 w-5 shrink-0 items-center justify-center rounded-md border transition-colors",
-					inSession ? "border-accent bg-accent" : "border-line"
-				)}
-			>
-				{inSession && <Check className="h-3.5 w-3.5 text-bg" />}
-			</span>
 			<span className="w-7 shrink-0 text-muted text-sm tabular-nums">
 				{String(player.num).padStart(2, "0")}
 			</span>
@@ -49,6 +41,14 @@ export function SessionRosterRow({
 					{score}
 				</span>
 			)}
+			<span
+				className={cn(
+					"flex h-5 w-5 shrink-0 items-center justify-center rounded-md border transition-colors",
+					inSession ? "border-accent bg-accent" : "border-line"
+				)}
+			>
+				{inSession && <Check className="h-3.5 w-3.5 text-bg" />}
+			</span>
 		</button>
 	);
 }

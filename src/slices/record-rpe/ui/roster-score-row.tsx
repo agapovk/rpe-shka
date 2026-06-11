@@ -21,7 +21,7 @@ export function RosterScoreRow({
 	return (
 		<button
 			className={cn(
-				"group flex min-h-14 items-center gap-3.5 px-4 py-3 text-left transition-colors hover:bg-line/30",
+				"group flex min-h-14 items-center gap-4 px-4 py-3 text-left transition-colors hover:bg-line/30",
 				!hasScore && "text-muted"
 			)}
 			onClick={() => onOpen(player.id)}

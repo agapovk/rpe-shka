@@ -1,5 +1,5 @@
 import { Check, Pencil, Plus, Trash2, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { addCategory, removeCategory, updateCategory } from "../mutations";
 import { useCategories } from "../queries";
 
@@ -15,6 +15,11 @@ function CategoryNameInput({
 	onSubmit,
 }: CategoryNameInputProps) {
 	const [name, setName] = useState(initialName);
+	const inputRef = useRef<HTMLInputElement>(null);
+
+	useEffect(() => {
+		inputRef.current?.focus();
+	}, []);
 
 	const commit = (): void => {
 		const trimmed = name.trim();
@@ -38,23 +43,24 @@ function CategoryNameInput({
 					}
 				}}
 				placeholder="Category name"
+				ref={inputRef}
 				value={name}
 			/>
 			<button
 				aria-label="Save"
-				className="text-accent"
+				className="p-1 text-accent transition-colors hover:text-accent/70"
 				onClick={commit}
 				type="button"
 			>
-				<Check className="h-4 w-4" />
+				<Check className="h-3.5 w-3.5" />
 			</button>
 			<button
 				aria-label="Cancel"
-				className="text-muted"
+				className="p-1 text-muted transition-colors hover:text-text"
 				onClick={onCancel}
 				type="button"
 			>
-				<X className="h-4 w-4" />
+				<X className="h-3.5 w-3.5" />
 			</button>
 		</>
 	);
