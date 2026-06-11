@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { ResultsScreen } from "@/slices/view-results";
 
 export const Route = createFileRoute("/sessions/$id/results")({
 	component: ResultsPage,
@@ -6,9 +7,5 @@ export const Route = createFileRoute("/sessions/$id/results")({
 
 function ResultsPage() {
 	const { id } = Route.useParams();
-	return (
-		<main className="mx-auto max-w-xl px-4 py-8">
-			<p className="text-muted">Результаты — сессия {id}</p>
-		</main>
-	);
+	return <ResultsScreen sessionId={id} />;
 }
