@@ -4,6 +4,7 @@ import type { Player } from "@/shared/db/dexie";
 import { addPlayer, removePlayer, updatePlayer } from "../mutations";
 import { usePlayers } from "../queries";
 import { RosterEditRow } from "./roster-edit-row";
+import { RosterIo } from "./roster-io";
 
 export function RosterSection() {
 	const players = usePlayers();
@@ -40,6 +41,8 @@ export function RosterSection() {
 					Add player
 				</button>
 			</div>
+
+			<RosterIo />
 
 			<div className="flex flex-col divide-y divide-line overflow-hidden rounded-xl border border-line bg-surface">
 				{players.map((player) =>
