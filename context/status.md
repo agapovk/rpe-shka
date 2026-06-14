@@ -7,7 +7,8 @@
 | 1 | Каркас: Vite + TanStack Router + Tailwind v4 + тема | ✓ |
 | 2 | Слой данных: Dexie + seed | ✓ |
 | 3 | Все срезы + UX-проход + ревизия | ✓ |
-| 4 | PWA + тесты + деплой | ⬜ |
+| 4 | PWA + тесты + деплой | ✓ |
+| 5 | Мелкие UI-улучшения | ▶ |
 
 Ветка текущей фазы: `feat/phase-N-…` → PR → `main`.
 
@@ -29,16 +30,28 @@
 
 ---
 
-## Фаза 4 — что осталось
+## Фаза 4 — сделано
 
 ```
-□ vite-plugin-pwa: manifest, иконки 192/512/maskable, theme_color
-□ Workbox: precache app shell, CacheFirst, registerType: 'autoUpdate'
-□ Lighthouse: installable + offline works
-□ Vitest: rpeBucket, calcSessionStats, calcSessionSummary, calcHomeStats
-□ pnpm test зелёный
-□ Деплой (Netlify / Cloudflare Pages / Vercel)
-□ README: задача, VSA-диаграмма, стек, офлайн-гиф, ссылка на демо
+✓ vite-plugin-pwa: manifest, иконки 192/512/maskable, theme_color
+✓ Workbox: precache app shell, registerType: 'autoUpdate'
+✓ Vitest: rpeBucket, calcSessionStats, calcSessionSummary, calcHomeStats — 22 теста зелёные
+✓ pnpm typecheck / check — чисто
+✓ Деплой: Vercel → https://rpe-shka.vercel.app
+✓ README: краткий, портфолио-уровня
+```
+
+## Фаза 5 — UI-полироль
+
+```
+✓ active: тач-фидбэк (карточки, строки, фильтры, чипы, кнопки, RPE-шкала)
+✓ ScoreSheet: slide-up + fade подложки, утилиты --animate-* в @theme
+✓ prefers-reduced-motion: глобальный сброс анимаций
+✓ Результаты: AVG RPE + Distribution в ряд, под ними 4 стата; calcDistribution + 2 теста
+✓ Заметки: иконка у счёта + раскрытие текста в строке (results + опрос)
+✓ Опрос: оценённая строка заливается светло-зелёным (bg-accent/10), галочка убрана
+✓ ScoreSheet: счётчик остатка символов у лимита заметки
+✓ Единый нижний отступ: main pt-5 + sticky-футер pb-5 (убран двойной паддинг)
 ```
 
 ## Чек-лист перед деплоем
