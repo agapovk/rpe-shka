@@ -13,7 +13,7 @@ export function RpeScale({ onSelect, value }: RpeScaleProps) {
 				<button
 					aria-pressed={value === n}
 					className={cn(
-						"flex aspect-square min-h-12 items-center justify-center rounded-xl border font-bold font-display text-2xl tabular-nums transition",
+						"flex aspect-square min-h-12 items-center justify-center rounded-xl border font-bold font-display text-2xl tabular-nums transition active:scale-95",
 						value === n
 							? cn("border-transparent text-bg", rpeBgClass(n))
 							: cn("border-line bg-surface hover:border-muted", rpeTextClass(n))

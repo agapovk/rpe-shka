@@ -9,7 +9,7 @@ export const Route = createFileRoute("/settings")({ component: SettingsPage });
 
 function SettingsPage() {
 	return (
-		<main className="mx-auto flex max-w-xl flex-col gap-8 px-4 py-6">
+		<main className="mx-auto flex max-w-xl flex-col gap-8 px-4 py-5">
 			<header className="flex items-center gap-3">
 				<Link
 					aria-label="Back to home"

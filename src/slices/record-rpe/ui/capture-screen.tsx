@@ -116,7 +116,7 @@ export function CaptureScreen({ sessionId }: CaptureScreenProps) {
 	};
 
 	return (
-		<main className="mx-auto flex min-h-dvh w-full max-w-xl flex-col gap-5 px-4 py-6">
+		<main className="mx-auto flex min-h-dvh w-full max-w-xl flex-col gap-5 px-4 pt-5">
 			<header className="flex flex-col gap-2">
 				<p className="flex items-center gap-2 text-[10px] text-muted uppercase tracking-widest">
 					<span className="h-2 w-2 rounded-full bg-accent" />
@@ -150,7 +150,7 @@ export function CaptureScreen({ sessionId }: CaptureScreenProps) {
 										"rounded-full border px-2.5 py-1 font-medium text-[10px] uppercase tracking-wider transition-colors",
 										selected
 											? "border-accent/30 bg-accent/10 text-accent"
-											: "border-line text-muted hover:text-text"
+											: "border-line text-muted hover:text-text active:bg-surface"
 									)}
 									key={cat.id}
 									onClick={() =>
@@ -189,7 +189,7 @@ export function CaptureScreen({ sessionId }: CaptureScreenProps) {
 									"rounded-md px-2.5 py-1.5 font-medium text-[10px] uppercase tracking-wider transition-colors",
 									filter === f
 										? "bg-line/50 text-text"
-										: "text-muted hover:text-text"
+										: "text-muted hover:text-text active:bg-line/30"
 								)}
 								key={f}
 								onClick={() => setFilter(f)}
@@ -200,23 +200,6 @@ export function CaptureScreen({ sessionId }: CaptureScreenProps) {
 						))}
 					</div>
 				</div>
-				{total > 0 && (
-					<div
-						aria-label={`${done} of ${total} players scored`}
-						className="flex gap-0.5"
-						role="img"
-					>
-						{roster.map((p) => (
-							<span
-								className={cn(
-									"h-1.5 flex-1 rounded-full",
-									scoreByPlayer.has(p.id) ? "bg-accent" : "bg-line"
-								)}
-								key={p.id}
-							/>
-						))}
-					</div>
-				)}
 			</section>
 
 			<section className="flex flex-col gap-3 pb-4">
@@ -266,10 +249,10 @@ export function CaptureScreen({ sessionId }: CaptureScreenProps) {
 				</div>
 			</section>
 
-			<div className="sticky bottom-0 mt-auto flex gap-3 bg-bg pt-2 pb-2">
+			<div className="sticky bottom-0 mt-auto flex gap-3 bg-bg pt-2 pb-5">
 				<Link
 					aria-label="Back to home"
-					className="flex min-h-14 items-center justify-center rounded-xl bg-surface px-5 transition-colors hover:bg-line/40"
+					className="flex min-h-14 items-center justify-center rounded-xl bg-surface px-5 transition-colors hover:bg-line/40 active:bg-line/60"
 					to="/"
 				>
 					<ArrowLeft className="h-4 w-4" />

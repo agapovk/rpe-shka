@@ -21,7 +21,7 @@ export function HomeScreen() {
 	const categoryNames = new Map(categories.map((c) => [c.id, c.name]));
 
 	return (
-		<main className="mx-auto flex min-h-dvh w-full max-w-xl flex-col px-4 py-6">
+		<main className="mx-auto flex min-h-dvh w-full max-w-xl flex-col px-4 pt-5">
 			<header className="flex items-center justify-between pb-4">
 				<div className="flex items-baseline gap-2">
 					<span className="font-bold font-display text-3xl leading-none tracking-tight">
@@ -33,7 +33,7 @@ export function HomeScreen() {
 				</div>
 				<Link
 					aria-label="Settings"
-					className="flex h-9 w-9 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface hover:text-text"
+					className="flex h-9 w-9 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface hover:text-text active:bg-line/40"
 					to="/settings"
 				>
 					<Settings2 className="h-4 w-4" />
@@ -81,7 +81,7 @@ export function HomeScreen() {
 				)}
 			</div>
 
-			<div className="sticky bottom-0 mt-auto bg-bg pt-2 pb-2">
+			<div className="sticky bottom-0 mt-auto bg-bg pt-2 pb-5">
 				<NewSessionButton />
 			</div>
 		</main>
