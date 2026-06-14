@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { RecordedPlayer } from "./model";
-import { calcSessionStats, joinRecorded } from "./model";
+import { calcDistribution, calcSessionStats, joinRecorded } from "./model";
 
 const player = (id: number, score: number): RecordedPlayer => ({
 	id,
@@ -42,6 +42,25 @@ describe("calcSessionStats", () => {
 
 	it("hard is 0 when no score >= 8", () => {
 		expect(calcSessionStats([player(1, 5), player(2, 7)]).hard).toBe(0);
+	});
+});
+
+describe("calcDistribution", () => {
+	it("returns five zero buckets for empty list", () => {
+		expect(calcDistribution([])).toEqual([0, 0, 0, 0, 0]);
+	});
+
+	it("buckets scores as 1-2 · 3-4 · 5-6 · 7-8 · 9-10", () => {
+		const recorded = [
+			player(1, 1),
+			player(2, 2),
+			player(3, 4),
+			player(4, 5),
+			player(5, 8),
+			player(6, 9),
+			player(7, 10),
+		];
+		expect(calcDistribution(recorded)).toEqual([2, 1, 1, 1, 2]);
 	});
 });
 

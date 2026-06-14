@@ -54,13 +54,13 @@ export function ScoreSheet({
 		<div className="fixed inset-0 z-50 flex items-end justify-center">
 			<button
 				aria-label="Close"
-				className="absolute inset-0 bg-black/55 backdrop-blur-xs"
+				className="absolute inset-0 animate-fade-in bg-black/55 backdrop-blur-xs"
 				onClick={() => onClose(note)}
 				type="button"
 			/>
 			<div
 				aria-modal="true"
-				className="relative flex max-h-[92dvh] w-full max-w-xl flex-col gap-4 overflow-y-auto rounded-t-3xl border-line border-t bg-bg px-5 pt-3 pb-6"
+				className="relative flex max-h-[92dvh] w-full max-w-xl animate-sheet-up flex-col gap-4 overflow-y-auto rounded-t-3xl border-line border-t bg-bg px-5 pt-3 pb-6"
 				role="dialog"
 			>
 				<div className="mx-auto h-1 w-10 shrink-0 rounded-full bg-line" />
@@ -76,7 +76,7 @@ export function ScoreSheet({
 					</div>
 					<button
 						aria-label="Close"
-						className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-line bg-surface text-muted transition-colors hover:text-text"
+						className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-line bg-surface text-muted transition-colors hover:text-text active:bg-line/40"
 						onClick={() => onClose(note)}
 						type="button"
 					>
@@ -99,22 +99,29 @@ export function ScoreSheet({
 					</p>
 				</div>
 
-				<input
-					className="min-h-12 w-full rounded-xl border border-line bg-surface px-4 py-3 text-sm outline-none placeholder:text-muted/60 focus:border-accent"
-					enterKeyHint="done"
-					maxLength={NOTE_MAX_LENGTH}
-					onChange={(e) => setNote(e.target.value)}
-					onKeyDown={(e) => {
-						if (e.key === "Enter") {
-							onClose(note);
-						}
-					}}
-					placeholder="Add a note (optional) — e.g. tight hamstring"
-					value={note}
-				/>
+				<div className="relative">
+					<input
+						className="min-h-12 w-full rounded-xl border border-line bg-surface px-4 py-3 pr-14 text-sm outline-none placeholder:text-muted/60 focus:border-accent"
+						enterKeyHint="done"
+						maxLength={NOTE_MAX_LENGTH}
+						onChange={(e) => setNote(e.target.value)}
+						onKeyDown={(e) => {
+							if (e.key === "Enter") {
+								onClose(note);
+							}
+						}}
+						placeholder="Add a note (optional) — e.g. tight hamstring"
+						value={note}
+					/>
+					{note.length > NOTE_MAX_LENGTH - 20 && (
+						<span className="absolute top-1/2 right-3 -translate-y-1/2 text-[10px] text-muted tabular-nums">
+							{NOTE_MAX_LENGTH - note.length}
+						</span>
+					)}
+				</div>
 
 				<button
-					className="flex min-h-12 items-center justify-center gap-2 rounded-xl border border-line bg-surface font-bold font-display text-muted uppercase tracking-wide transition-colors hover:text-text"
+					className="flex min-h-12 items-center justify-center gap-2 rounded-xl border border-line bg-surface font-bold font-display text-muted uppercase tracking-wide transition-colors hover:text-text active:bg-line/40"
 					onClick={onAbsent}
 					type="button"
 				>

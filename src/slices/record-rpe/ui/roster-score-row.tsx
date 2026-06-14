@@ -1,4 +1,5 @@
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, MessageSquareText } from "lucide-react";
+import { useState } from "react";
 import type { Player } from "@/shared/db/dexie";
 import { cn } from "@/shared/lib/cn";
 import { rpeTextClass } from "@/shared/lib/rpe";
@@ -17,49 +18,80 @@ export function RosterScoreRow({
 	score,
 }: RosterScoreRowProps) {
 	const hasScore = score !== undefined;
+	const [noteOpen, setNoteOpen] = useState(false);
 
 	return (
-		<button
-			className={cn(
-				"group flex min-h-14 items-center gap-4 px-4 py-3 text-left transition-colors hover:bg-line/30",
-				!hasScore && "text-muted"
-			)}
-			onClick={() => onOpen(player.id)}
-			type="button"
-		>
-			<span className="w-7 shrink-0 text-muted text-sm tabular-nums">
-				{String(player.num).padStart(2, "0")}
-			</span>
-			<span className="min-w-0 flex-1 truncate font-display font-medium text-lg">
-				{player.name}
-				{note && (
-					<span className="ml-2 font-normal font-sans text-muted text-xs">
-						· {note}
-					</span>
+		<div className="flex flex-col">
+			<div
+				className={cn(
+					"group flex min-h-14 items-center transition-colors",
+					hasScore
+						? "bg-accent/10 hover:bg-accent/15 active:bg-accent/20"
+						: "text-muted hover:bg-line/30 active:bg-line/50"
 				)}
-			</span>
-			{hasScore ? (
-				<span className="flex items-center gap-3">
-					<span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent">
-						<Check className="h-3.5 w-3.5 text-bg" />
+			>
+				<button
+					className="flex min-w-0 flex-1 items-center gap-4 px-4 py-3 text-left"
+					onClick={() => onOpen(player.id)}
+					type="button"
+				>
+					<span className="w-7 shrink-0 text-muted text-sm tabular-nums">
+						{String(player.num).padStart(2, "0")}
 					</span>
-					<span
-						className={cn(
-							"min-w-6 text-right font-bold font-display text-2xl tabular-nums leading-none",
-							rpeTextClass(score)
+					<span className="min-w-0 flex-1 truncate font-display font-medium text-lg">
+						{player.name}
+					</span>
+				</button>
+				{hasScore ? (
+					<div className="flex shrink-0 items-center gap-2.5 pr-4 pl-1">
+						{note && (
+							<button
+								aria-expanded={noteOpen}
+								aria-label={`Toggle note for ${player.name}`}
+								className={cn(
+									"flex h-7 w-7 items-center justify-center rounded-md transition-colors active:bg-line/40",
+									noteOpen ? "text-accent" : "text-muted hover:text-text"
+								)}
+								onClick={() => setNoteOpen(!noteOpen)}
+								type="button"
+							>
+								<MessageSquareText className="h-4 w-4" />
+							</button>
 						)}
+						<button
+							className="flex items-center"
+							onClick={() => onOpen(player.id)}
+							type="button"
+						>
+							<span
+								className={cn(
+									"min-w-6 text-right font-bold font-display text-2xl tabular-nums leading-none",
+									rpeTextClass(score)
+								)}
+							>
+								{score}
+							</span>
+						</button>
+					</div>
+				) : (
+					<button
+						className="flex shrink-0 items-center gap-2 px-4 py-3 text-[10px] text-muted uppercase tracking-widest"
+						onClick={() => onOpen(player.id)}
+						type="button"
 					>
-						{score}
-					</span>
-				</span>
-			) : (
-				<span className="flex items-center gap-2 text-[10px] text-muted uppercase tracking-widest">
-					<span className="transition-colors group-hover:text-accent">
-						Tap to score
-					</span>
-					<ArrowRight className="h-4 w-4" />
-				</span>
+						<span className="transition-colors group-hover:text-accent">
+							Tap to score
+						</span>
+						<ArrowRight className="h-4 w-4" />
+					</button>
+				)}
+			</div>
+			{note && noteOpen && (
+				<div className="flex gap-4 px-4 pb-3">
+					<span aria-hidden="true" className="w-7 shrink-0" />
+					<p className="min-w-0 text-muted text-sm leading-snug">{note}</p>
+				</div>
 			)}
-		</button>
+		</div>
 	);
 }

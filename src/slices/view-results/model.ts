@@ -16,8 +16,21 @@ export interface RecordedPlayer {
 }
 
 export const HARD_THRESHOLD = 8;
+export const DIST_BUCKETS = 5;
 const FLAG_HIGH = 9;
 const FLAG_LOW = 2;
+
+// 1-2 · 3-4 · 5-6 · 7-8 · 9-10
+const distBucket = (score: number): number =>
+	Math.min(Math.floor((score - 1) / 2), DIST_BUCKETS - 1);
+
+export function calcDistribution(recorded: RecordedPlayer[]): number[] {
+	const dist = new Array<number>(DIST_BUCKETS).fill(0);
+	for (const p of recorded) {
+		dist[distBucket(p.score)] += 1;
+	}
+	return dist;
+}
 
 // флажок «обратить внимание»: экстремально высокая или подозрительно низкая оценка
 export const isFlagged = (score: number): boolean =>

@@ -62,7 +62,7 @@ export function SessionCard({
 			<button
 				className={cn(
 					"flex min-w-0 flex-1 flex-col gap-2.5 px-4 py-3 text-left transition-colors",
-					!editing && "hover:bg-line/30"
+					!editing && "hover:bg-line/30 active:bg-line/50"
 				)}
 				disabled={editing}
 				onClick={openSession}
