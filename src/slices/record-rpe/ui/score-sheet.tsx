@@ -1,16 +1,8 @@
 import { UserX, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { Player } from "@/shared/db/dexie";
-import { rpeTextClass } from "@/shared/lib/rpe";
 import { NOTE_MAX_LENGTH } from "../model";
 import { RpeScale } from "./rpe-scale";
-
-const BUCKET_LEGEND = [
-	{ label: "Light", sample: 2 },
-	{ label: "Moderate", sample: 5 },
-	{ label: "Hard", sample: 8 },
-	{ label: "Max", sample: 10 },
-] as const;
 
 interface ScoreSheetProps {
 	initialNote: string;
@@ -73,6 +65,11 @@ export function ScoreSheet({
 						<p className="font-bold font-display text-3xl uppercase leading-none tracking-tight">
 							{player.name}
 						</p>
+						<p className="pt-2 text-[10px] text-muted uppercase tracking-widest">
+							{initialScore === null
+								? "Tap to save"
+								: "Tap same score to clear"}
+						</p>
 					</div>
 					<button
 						aria-label="Close"
@@ -86,22 +83,9 @@ export function ScoreSheet({
 
 				<RpeScale onSelect={(n) => onPick(n, note)} value={initialScore} />
 
-				<div className="flex flex-wrap items-center justify-between gap-2">
-					<div className="flex flex-wrap gap-4 text-[10px] uppercase tracking-widest">
-						{BUCKET_LEGEND.map(({ label, sample }) => (
-							<span className={rpeTextClass(sample)} key={label}>
-								● {label}
-							</span>
-						))}
-					</div>
-					<p className="text-[10px] text-muted uppercase tracking-widest">
-						{initialScore === null ? "Tap to save" : "Tap same score to clear"}
-					</p>
-				</div>
-
 				<div className="relative">
 					<input
-						className="min-h-12 w-full rounded-xl border border-line bg-surface px-4 py-3 pr-14 text-sm outline-none placeholder:text-muted/60 focus:border-accent"
+						className="min-h-14 w-full rounded-xl border border-line bg-surface px-4 py-3 pr-14 text-sm outline-none placeholder:text-muted/60 focus:border-accent"
 						enterKeyHint="done"
 						maxLength={NOTE_MAX_LENGTH}
 						onChange={(e) => setNote(e.target.value)}
@@ -110,7 +94,7 @@ export function ScoreSheet({
 								onClose(note);
 							}
 						}}
-						placeholder="Add a note (optional) — e.g. tight hamstring"
+						placeholder="Add a note (optional)"
 						value={note}
 					/>
 					{note.length > NOTE_MAX_LENGTH - 20 && (
@@ -121,7 +105,7 @@ export function ScoreSheet({
 				</div>
 
 				<button
-					className="flex min-h-12 items-center justify-center gap-2 rounded-xl border border-line bg-surface font-bold font-display text-muted uppercase tracking-wide transition-colors hover:text-text active:bg-line/40"
+					className="flex min-h-14 items-center justify-center gap-2 rounded-xl border border-line bg-surface font-bold font-display text-muted uppercase tracking-wide transition-colors hover:text-text active:bg-line/40"
 					onClick={onAbsent}
 					type="button"
 				>

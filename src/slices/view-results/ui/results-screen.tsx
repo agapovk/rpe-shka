@@ -1,8 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import {
 	ArrowDownWideNarrow,
-	ArrowLeft,
 	ArrowUpNarrowWide,
+	ClipboardEditIcon,
 	Download,
 	Home,
 	MessageSquareText,
@@ -229,14 +229,15 @@ export function ResultsScreen({ sessionId }: ResultsScreenProps) {
 			<div className="sticky bottom-0 mt-auto flex gap-3 bg-bg pt-2 pb-5">
 				<Link
 					aria-label="Back to survey"
-					className="flex min-h-14 items-center justify-center rounded-xl bg-surface px-5 transition-colors hover:bg-line/40 active:bg-line/60"
+					className="flex min-h-14 flex-1 items-center justify-center gap-2 rounded-xl bg-surface px-5 font-bold font-display text-lg uppercase tracking-wide transition-colors hover:bg-line/40 active:bg-line/60"
 					params={{ id: sessionId }}
 					to="/sessions/$id/survey"
 				>
-					<ArrowLeft className="h-4 w-4" />
+					<ClipboardEditIcon className="h-4 w-4" />
+					Edit
 				</Link>
 				<button
-					className="flex min-h-14 items-center justify-center gap-2 rounded-xl bg-surface px-5 font-bold font-display uppercase tracking-wide transition-colors hover:bg-line/40 active:bg-line/60 disabled:opacity-30"
+					className="flex min-h-14 flex-1 items-center justify-center gap-2 rounded-xl bg-accent px-4 font-bold font-display text-bg text-lg uppercase tracking-wide transition hover:brightness-110 active:translate-y-px disabled:opacity-30"
 					disabled={recorded.length === 0}
 					onClick={() => exportXlsx(session.name, recorded)}
 					type="button"
@@ -245,7 +246,7 @@ export function ResultsScreen({ sessionId }: ResultsScreenProps) {
 					XLSX
 				</button>
 				<Link
-					className="flex min-h-14 flex-1 items-center justify-center gap-2 rounded-xl bg-accent px-4 font-bold font-display text-bg text-lg uppercase tracking-wide transition hover:brightness-110 active:translate-y-px"
+					className="flex min-h-14 flex-1 items-center justify-center gap-2 rounded-xl bg-surface px-5 font-bold font-display text-lg uppercase tracking-wide transition-colors hover:bg-line/40 active:bg-line/60"
 					to="/"
 				>
 					<Home className="h-4 w-4" />
