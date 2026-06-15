@@ -52,16 +52,19 @@
 ✓ Опрос: оценённая строка заливается светло-зелёным (bg-accent/10), галочка убрана
 ✓ ScoreSheet: счётчик остатка символов у лимита заметки
 ✓ Единый нижний отступ: main pt-5 + sticky-футер pb-5 (убран двойной паддинг)
+✓ Perf (по Lighthouse): registerSW → script-defer (вне крит. пути);
+  шрифты сужены до latin+cyrillic → precache 56/1194 KiB → 36/950 KiB, woff2 30 → 10
 ```
 
 ## Чек-лист перед деплоем
 
 ```
-□ pnpm build — без ошибок
-□ tsc --noEmit — без ошибок
-□ pnpm check — чист
-□ pnpm test — зелёный
-□ Флоу: создать сессию → оценить → результаты → XLSX
-□ Офлайн: DevTools Offline → работает, данные сохраняются
-□ PWA: Lighthouse installable
+✓ pnpm build — без ошибок (PWA precache 56 entries / 1194 KiB)
+✓ tsc --noEmit — без ошибок
+✓ pnpm check — чист (62 файла)
+✓ pnpm test — зелёный (31 тест)
+✓ PWA: installable — запрос установки появился в prod-сборке (Brave). Lighthouse PWA-категория
+                      удалена в LH 12 — проверка через адресную строку / Application→Manifest
+✓ Офлайн: prod-сборка работает офлайн (SW precache app shell + IndexedDB)
+✓ Флоу: создать сессию → оценить → результаты → XLSX
 ```

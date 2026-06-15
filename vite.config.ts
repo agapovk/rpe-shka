@@ -12,6 +12,7 @@ const config = defineConfig({
 		tailwindcss(),
 		VitePWA({
 			registerType: "autoUpdate",
+			injectRegister: "script-defer",
 			workbox: {
 				globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2}"],
 				runtimeCaching: [],
