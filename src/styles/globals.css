@@ -1,9 +1,14 @@
 @import "tailwindcss";
-@import "@fontsource/oswald/400.css";
-@import "@fontsource/oswald/700.css";
-@import "@fontsource/inter/400.css";
-@import "@fontsource/inter/500.css";
-@import "@fontsource/inter/600.css";
+@import "@fontsource/oswald/latin-400.css";
+@import "@fontsource/oswald/latin-700.css";
+@import "@fontsource/oswald/cyrillic-400.css";
+@import "@fontsource/oswald/cyrillic-700.css";
+@import "@fontsource/inter/latin-400.css";
+@import "@fontsource/inter/latin-500.css";
+@import "@fontsource/inter/latin-600.css";
+@import "@fontsource/inter/cyrillic-400.css";
+@import "@fontsource/inter/cyrillic-500.css";
+@import "@fontsource/inter/cyrillic-600.css";
 
 @theme {
 	--font-display: "Oswald", system-ui, sans-serif;
