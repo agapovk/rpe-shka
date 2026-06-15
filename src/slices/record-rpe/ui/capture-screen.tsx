@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowRight, Home } from "lucide-react";
 import { useState } from "react";
 import type { Player } from "@/shared/db/dexie";
 import { cn } from "@/shared/lib/cn";
@@ -122,25 +122,28 @@ export function CaptureScreen({ sessionId }: CaptureScreenProps) {
 					<span className="h-2 w-2 rounded-full bg-accent" />
 					Session · {allScored ? "Ready" : "In progress"}
 				</p>
-				<input
-					className="w-full border-transparent border-b bg-transparent py-0.5 font-bold font-display text-3xl uppercase leading-none tracking-tight outline-none transition-colors hover:border-line focus:border-accent"
-					defaultValue={session.name}
-					onBlur={(e) => {
-						const trimmed = e.target.value.trim();
-						if (trimmed) {
-							updateSessionName(sessionId, trimmed);
-						} else {
-							e.target.value = session.name;
-						}
-					}}
-					onKeyDown={(e) => {
-						if (e.key === "Enter") {
-							e.currentTarget.blur();
-						}
-					}}
-				/>
+				<div className="relative w-full">
+					<input
+						className="peer w-full border-line border-b bg-transparent py-0.5 font-bold font-display text-3xl uppercase leading-none tracking-tight outline-none transition-colors hover:border-muted/60"
+						defaultValue={session.name}
+						onBlur={(e) => {
+							const trimmed = e.target.value.trim();
+							if (trimmed) {
+								updateSessionName(sessionId, trimmed);
+							} else {
+								e.target.value = session.name;
+							}
+						}}
+						onKeyDown={(e) => {
+							if (e.key === "Enter") {
+								e.currentTarget.blur();
+							}
+						}}
+					/>
+					<span className="pointer-events-none absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-accent transition-transform duration-400 ease-out peer-focus:scale-x-100" />
+				</div>
 				{categories && categories.length > 0 && (
-					<div className="flex flex-wrap gap-1.5 pt-1">
+					<div className="flex flex-wrap gap-1.5 pt-3">
 						{categories.map((cat) => {
 							const selected = session.categoryId === cat.id;
 							return (
@@ -252,10 +255,10 @@ export function CaptureScreen({ sessionId }: CaptureScreenProps) {
 			<div className="sticky bottom-0 mt-auto flex gap-3 bg-bg pt-2 pb-5">
 				<Link
 					aria-label="Back to home"
-					className="flex min-h-14 items-center justify-center rounded-xl bg-surface px-5 transition-colors hover:bg-line/40 active:bg-line/60"
+					className="flex min-h-14 flex-1 items-center justify-center rounded-xl bg-surface px-5 transition-colors hover:bg-line/40 active:bg-line/60"
 					to="/"
 				>
-					<ArrowLeft className="h-4 w-4" />
+					<Home className="h-4 w-4" />
 				</Link>
 				<button
 					className="flex min-h-14 flex-1 items-center justify-center gap-2 rounded-xl bg-accent px-4 font-bold font-display text-bg text-lg uppercase tracking-wide transition hover:brightness-110 active:translate-y-px disabled:cursor-not-allowed disabled:opacity-30"
@@ -265,7 +268,7 @@ export function CaptureScreen({ sessionId }: CaptureScreenProps) {
 					}
 					type="button"
 				>
-					{allScored ? "View results" : "Finish & view results"}
+					{allScored ? "Results" : "Finish"}
 					<ArrowRight className="h-4 w-4" />
 				</button>
 			</div>
