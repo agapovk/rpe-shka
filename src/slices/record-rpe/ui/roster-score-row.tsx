@@ -2,9 +2,10 @@ import { ArrowRight, MessageSquareText } from "lucide-react";
 import { useState } from "react";
 import type { Player } from "@/shared/db/dexie";
 import { cn } from "@/shared/lib/cn";
-import { rpeTextClass } from "@/shared/lib/rpe";
+import { rpeBgClass, rpeTextClass } from "@/shared/lib/rpe";
 
 interface RosterScoreRowProps {
+	flash: number | null;
 	note: string | undefined;
 	onOpen: (playerId: number) => void;
 	player: Player;
@@ -12,6 +13,7 @@ interface RosterScoreRowProps {
 }
 
 export function RosterScoreRow({
+	flash,
 	note,
 	onOpen,
 	player,
@@ -24,12 +26,22 @@ export function RosterScoreRow({
 		<div className="flex flex-col">
 			<div
 				className={cn(
-					"group flex min-h-14 items-center transition-colors",
+					"group relative flex min-h-14 items-center overflow-hidden transition-colors",
 					hasScore
 						? "bg-accent/10 hover:bg-accent/15 active:bg-accent/20"
 						: "text-muted hover:bg-line/30 active:bg-line/50"
 				)}
 			>
+				{flash !== null && hasScore && (
+					<span
+						aria-hidden="true"
+						className={cn(
+							"pointer-events-none absolute inset-0 animate-row-flash",
+							rpeBgClass(score)
+						)}
+						key={flash}
+					/>
+				)}
 				<button
 					className="flex min-w-0 flex-1 items-center gap-4 px-4 py-3 text-left"
 					onClick={() => onOpen(player.id)}

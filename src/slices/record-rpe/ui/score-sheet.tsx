@@ -1,8 +1,12 @@
-import { UserX, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Check, UserX, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import type { Player } from "@/shared/db/dexie";
+import { cn } from "@/shared/lib/cn";
+import { rpeBgClass } from "@/shared/lib/rpe";
 import { NOTE_MAX_LENGTH } from "../model";
 import { RpeScale } from "./rpe-scale";
+
+const CONFIRM_DELAY_MS = 750;
 
 interface ScoreSheetProps {
 	initialNote: string;
@@ -22,6 +26,37 @@ export function ScoreSheet({
 	player,
 }: ScoreSheetProps) {
 	const [note, setNote] = useState(initialNote);
+	const [confirming, setConfirming] = useState<number | null>(null);
+	const timerRef = useRef<number | null>(null);
+
+	useEffect(
+		() => () => {
+			if (timerRef.current !== null) {
+				window.clearTimeout(timerRef.current);
+			}
+		},
+		[]
+	);
+
+	const handleSelect = (n: number): void => {
+		if (confirming !== null) {
+			return;
+		}
+		const prefersReduced = window.matchMedia(
+			"(prefers-reduced-motion: reduce)"
+		).matches;
+		if (prefersReduced) {
+			onPick(n, note);
+			return;
+		}
+		setConfirming(n);
+		timerRef.current = window.setTimeout(
+			() => onPick(n, note),
+			CONFIRM_DELAY_MS
+		);
+	};
+
+	const confirmCleared = confirming !== null && confirming === initialScore;
 
 	useEffect(() => {
 		const onKey = (e: KeyboardEvent): void => {
@@ -52,9 +87,37 @@ export function ScoreSheet({
 			/>
 			<div
 				aria-modal="true"
-				className="relative flex max-h-[92dvh] w-full max-w-xl animate-sheet-up flex-col gap-4 overflow-y-auto rounded-t-3xl border-line border-t bg-bg px-5 pt-3 pb-6"
+				className="relative flex max-h-[92dvh] w-full max-w-xl animate-sheet-up flex-col gap-4 overflow-y-auto rounded-t-3xl bg-bg px-5 pt-3 pb-6"
 				role="dialog"
 			>
+				{confirming !== null && (
+					<div
+						className={cn(
+							"absolute inset-0 z-10 flex animate-confirm-pop flex-col items-center justify-center gap-3 rounded-t-3xl",
+							confirmCleared
+								? "bg-surface text-muted"
+								: cn("text-bg", rpeBgClass(confirming))
+						)}
+					>
+						{confirmCleared ? (
+							<X className="h-10 w-10" />
+						) : (
+							<Check className="h-10 w-10" strokeWidth={3} />
+						)}
+						<span
+							className={cn(
+								"font-bold font-display text-9xl tabular-nums leading-none",
+								confirmCleared && "line-through"
+							)}
+						>
+							{confirming}
+						</span>
+						<span className="text-xs uppercase tracking-widest">
+							{confirmCleared ? "Cleared" : "Saved"}
+						</span>
+					</div>
+				)}
+
 				<div className="mx-auto h-1 w-10 shrink-0 rounded-full bg-line" />
 
 				<div className="flex items-start justify-between gap-3">
@@ -81,7 +144,7 @@ export function ScoreSheet({
 					</button>
 				</div>
 
-				<RpeScale onSelect={(n) => onPick(n, note)} value={initialScore} />
+				<RpeScale onSelect={handleSelect} value={initialScore} />
 
 				<div className="relative">
 					<input
