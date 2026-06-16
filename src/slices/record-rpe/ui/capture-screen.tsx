@@ -42,6 +42,7 @@ export function CaptureScreen({ sessionId }: CaptureScreenProps) {
 	const [filter, setFilter] = useState<ScoreFilter>("all");
 	const [editingRoster, setEditingRoster] = useState(false);
 	const [openPlayerId, setOpenPlayerId] = useState<number | null>(null);
+	const [flash, setFlash] = useState<{ id: number; n: number } | null>(null);
 
 	if (!(entries && players)) {
 		return null;
@@ -96,12 +97,12 @@ export function CaptureScreen({ sessionId }: CaptureScreenProps) {
 			clearScore(sessionId, openPlayerId);
 		} else {
 			setScore(sessionId, openPlayerId, score, note);
+			setFlash((f) => ({ id: openPlayerId, n: (f?.n ?? 0) + 1 }));
 		}
 		setOpenPlayerId(null);
 	};
 
 	const handleClose = (note: string): void => {
-		// без кнопки Save заметка коммитится при закрытии шита
 		if (openEntry && note.trim() !== (openEntry.note ?? "")) {
 			setScore(sessionId, openEntry.playerId, openEntry.score, note);
 		}
@@ -237,6 +238,7 @@ export function CaptureScreen({ sessionId }: CaptureScreenProps) {
 							))
 						: filtered.map((p) => (
 								<RosterScoreRow
+									flash={flash?.id === p.id ? flash.n : null}
 									key={p.id}
 									note={scoreByPlayer.get(p.id)?.note}
 									onOpen={setOpenPlayerId}
