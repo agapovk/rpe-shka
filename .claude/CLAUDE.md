@@ -1,4 +1,16 @@
-# CLAUDE.md
+# RPE Tracker
+
+Офлайн PWA для сбора RPE игроков. Vite + React 19 SPA, TanStack Router,
+Dexie, Tailwind v4, VSA. Только pnpm. Legacy (Next.js) — ветка `legacy`.
+
+@../context/project.md
+
+Текущую фазу и принятые решения смотри в context/status.md (читай при
+нетривиальной задаче — там «почему», а не только «что»).
+
+---
+
+# Поведенческие правила
 
 Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-specific instructions as needed.
 
