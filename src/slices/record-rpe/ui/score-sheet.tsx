@@ -87,7 +87,7 @@ export function ScoreSheet({
 			/>
 			<div
 				aria-modal="true"
-				className="relative flex max-h-[92dvh] w-full max-w-xl animate-sheet-up flex-col gap-4 overflow-y-auto rounded-t-3xl bg-bg px-5 pt-3 pb-6"
+				className="relative flex h-[92dvh] w-full max-w-xl animate-sheet-up flex-col gap-4 overflow-y-auto rounded-t-3xl bg-bg px-5 pt-3 pb-6"
 				role="dialog"
 			>
 				{confirming !== null && (
