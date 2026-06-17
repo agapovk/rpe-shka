@@ -4,6 +4,7 @@ import { useEffect } from "react";
 
 import { ThemeProvider } from "@/shared/context/theme";
 import { db } from "@/shared/db/dexie";
+import { RotateGate } from "@/shared/ui/rotate-gate";
 
 export const Route = createRootRoute({ component: RootApp });
 
@@ -18,6 +19,7 @@ function RootApp() {
 	return (
 		<ThemeProvider>
 			<Outlet />
+			<RotateGate />
 			<TanStackRouterDevtools position="bottom-right" />
 		</ThemeProvider>
 	);
