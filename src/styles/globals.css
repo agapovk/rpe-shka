@@ -30,6 +30,7 @@
 	--animate-fade-in: fade-in 0.2s ease-out;
 	--animate-confirm-pop: confirm-pop 0.25s cubic-bezier(0.32, 0.72, 0, 1);
 	--animate-row-flash: row-flash 1.5s ease-out forwards;
+	--animate-bolt-flash: bolt-flash 4s ease-in-out infinite;
 
 	@keyframes sheet-up {
 		from {
@@ -71,6 +72,33 @@
 		to {
 			opacity: 0;
 		}
+	}
+
+	/* блик пробегает по молнии снизу вверх ближе к концу цикла */
+	@keyframes bolt-flash {
+		0%,
+		70% {
+			transform: translateY(380px);
+			opacity: 0;
+		}
+		73% {
+			transform: translateY(380px);
+			opacity: 1;
+		}
+		99% {
+			transform: translateY(-60px);
+			opacity: 1;
+		}
+		100% {
+			transform: translateY(-60px);
+			opacity: 0;
+		}
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.animate-bolt-flash {
+		animation: none;
 	}
 }
 
