@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Settings2 } from "lucide-react";
 import { useState } from "react";
+import { Logo } from "@/shared/ui/logo";
 import { calcHomeStats, calcSessionSummary } from "../model";
 import { useAllEntries, useCategories, useSessions } from "../queries";
 import { NewSessionButton } from "./new-session-button";
@@ -23,17 +24,15 @@ export function HomeScreen() {
 	return (
 		<main className="mx-auto flex min-h-dvh w-full max-w-xl flex-col px-4 pt-5">
 			<header className="flex items-center justify-between pb-4">
-				<div className="flex items-baseline gap-2">
+				<div className="flex h-8 items-center gap-2">
+					<Logo className="h-8 w-8" />
 					<span className="font-bold font-display text-3xl leading-none tracking-tight">
 						RPE
-					</span>
-					<span className="text-[10px] text-muted uppercase tracking-[0.18em]">
-						шка
 					</span>
 				</div>
 				<Link
 					aria-label="Settings"
-					className="flex h-9 w-9 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface hover:text-text active:bg-line/40"
+					className="flex h-8 w-8 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface hover:text-text active:bg-line/40"
 					to="/settings"
 				>
 					<Settings2 className="h-4 w-4" />
