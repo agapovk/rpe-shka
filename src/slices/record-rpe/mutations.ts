@@ -57,3 +57,10 @@ export async function toggleSessionPlayer(
 		: [...session.rosterIds, playerId];
 	await db.sessions.update(sessionId, { rosterIds });
 }
+
+export async function setSessionRoster(
+	sessionId: string,
+	rosterIds: number[]
+): Promise<void> {
+	await db.sessions.update(sessionId, { rosterIds });
+}
