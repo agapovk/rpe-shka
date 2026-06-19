@@ -1,20 +1,34 @@
 # RPE Tracker
 
-Офлайн PWA для тренера: собирает оценки нагрузки (RPE 1–10) от игроков после тренировки. Работает без интернета — все данные в IndexedDB.
+Offline-first PWA for coaches to collect post-training workload ratings 
+(RPE 1–10) from players. Works fully without internet — all data lives 
+in the browser via IndexedDB.
 
-**[Live demo →](https://rpe-shka.vercel.app)**
+**🔗 [Live demo](https://rpe-shka.vercel.app)**
 
----
+![RPE Tracker demo](./public/demo.gif)
 
-**Стек:** Vite + React 19 · TanStack Router · Dexie.js · Tailwind CSS v4 · vite-plugin-pwa
+## Why local-first
 
-**Архитектура:** Vertical Slice Architecture — каждый срез (record-rpe, view-results, manage-session, manage-roster) изолирован и содержит UI / model / queries / mutations.
+Coaches collect ratings pitch-side, where connectivity is unreliable. 
+The app is built offline-first: every action works without a network, 
+data persists locally in IndexedDB (via Dexie.js), and the PWA is 
+installable on a phone like a native app.
 
----
+## Features
+- Session & roster management
+- Per-player RPE rating capture (1–10)
+- Results view with workload aggregation
+- Fully offline, installable as PWA
+- Export to .xlsx file
 
-```bash
-pnpm install
-pnpm dev      # :3000
-pnpm build
-pnpm test     # vitest, 22 теста
-```
+## Architecture
+
+Vertical Slice Architecture — each slice (`record-rpe`, `view-results`, 
+`manage-session`, `manage-roster`) is self-contained with its own 
+UI / model / queries / mutations. Adding a feature touches one slice, 
+not the whole codebase.
+
+## Tech stack
+Vite · React 19 · TypeScript · TanStack Router · Dexie.js (IndexedDB) · 
+Tailwind CSS v4 · vite-plugin-pwa · Vitest
