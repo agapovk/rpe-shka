@@ -8,6 +8,7 @@ import {
 	clearScore,
 	setScore,
 	setSessionCategory,
+	setSessionRoster,
 	toggleSessionPlayer,
 	updateSessionName,
 } from "../mutations";
@@ -209,13 +210,42 @@ export function CaptureScreen({ sessionId }: CaptureScreenProps) {
 			<section className="flex flex-col gap-3 pb-4">
 				<div
 					className={cn(
-						"flex items-center justify-between py-3",
+						"flex items-center justify-between gap-3 py-3",
 						editingRoster && "sticky top-0 z-10 bg-bg"
 					)}
 				>
-					<h2 className="font-medium text-muted text-xs uppercase tracking-widest">
-						{editingRoster ? "Select players" : "Tap a player to score"}
-					</h2>
+					{editingRoster ? (
+						<div className="flex items-center gap-6 font-medium text-xs uppercase tracking-widest">
+							<button
+								className="text-muted uppercase transition-colors hover:text-text disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:text-muted"
+								disabled={total === players.length}
+								onClick={() =>
+									setSessionRoster(
+										sessionId,
+										players.map((p) => p.id)
+									)
+								}
+								type="button"
+							>
+								All
+							</button>
+							<button
+								className="text-muted uppercase transition-colors hover:text-text disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:text-muted"
+								disabled={total === 0}
+								onClick={() => setSessionRoster(sessionId, [])}
+								type="button"
+							>
+								None
+							</button>
+							<span className="text-accent tabular-nums">
+								{total}/{players.length}
+							</span>
+						</div>
+					) : (
+						<h2 className="font-medium text-muted text-xs uppercase tracking-widest">
+							Tap a player to score
+						</h2>
+					)}
 					<button
 						className="py-1 font-medium text-accent text-xs uppercase tracking-widest underline-offset-4 hover:underline"
 						onClick={() => setEditingRoster(!editingRoster)}
@@ -231,6 +261,7 @@ export function CaptureScreen({ sessionId }: CaptureScreenProps) {
 								<SessionRosterRow
 									inSession={session.rosterIds.includes(p.id)}
 									key={p.id}
+									onDeleteScore={(id) => clearScore(sessionId, id)}
 									onToggle={(id) => toggleSessionPlayer(sessionId, id)}
 									player={p}
 									score={scoreByPlayer.get(p.id)?.score}

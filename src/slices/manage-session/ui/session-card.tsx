@@ -3,7 +3,6 @@ import { Copy, Trash2 } from "lucide-react";
 import { useState } from "react";
 import type { Session } from "@/shared/db/dexie";
 import { cn } from "@/shared/lib/cn";
-import { fmtDate } from "@/shared/lib/date";
 import { rpeTextClass } from "@/shared/lib/rpe";
 import type { SessionSummary } from "../model";
 import { deleteSession, duplicateSession } from "../mutations";
@@ -61,7 +60,7 @@ export function SessionCard({
 		<div className="flex overflow-hidden rounded-xl border border-line bg-surface">
 			<button
 				className={cn(
-					"flex min-w-0 flex-1 flex-col gap-2.5 px-4 py-3 text-left transition-colors",
+					"flex min-w-0 flex-1 flex-col gap-2 px-4 py-3 text-left transition-colors",
 					!editing && "hover:bg-line/30 active:bg-line/50"
 				)}
 				disabled={editing}
@@ -71,13 +70,10 @@ export function SessionCard({
 				<div className="flex items-start justify-between gap-3">
 					<div className="flex min-w-0 flex-col gap-0.5">
 						<span className="text-[10px] text-muted uppercase tracking-widest">
-							{fmtDate(session.date)}
-							{categoryName && (
-								<span className="text-accent"> · {categoryName}</span>
-							)}
+							{session.name}
 						</span>
 						<span className="truncate font-display font-semibold text-xl leading-tight">
-							{session.name}
+							{categoryName ? categoryName : "-"}
 						</span>
 					</div>
 					<span
